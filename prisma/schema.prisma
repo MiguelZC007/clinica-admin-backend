@@ -1,0 +1,669 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                             String                 @id @default(uuid())
+  name                           String?
+  lastname                       String?
+  mother_lastname                String?
+  search                         String?
+  birthdate                      DateTime?
+  cellphone                      String?
+  ci                             String?                @unique
+  gender                         Gender?
+  address                        String?
+  zone                           String?
+  state                          String?
+  city                           String?
+  country                        String?
+  email                          String?                @unique
+  password                       String?
+  contact_name                   String?
+  contact_phone                  String?
+  relationship                   String?
+  odoo_user_id                   Int?
+  registration_age               String?
+  observations                   String?
+  about_us                       String?
+  is_black                       Boolean?               @default(false)
+  hemodialysis                   Boolean?               @default(false)
+  createdAt                      DateTime               @default(now())
+  updatedAt                      DateTime               @updatedAt
+  active                         Boolean?               @default(true)
+  user_rol                       UserRol[]              @relation("user_id")
+  user_created_addendum          Addendum[]             @relation("addendum")
+  assigned_doctors               AssignedDoctors[]
+  day_offs                       DayOff[]               @relation("employee_dayoff")
+  specialties                    DoctorSpecialty[]
+  imagings                       Imaging[]              @relation("imaging")
+  laboratories                   Laboratory[]           @relation("laboratory")
+  patient_medical_history        MedicalHistory?        @relation("medical_history")
+  history_detail_doctor_assigned MedicalHistoryDetail[] @relation("medical_history_detail")
+  history_detail_user_created    MedicalHistoryDetail[] @relation("medical_history_detail_created")
+  medication_user_created        Medication[]           @relation("medication")
+  doctor_meet                    Meet[]                 @relation("doctor_meet")
+  patient_meet                   Meet[]                 @relation("patient_meet")
+  user_created_physical_exam     PhysicalExam[]         @relation("physical_exam")
+  cashier_sale                   Sale[]                 @relation("cashier_sale")
+  delete_sale                    Sale[]                 @relation("delete_sale")
+  patient_sale                   Sale[]                 @relation("patient_sale")
+  update_sale                    Sale[]                 @relation("update_sale")
+  sessions                       Session[]              @relation("session_user")
+  vital_signs_user_created       VitalSigns[]           @relation("vital_signs")
+  user_working_hour              WorkingHour?           @relation("employee_work")
+  medical_history_detail_approve MedicalHistoryDetail[] @relation("medical_history_detail_approve")
+  imaging_doctor_assigned        Imaging[]              @relation("imaging_doctor_assigned")
+  patient_credit_detail          Payment[]              @relation("patient_payment")
+  cashier_credit_detail          Payment[]              @relation("cashier_payment")
+}
+
+model UserRol {
+  id        String   @id @default(uuid())
+  rol_id    String
+  user_id   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rol       Rol      @relation("rol_id", fields: [rol_id], references: [id])
+  user      User     @relation("user_id", fields: [user_id], references: [id])
+
+}
+
+model Rol {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user_rol  UserRol[] @relation("rol_id")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  state     Boolean? @default(true)
+  token     String?
+  expire_in String?
+  user_id   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation("session_user", fields: [user_id], references: [id])
+}
+
+model Meet {
+  id                     String                @id @default(uuid())
+  from                   DateTime?
+  to                     DateTime?
+  state                  StateMeet?            @default(RESERVADO)
+  reminder               Json?                 @default("{\"hour2\": false, \"hour24\": false}")
+  patient_id             String
+  doctor_id              String
+  specialty              Specialty?            @relation(fields: [specialty_id], references: [id])
+  specialty_id           String?
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+  doctor                 User                  @relation("doctor_meet", fields: [doctor_id], references: [id])
+  patient                User                  @relation("patient_meet", fields: [patient_id], references: [id])
+  detail                 SaleDetail?           @relation("detail_meet")
+  medical_history_detail MedicalHistoryDetail?
+}
+
+model WorkingHour {
+  id            String   @id @default(uuid())
+  business_hour Json?    @default("[{\"to\": \"2000-09-01T20:00:00.000Z\", \"day\": \"Domingo\", \"from\": \"2000-09-01T12:00:00.000Z\", \"state\": false, \"endBreak\": \"2000-09-01T17:00:00.000Z\", \"initBreak\": \"2000-09-01T16:00:00.000Z\", \"continuous_time\": true}, {\"to\": \"2000-09-01T20:00:00.000Z\", \"day\": \"Lunes\", \"from\": \"2000-09-01T12:00:00.000Z\", \"state\": true, \"endBreak\": \"2000-09-01T17:00:00.000Z\", \"initBreak\": \"2000-09-01T16:00:00.000Z\", \"continuous_time\": true}, {\"to\": \"2000-09-01T20:00:00.000Z\", \"day\": \"Martes\", \"from\": \"2000-09-01T12:00:00.000Z\", \"state\": true, \"endBreak\": \"2000-09-01T17:00:00.000Z\", \"initBreak\": \"2000-09-01T16:00:00.000Z\", \"continuous_time\": true}, {\"to\": \"2000-09-01T20:00:00.000Z\", \"day\": \"Miercoles\", \"from\": \"2000-09-01T12:00:00.000Z\", \"state\": true, \"endBreak\": \"2000-09-01T17:00:00.000Z\", \"initBreak\": \"2000-09-01T16:00:00.000Z\", \"continuous_time\": true}, {\"to\": \"2000-09-01T20:00:00.000Z\", \"day\": \"Jueves\", \"from\": \"2000-09-01T12:00:00.000Z\", \"state\": true, \"endBreak\": \"2000-09-01T17:00:00.000Z\", \"initBreak\": \"2000-09-01T16:00:00.000Z\", \"continuous_time\": true}, {\"to\": \"2000-09-01T20:00:00.000Z\", \"day\": \"Viernes\", \"from\": \"2000-09-01T12:00:00.000Z\", \"state\": true, \"endBreak\": \"2000-09-01T17:00:00.000Z\", \"initBreak\": \"2000-09-01T16:00:00.000Z\", \"continuous_time\": true}, {\"to\": \"2000-09-01T20:00:00.000Z\", \"day\": \"Sabado\", \"from\": \"2000-09-01T12:00:00.000Z\", \"state\": true, \"endBreak\": \"2000-09-01T17:00:00.000Z\", \"initBreak\": \"2000-09-01T16:00:00.000Z\", \"continuous_time\": true}]")
+  user_id       String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation("employee_work", fields: [user_id], references: [id])
+}
+
+model DayOff {
+  id          String    @id @default(uuid())
+  from        DateTime?
+  to          DateTime?
+  description String?
+  user_id     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation("employee_dayoff", fields: [user_id], references: [id])
+}
+
+model Sale {
+  id             String       @id @default(uuid())
+  total_price    Decimal?     @default(0.0)
+  state          StateSale?   @default(NO_PAGADO)
+  description    String?      @default("")
+  receipt_number Int?         @default(autoincrement())
+  odoo_sale_id   Int?
+  patient_id     String
+  cashier_id     String
+  delete_id      String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  symptom        Json?        @default("[]")
+  transfer       Decimal?     @default(0.0)
+  update_id      String?
+  cashier        User         @relation("cashier_sale", fields: [cashier_id], references: [id])
+  delete         User?        @relation("delete_sale", fields: [delete_id], references: [id])
+  patient        User         @relation("patient_sale", fields: [patient_id], references: [id])
+  update         User?        @relation("update_sale", fields: [update_id], references: [id])
+  laboratory     Laboratory?
+  sale_detail    SaleDetail[] @relation("sale")
+  imaging        Imaging?
+  payment        Payment[]
+}
+
+model Payment {
+  id         String       @id @default(uuid())
+  amount     Decimal?     @default(0.0)
+  residue    Decimal?
+  sale_id    String?
+  sale       Sale?        @relation(fields: [sale_id], references: [id])
+  cashier_id String?
+  patient_id String?
+  patient    User?        @relation("patient_payment", fields: [patient_id], references: [id])
+  cashier    User?        @relation("cashier_payment", fields: [cashier_id], references: [id])
+  type       TypePayment? @default(EFECTIVO)
+  active     Boolean?     @default(true)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model SaleDetail {
+  id                String         @id @default(uuid())
+  quantity          Int?           @default(1)
+  sale_price        Decimal?       @default(0.0)
+  discount          Decimal?       @default(0.0)
+  invoiced          Boolean?       @default(false)
+  name              String?
+  odoo_sale_line_id Int?
+  product_id        String
+  sale_id           String
+  meet_id           String?        @unique
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  meet              Meet?          @relation("detail_meet", fields: [meet_id], references: [id])
+  product           Product        @relation("detail", fields: [product_id], references: [id])
+  sale              Sale           @relation("sale", fields: [sale_id], references: [id])
+  sample_detail     Sample[]
+  imaging_detail    ImagingDetail?
+}
+
+model Product {
+  id               String            @id @default(uuid())
+  name             String            @unique
+  price            Decimal?          @default(0.0)
+  state            Boolean?          @default(true)
+  description      String?
+  programmable     Boolean?          @default(false)
+  sub_category     String?
+  odoo_product_id  Int?
+  category_id      String
+  category         Category          @relation(fields: [category_id], references: [id])
+  saleDetail       SaleDetail[]      @relation("detail")
+  analysis         Analysis[]
+  template_product TemplateProduct[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  sample           Sample[]
+  imaging_detail   ImagingDetail[]
+}
+
+model TemplateProduct {
+  id                     String             @id @default(uuid())
+  product                Product            @relation(fields: [product_id], references: [id])
+  product_id             String
+  laboratory_template    LaboratoryTemplate @relation(fields: [laboratory_template_id], references: [id])
+  laboratory_template_id String
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+}
+
+model LaboratoryTemplate {
+  id               String            @id @default(uuid())
+  name             String?           @unique
+  state            Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  tamplate_product TemplateProduct[]
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  state       Boolean?  @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  product     Product[]
+}
+
+model Specialty {
+  id                     String                 @id @default(uuid())
+  name                   String                 @unique
+  description            String
+  state                  Boolean                @default(true)
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+  doctor_specialty       DoctorSpecialty[]
+  meet                   Meet[]
+  medical_history_detail MedicalHistoryDetail[]
+}
+
+model DoctorSpecialty {
+  id           String    @id @default(uuid())
+  specialty_id String
+  doctor_id    String
+  state        Boolean?  @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  doctor       User      @relation(fields: [doctor_id], references: [id])
+  specialty    Specialty @relation(fields: [specialty_id], references: [id])
+}
+
+model AssignedDoctors {
+  id                 String         @id @default(uuid())
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  medical_history_id String
+  doctor_id          String
+  doctor             User           @relation(fields: [doctor_id], references: [id])
+  medical_history    MedicalHistory @relation(fields: [medical_history_id], references: [id])
+}
+
+model MedicalHistory {
+  id                        String                    @id @default(uuid())
+  paternal_family_record    Json?
+  maternal_family_record    Json?
+  surgical_record           String?
+  laboratory_record         String?
+  medicines                 String?
+  social_record             String?
+  smokes                    String?
+  is_smokes                 Boolean?                  @default(false)
+  allergies                 Json?
+  blood_type                String?
+  state                     Boolean?                  @default(true)
+  patient_type              PatientType?              @default(EXTERNO)
+  patient                   User                      @relation("medical_history", fields: [patient_id], references: [id])
+  patient_id                String                    @unique
+  createdAt                 DateTime                  @default(now())
+  updatedAt                 DateTime                  @updatedAt
+  assigned_doctors          AssignedDoctors[]
+  medical_history_detail    MedicalHistoryDetail[]
+  record_underlying_disease RecordUnderlyingDisease[]
+}
+
+model RecordUnderlyingDisease {
+  id                        String                @id @default(uuid())
+  disease                   String?
+  icd                       Icd?                  @relation(fields: [icd_id], references: [id])
+  icd_id                    String?
+  medical_history           MedicalHistory?       @relation(fields: [medical_history_id], references: [id])
+  medical_history_id        String?
+  medical_history_detail    MedicalHistoryDetail? @relation(fields: [medical_history_detail_id], references: [id])
+  medical_history_detail_id String?
+  diagnostic                Diagnostic?           @relation(fields: [diagnostic_id], references: [id])
+  diagnostic_id             String?               @unique
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+}
+
+model MedicalHistoryDetail {
+  id                        String                    @id @default(uuid())
+  medical_history_type      MedicalHistoryType?       @default(CONSULTA)
+  history_detail_number     Int?                      @default(autoincrement())
+  symptoms                  String?
+  prescription              String?
+  specialty                 Specialty?                @relation(fields: [specialty_id], references: [id])
+  specialty_id              String?
+  meet_id                   String?                   @unique
+  meet                      Meet?                     @relation(fields: [meet_id], references: [id])
+  state                     Boolean                   @default(true)
+  approve                   Boolean                   @default(false)
+  user_approve              User?                     @relation("medical_history_detail_approve", fields: [user_approve_id], references: [id])
+  user_approve_id           String?
+  assigned_doctor           User                      @relation("medical_history_detail", fields: [assigned_doctor_id], references: [id])
+  assigned_doctor_id        String
+  medical_history           MedicalHistory            @relation(fields: [medical_history_id], references: [id])
+  medical_history_id        String
+  user_created              User                      @relation("medical_history_detail_created", fields: [user_created_id], references: [id])
+  user_created_id           String
+  createdAt                 DateTime                  @default(now())
+  updatedAt                 DateTime                  @updatedAt
+  addendum                  Addendum[]
+  imaging                   Imaging[]
+  laboratory                Laboratory[]
+  medication                Medication[]
+  physical_exam             PhysicalExam[]
+  vital_signs               VitalSigns?
+  diagnostic                Diagnostic[]
+  record_underlying_disease RecordUnderlyingDisease[]
+}
+
+model Diagnostic {
+  id                        String                   @id @default(uuid())
+  icd                       Icd?                     @relation(fields: [icd_id], references: [id])
+  icd_id                    String?
+  name                      String?
+  add_to_record             Boolean?                 @default(true)
+  description               String?
+  medical_history_detail_id String?
+  medical_history_detail    MedicalHistoryDetail?    @relation(fields: [medical_history_detail_id], references: [id])
+  createdAt                 DateTime                 @default(now())
+  updatedAt                 DateTime                 @updatedAt
+  record_underlying_disease RecordUnderlyingDisease?
+}
+
+model Icd {
+  id                        String                    @id @default(uuid())
+  disease                   String                    @unique
+  active                    Boolean?                  @default(true)
+  createdAt                 DateTime                  @default(now())
+  updatedAt                 DateTime                  @updatedAt
+  diagnostic                Diagnostic[]
+  record_underlying_disease RecordUnderlyingDisease[]
+}
+
+model VitalSigns {
+  id                        String               @id @default(uuid())
+  description               String?
+  oxygen_saturation         String?
+  temperature               String?
+  heart_rate                String?
+  breathing_frequency       String?
+  weight                    String?
+  height                    String?
+  diastolic_pressure        String?
+  systolic_pressure         String?
+  mdrd                      Json?
+  medical_history_detail_id String               @unique
+  user_created_id           String
+  state                     Boolean              @default(true)
+  approve                   Boolean              @default(false)
+  addendum                  Addendum[]
+  createdAt                 DateTime             @default(now())
+  updatedAt                 DateTime             @updatedAt
+  medical_history_detail    MedicalHistoryDetail @relation(fields: [medical_history_detail_id], references: [id])
+  user_created              User                 @relation("vital_signs", fields: [user_created_id], references: [id])
+}
+
+model Addendum {
+  id                        String                @id @default(uuid())
+  description               String?
+  medical_history_detail_id String?
+  user_created_id           String
+  state                     Boolean               @default(true)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+  medical_history_detail    MedicalHistoryDetail? @relation(fields: [medical_history_detail_id], references: [id])
+  user_created              User                  @relation("addendum", fields: [user_created_id], references: [id])
+  vital_signs               VitalSigns?           @relation(fields: [vital_signs_id], references: [id])
+  vital_signs_id            String?
+}
+
+model Medication {
+  id                        String               @id @default(uuid())
+  from                      DateTime?
+  to                        DateTime?
+  duration                  String?
+  description               String?
+  frequency                 String?
+  medicine                  String?
+  state                     Boolean              @default(true)
+  createdAt                 DateTime             @default(now())
+  updatedAt                 DateTime             @updatedAt
+  medical_history_detail    MedicalHistoryDetail @relation(fields: [medical_history_detail_id], references: [id])
+  medical_history_detail_id String
+  user_created              User                 @relation("medication", fields: [user_created_id], references: [id])
+  user_created_id           String
+}
+
+model PhysicalExam {
+  id                        String               @id @default(uuid())
+  normal                    Boolean?             @default(true)
+  description               String?
+  medical_history_detail_id String
+  user_created_id           String
+  state                     Boolean              @default(true)
+  physical_exam_type        PhysicalExamType
+  createdAt                 DateTime             @default(now())
+  updatedAt                 DateTime             @updatedAt
+  medical_history_detail    MedicalHistoryDetail @relation(fields: [medical_history_detail_id], references: [id])
+  user_created              User                 @relation("physical_exam", fields: [user_created_id], references: [id])
+}
+
+model Laboratory {
+  id                        String                @id @default(uuid())
+  laboratory_number         Int?                  @default(autoincrement())
+  patient_id                String
+  medical_history_detail_id String?
+  sale_id                   String?               @unique
+  description               String?
+  observation               String?
+  type                      LaboratoryType        @default(RECEPCION)
+  state                     Boolean?              @default(true)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+  medical_history_detail    MedicalHistoryDetail? @relation(fields: [medical_history_detail_id], references: [id])
+  patient                   User                  @relation("laboratory", fields: [patient_id], references: [id])
+  sale                      Sale?                 @relation(fields: [sale_id], references: [id])
+  sample                    Sample[]
+}
+
+model Sample {
+  id             String         @id @default(uuid())
+  laboratory_id  String
+  laboratory     Laboratory     @relation(fields: [laboratory_id], references: [id])
+  name           String?
+  type           SampleType?    @default(PENDIENTE)
+  state          Boolean        @default(true)
+  product        Product        @relation(fields: [product_id], references: [id])
+  product_id     String
+  sale_detail    SaleDetail?    @relation(fields: [sale_detail_id], references: [id])
+  sale_detail_id String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  sample_result  SampleResult[]
+}
+
+model SampleResult {
+  id                 String          @id @default(uuid())
+  sample_id          String
+  sample             Sample          @relation(fields: [sample_id], references: [id])
+  name               String?
+  attached           Json?
+  danger             Boolean?        @default(false)
+  result             String?
+  within_range       String?
+  out_of_range       String?
+  type               SampleType?     @default(PENDIENTE)
+  state              Boolean         @default(true)
+  value_reference    String?
+  reference_value    ReferenceValue? @relation(fields: [reference_value_id], references: [id])
+  reference_value_id String?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  analysis           Analysis        @relation(fields: [analysis_id], references: [id])
+  analysis_id        String
+}
+
+model Analysis {
+  id                 String           @id @default(uuid())
+  product            Product          @relation(fields: [product_id], references: [id])
+  product_id         String
+  name               String?
+  order              Int?
+  state              Boolean?         @default(true)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  parent_analysis    Analysis[]       @relation("AnalysisToAnalysis")
+  sample_result      SampleResult[]
+  category           CategoryAnalysis @relation(fields: [category_id], references: [id])
+  category_id        String
+  reference_value    ReferenceValue?  @relation(fields: [reference_value_id], references: [id])
+  reference_value_id String?
+  parent             Analysis?        @relation("AnalysisToAnalysis", fields: [parent_id], references: [id])
+  parent_id          String?
+}
+
+model CategoryAnalysis {
+  id          String     @id @default(uuid())
+  name        String?
+  order       Int?
+  description String?
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  analysis    Analysis[]
+}
+
+model ReferenceValue {
+  id               String              @id @default(uuid())
+  name             String
+  description      String?
+  value_reference  String?
+  unit_measurement String?
+  maker            String?
+  type             ReferenceValueType? @default(REACTIVO)
+  state            Boolean             @default(true)
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  analysis         Analysis[]
+  sample_result    SampleResult[]
+}
+
+model Imaging {
+  id                        String                @id @default(uuid())
+  patient_id                String
+  doctor_id                 String?
+  sale_id                   String?               @unique
+  medical_history_detail_id String?
+  type                      ImagingType?          @default(PENDIENTE)
+  state                     Boolean?              @default(true)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+  medical_history_detail    MedicalHistoryDetail? @relation(fields: [medical_history_detail_id], references: [id])
+  sale                      Sale?                 @relation(fields: [sale_id], references: [id])
+  patient                   User                  @relation("imaging", fields: [patient_id], references: [id])
+  doctor                    User?                 @relation("imaging_doctor_assigned", fields: [doctor_id], references: [id])
+  imaging_detail            ImagingDetail[]
+}
+
+model ImagingDetail {
+  id             String         @id @default(uuid())
+  product_id     String?
+  imaging_id     String?
+  name           String?
+  description    String?
+  imaging        Imaging?       @relation(fields: [imaging_id], references: [id])
+  product        Product?       @relation(fields: [product_id], references: [id])
+  type           ImagingType?   @default(PENDIENTE)
+  sale_detail    SaleDetail?    @relation(fields: [sale_detail_id], references: [id])
+  sale_detail_id String?        @unique
+  state          Boolean?       @default(true)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  imaging_files  ImagingFiles[]
+}
+
+model ImagingFiles {
+  id                String         @id @default(uuid())
+  imaging_detail_id String?
+  file              String?
+  ext               String?
+  url               String?
+  description       String?
+  state             Boolean?       @default(true)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  imaging_detail    ImagingDetail? @relation(fields: [imaging_detail_id], references: [id])
+}
+
+enum Gender {
+  MASCULINO
+  FEMENINO
+}
+
+enum StateMeet {
+  RESERVADO
+  ATENDIDO
+  AUSENTE
+  REPROGRAMADO
+  ELIMINADO
+  SIGNOS_VITALES
+}
+
+enum StateSale {
+  PAGADO
+  NO_PAGADO
+  CREDITO
+  ELIMINADO
+  ANULADO
+  DEVOLUCION
+}
+
+enum TypePayment {
+  EFECTIVO
+  TRANSFERENCIA
+  ANULADO
+  DEVOLUCION
+}
+
+enum MedicalHistoryType {
+  CONSULTA
+  SEGUIMIENTO
+  EPICRISIS
+  EVOLUCION
+}
+
+enum SampleType {
+  ENTREGADO
+  PENDIENTE
+  PROCESO
+  TERMINADO
+  ANULADO
+}
+
+enum ImagingType {
+  PENDIENTE
+  TERMINADO
+  ANULADO
+}
+
+enum LaboratoryType {
+  RECEPCION
+  PROCESO
+  TERMINADO
+  ANULADO
+  EMERGENCIA
+}
+
+enum PhysicalExamType {
+  CONSTITUCIONAL
+  OJOS
+  BUCOFARINGEO
+  CUELLO
+  CARDIOVASCULAR
+  PULMONAR
+  ABDOMEN
+  GENITOURINARIO
+  EXTREMIDADES
+  PIEL
+  NEUROLOGICO
+}
+
+enum PatientType {
+  INTERNO
+  EXTERNO
+}
+
+enum ReferenceValueType {
+  REACTIVO
+  CONTEO
+  OTRO
+}
