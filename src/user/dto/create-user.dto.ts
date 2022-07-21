@@ -1,50 +1,119 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsDateString, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty()
-  public name?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  name?: string | null;
+
   @ApiProperty()
-  public lastname?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  lastname?: string | null;
+
   @ApiProperty()
-  public mother_lastname?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  mother_lastname?: string | null;
+
   @ApiProperty()
-  public birthdate?: string | null;
+  @IsOptional()
+  @IsDateString({ message: 'El dato debe ser un ISO string' })
+  birthdate?: string | null;
+
   @ApiProperty()
-  public cellphone?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  cellphone?: string | null;
+
   @ApiProperty()
-  public ci?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  ci?: string | null;
+
   @ApiProperty()
-  public gender?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  gender?: string | null;
+
   @ApiProperty()
-  public address?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  address?: string | null;
+
   @ApiProperty()
-  public zone?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  zone?: string | null;
+
   @ApiProperty()
-  public state?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  state?: string | null;
+
   @ApiProperty()
-  public city?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  city?: string | null;
+
   @ApiProperty()
-  public country?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  country?: string | null;
+
   @ApiProperty()
-  public email?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  email?: string | null;
+
   @ApiProperty()
-  public password?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  password?: string | null;
+
   @ApiProperty()
-  public contact_name?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  contact_name?: string | null;
+
   @ApiProperty()
-  public contact_phone?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  contact_phone?: string | null;
+
   @ApiProperty()
-  public relationship?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  relationship?: string | null;
+
   @ApiProperty()
-  public registration_age?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  registration_age?: string | null;
+
   @ApiProperty()
-  public observations?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  observations?: string | null;
+
   @ApiProperty()
-  public about_us?: string | null;
+  @IsOptional()
+  @IsString({ message: 'El dato debe ser un string' })
+  about_us?: string | null;
+
   @ApiProperty()
-  public is_black?: boolean | null;
+  @IsOptional()
+  @IsBoolean({ message: 'el dato debe ser falso o verdadero' })
+  is_black?: boolean | null;
+
   @ApiProperty()
-  public hemodialysis?: boolean | null;
+  @IsOptional()
+  @IsBoolean({ message: 'el dato debe ser falso o verdadero' })
+  hemodialysis?: boolean | null;
+
   @ApiProperty()
-  public active?: boolean | null;
+  @IsOptional()
+  @IsBoolean({ message: 'el dato debe ser falso o verdadero' })
+  active?: boolean | null;
 }

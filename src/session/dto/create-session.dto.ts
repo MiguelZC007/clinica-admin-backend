@@ -1,12 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class CreateSessionDto {
   @ApiProperty()
-  public state?: boolean | null;
+  @IsBoolean()
+  @IsOptional()
+  state?: boolean | null;
+
   @ApiProperty()
-  public token?: string | null;
+  @IsString()
+  @IsOptional()
+  token?: string | null;
+
   @ApiProperty()
-  public expire_in?: string | null;
+  @IsString()
+  @IsOptional()
+  expire_in?: string | null;
+
   @ApiProperty()
-  public user_id: string;
+  @IsString()
+  user_id: string;
 }

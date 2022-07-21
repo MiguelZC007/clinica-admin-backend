@@ -81,12 +81,9 @@ export class UserService {
 
   async create(params: Prisma.UserCreateArgs) {
     try {
-      let search: string =
-        params.data.name +
-        ' ' +
-        params.data.lastname +
-        ' ' +
-        params.data.mother_lastname;
+      let search: string = `${params.data.name || ''} ${
+        params.data.lastname || ''
+      } ${params.data.mother_lastname || ''}`;
       search = search.trimEnd();
       params.data.search = search.toLocaleLowerCase();
       let data = await this.prisma.user.create(params);
@@ -108,7 +105,6 @@ export class UserService {
   async findUnique(params: Prisma.UserFindUniqueArgs) {
     try {
       let data = await this.prisma.user.findUnique(params);
-      console.log('unique', data);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -126,12 +122,9 @@ export class UserService {
 
   async update(params: Prisma.UserUpdateArgs) {
     try {
-      let search: string =
-        params.data.name +
-        ' ' +
-        params.data.lastname +
-        ' ' +
-        params.data.mother_lastname;
+      let search: string = `${params.data.name || ''} ${
+        params.data.lastname || ''
+      } ${params.data.mother_lastname || ''}`;
       search = search.trimEnd();
       params.data.search = search.toLocaleLowerCase();
       let data = await this.prisma.user.update(params);

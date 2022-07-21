@@ -13,7 +13,12 @@ async function bootstrap() {
   app.use(express.json({ limit: '900mb' }));
   app.use(express.urlencoded({ limit: '900mb', extended: true }));
   app.enableCors();
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
   app.enableVersioning({ type: VersioningType.URI });
 
   const config = new DocumentBuilder()

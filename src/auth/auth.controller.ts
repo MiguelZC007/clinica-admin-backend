@@ -19,9 +19,6 @@ import { compareSync, hashSync } from 'bcrypt';
 import { Prisma } from '@prisma/client';
 import { SessionService } from 'src/session/session.service';
 import { UserService } from 'src/user/user.service';
-import { JwtPayload } from './jwt-payload';
-import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
 
 @ApiTags('Authentication')
 @Controller({ version: '1', path: 'auth/admin' })
@@ -49,6 +46,7 @@ export class AuthController {
       },
     };
     let user = await this.usersService.findFirst(user_params);
+
     if (user != null && compareSync(data.password, user.password)) {
       return await this.authService.createToken(user);
     } else {
