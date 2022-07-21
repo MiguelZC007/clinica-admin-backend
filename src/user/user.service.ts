@@ -1,26 +1,152 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Prisma } from '@prisma/client';
+import { ErrorsManager } from 'src/errors-manager';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private prisma: PrismaService) {}
+
+  public user_select: Prisma.UserSelect = {
+    id: true,
+    name: true,
+    lastname: true,
+    mother_lastname: true,
+    search: true,
+    birthdate: true,
+    cellphone: true,
+    ci: true,
+    gender: true,
+    address: true,
+    zone: true,
+    state: true,
+    city: true,
+    country: true,
+    email: true,
+    password: true,
+    contact_name: true,
+    contact_phone: true,
+    relationship: true,
+    odoo_user_id: true,
+    registration_age: true,
+    observations: true,
+    about_us: true,
+    is_black: true,
+    hemodialysis: true,
+    createdAt: true,
+    updatedAt: true,
+    active: true,
+    user_rol: {
+      include: {
+        rol: true,
+      },
+    },
+  };
+
+  public user_public_select: Prisma.UserSelect = {
+    id: true,
+    name: true,
+    lastname: true,
+    mother_lastname: true,
+    search: true,
+    birthdate: true,
+    cellphone: true,
+    ci: true,
+    gender: true,
+    address: true,
+    zone: true,
+    state: true,
+    city: true,
+    country: true,
+    email: true,
+    password: false,
+    contact_name: true,
+    contact_phone: true,
+    relationship: true,
+    odoo_user_id: false,
+    registration_age: true,
+    observations: true,
+    about_us: true,
+    is_black: true,
+    hemodialysis: true,
+    createdAt: true,
+    updatedAt: true,
+    active: true,
+    user_rol: {
+      include: {
+        rol: true,
+      },
+    },
+  };
+
+  async create(params: Prisma.UserCreateArgs) {
+    try {
+      let search: string =
+        params.data.name +
+        ' ' +
+        params.data.lastname +
+        ' ' +
+        params.data.mother_lastname;
+      search = search.trimEnd();
+      params.data.search = search.toLocaleLowerCase();
+      let data = await this.prisma.user.create(params);
+      return data;
+    } catch (error) {
+      ErrorsManager(error);
+    }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findMany(params: Prisma.UserFindManyArgs) {
+    try {
+      let data = await this.prisma.user.findMany(params);
+      return data;
+    } catch (error) {
+      ErrorsManager(error);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findUnique(params: Prisma.UserFindUniqueArgs) {
+    try {
+      let data = await this.prisma.user.findUnique(params);
+      console.log('unique', data);
+      return data;
+    } catch (error) {
+      ErrorsManager(error);
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findFirst(params: Prisma.UserFindFirstArgs) {
+    try {
+      let data = await this.prisma.user.findFirst(params);
+      return data;
+    } catch (error) {
+      ErrorsManager(error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(params: Prisma.UserUpdateArgs) {
+    try {
+      let search: string =
+        params.data.name +
+        ' ' +
+        params.data.lastname +
+        ' ' +
+        params.data.mother_lastname;
+      search = search.trimEnd();
+      params.data.search = search.toLocaleLowerCase();
+      let data = await this.prisma.user.update(params);
+      return data;
+    } catch (error) {
+      ErrorsManager(error);
+    }
+  }
+
+  async delete(params: Prisma.UserDeleteArgs) {
+    try {
+      let data = await this.prisma.user.delete(params);
+      return data;
+    } catch (error) {
+      ErrorsManager(error);
+    }
   }
 }
