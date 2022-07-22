@@ -11,10 +11,11 @@ import { MeetModule } from './meet/meet.module';
 import { SpecialtyModule } from './specialty/specialty.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
+import { ReferenceValueModule } from './reference-value/reference-value.module';
 
 @Module({
   controllers: [AppController],
   providers: [AppService],
-  imports: [PrismaModule, UserModule, AuthModule, SessionModule, UserRolModule, RolModule, MeetModule, SpecialtyModule, ProductModule, CategoryModule],
+  imports: [PrismaModule, UserModule, AuthModule, SessionModule, UserRolModule, RolModule, MeetModule, SpecialtyModule, ProductModule, CategoryModule, ReferenceValueModule],
 })
 export class AppModule {}
