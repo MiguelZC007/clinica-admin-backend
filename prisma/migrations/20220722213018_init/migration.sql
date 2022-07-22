@@ -622,6 +622,12 @@ CREATE UNIQUE INDEX "VitalSigns_medical_history_detail_id_key" ON "VitalSigns"("
 CREATE UNIQUE INDEX "Laboratory_sale_id_key" ON "Laboratory"("sale_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "CategoryAnalysis_name_key" ON "CategoryAnalysis"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ReferenceValue_name_key" ON "ReferenceValue"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Imaging_sale_id_key" ON "Imaging"("sale_id");
 
 -- CreateIndex

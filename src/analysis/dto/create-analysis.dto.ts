@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsInt,
   IsNotEmpty,
   IsNumber,
@@ -29,7 +30,7 @@ export class CreateAnalysisDto {
   order?: number | null;
   @ApiProperty()
   @IsOptional()
-  @IsString()
+  @IsBoolean()
   state?: boolean | null;
   @ApiProperty()
   @IsOptional()

@@ -512,7 +512,7 @@ model Analysis {
 
 model CategoryAnalysis {
   id          String     @id @default(uuid())
-  name        String?
+  name        String?    @unique
   order       Int?
   description String?
   active      Boolean    @default(true)
@@ -523,7 +523,7 @@ model CategoryAnalysis {
 
 model ReferenceValue {
   id               String              @id @default(uuid())
-  name             String
+  name             String              @unique
   description      String?
   value_reference  String?
   unit_measurement String?
