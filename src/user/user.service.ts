@@ -48,7 +48,7 @@ export class UserService {
     name: true,
     lastname: true,
     mother_lastname: true,
-    search: true,
+    search: false,
     birthdate: true,
     cellphone: true,
     ci: true,

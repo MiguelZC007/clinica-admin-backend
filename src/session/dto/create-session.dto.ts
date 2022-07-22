@@ -8,16 +8,16 @@ export class CreateSessionDto {
   state?: boolean | null;
 
   @ApiProperty()
-  @IsString()
+  @IsString({ message: 'El dato debe ser un string' })
   @IsOptional()
   token?: string | null;
 
   @ApiProperty()
-  @IsString()
+  @IsString({ message: 'El dato debe ser un string' })
   @IsOptional()
   expire_in?: string | null;
 
   @ApiProperty()
-  @IsString()
+  @IsString({ message: 'El dato debe ser un string' })
   user_id: string;
 }
