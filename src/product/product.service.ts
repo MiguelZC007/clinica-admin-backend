@@ -7,6 +7,36 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
+  public product_select: Prisma.ProductSelect = {
+    id: true,
+    name: true,
+    price: true,
+    state: true,
+    description: true,
+    programmable: true,
+    sub_category: true,
+    odoo_product_id: true,
+    category_id: true,
+    category: true,
+    createdAt: true,
+    updatedAt: true,
+  };
+
+  public product_public_select: Prisma.ProductSelect = {
+    id: true,
+    name: true,
+    price: true,
+    state: true,
+    description: true,
+    programmable: true,
+    sub_category: true,
+    odoo_product_id: false,
+    category_id: true,
+    category: true,
+    createdAt: true,
+    updatedAt: true,
+  };
+
   async create(params: Prisma.ProductCreateArgs) {
     try {
       let data = await this.prisma.product.create(params);
