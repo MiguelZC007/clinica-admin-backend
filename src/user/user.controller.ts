@@ -30,7 +30,7 @@ export class UserController {
   @Post()
   create(@Body() data: CreateUserDto) {
     if (data.password) {
-      data.password = hashSync(data.password, process.env.SALT_ROUND);
+      data.password = hashSync(data.password, Number(process.env.SALT_ROUND));
     }
     let params: Prisma.UserCreateArgs = {
       data: data as Prisma.UserUncheckedCreateInput,
@@ -66,7 +66,7 @@ export class UserController {
   @Put(':id')
   update(@Param('id') id: string, @Body() data: UpdateUserDto) {
     if (data.password) {
-      data.password = hashSync(data.password, process.env.SALT_ROUND);
+      data.password = hashSync(data.password, Number(process.env.SALT_ROUND));
     }
     let params: Prisma.UserUpdateArgs = {
       where: { id: id },
