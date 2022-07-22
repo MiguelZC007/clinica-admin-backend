@@ -14,10 +14,26 @@ import { CategoryModule } from './category/category.module';
 import { ReferenceValueModule } from './reference-value/reference-value.module';
 import { AnalysisModule } from './analysis/analysis.module';
 import { CategoryAnalysisModule } from './category-analysis/category-analysis.module';
+import { SaleModule } from './sale/sale.module';
 
 @Module({
   controllers: [AppController],
   providers: [AppService],
-  imports: [PrismaModule, UserModule, AuthModule, SessionModule, UserRolModule, RolModule, MeetModule, SpecialtyModule, ProductModule, CategoryModule, ReferenceValueModule, AnalysisModule, CategoryAnalysisModule],
+  imports: [
+    PrismaModule,
+    UserModule,
+    AuthModule,
+    SessionModule,
+    UserRolModule,
+    RolModule,
+    MeetModule,
+    SpecialtyModule,
+    ProductModule,
+    CategoryModule,
+    ReferenceValueModule,
+    AnalysisModule,
+    CategoryAnalysisModule,
+    SaleModule,
+  ],
 })
 export class AppModule {}
