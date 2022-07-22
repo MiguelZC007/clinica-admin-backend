@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDecimal, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsDecimal,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateSaleDto {
   @ApiProperty()
@@ -11,11 +17,11 @@ export class CreateSaleDto {
   @IsNotEmpty()
   cashier_id: string;
   @ApiProperty()
-  @IsDecimal()
+  @IsNumber()
   @IsNotEmpty()
   total_price?: number | null;
   @ApiProperty()
-  @IsDecimal()
+  @IsNumber()
   @IsOptional()
   transfer?: number | null;
   @ApiProperty({
