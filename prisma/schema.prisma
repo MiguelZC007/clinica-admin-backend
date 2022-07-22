@@ -71,7 +71,6 @@ model UserRol {
   updatedAt DateTime @updatedAt
   rol       Rol      @relation("rol_id", fields: [rol_id], references: [id])
   user      User     @relation("user_id", fields: [user_id], references: [id])
-
 }
 
 model Rol {
@@ -204,7 +203,7 @@ model Product {
   odoo_product_id  Int?
   category_id      String
   category         Category          @relation(fields: [category_id], references: [id])
-  saleDetail       SaleDetail[]      @relation("detail")
+  sale_detail      SaleDetail[]      @relation("detail")
   analysis         Analysis[]
   template_product TemplateProduct[]
   createdAt        DateTime          @default(now())

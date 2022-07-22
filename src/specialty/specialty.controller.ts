@@ -7,13 +7,22 @@ import {
   Delete,
   Query,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { SpecialtyService } from './specialty.service';
 import { CreateSpecialtyDto } from './dto/create-specialty.dto';
 import { UpdateSpecialtyDto } from './dto/update-specialty.dto';
 import { Prisma } from '@prisma/client';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolGuard } from 'src/guards/rol.guard';
+import { Roles } from 'src/decorators/roles.decorator';
 
-@Controller('specialty')
+@ApiTags('Specialty')
+@UseGuards(JwtAuthGuard, RolGuard)
+@Roles('ADMIN')
+@ApiBearerAuth()
+@Controller({ version: '1', path: 'specialty' })
 export class SpecialtyController {
   constructor(private readonly specialtyService: SpecialtyService) {}
 
