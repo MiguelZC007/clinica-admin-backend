@@ -10,10 +10,11 @@ import { RolModule } from './rol/rol.module';
 import { MeetModule } from './meet/meet.module';
 import { SpecialtyModule } from './specialty/specialty.module';
 import { ProductModule } from './product/product.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   controllers: [AppController],
   providers: [AppService],
-  imports: [PrismaModule, UserModule, AuthModule, SessionModule, UserRolModule, RolModule, MeetModule, SpecialtyModule, ProductModule],
+  imports: [PrismaModule, UserModule, AuthModule, SessionModule, UserRolModule, RolModule, MeetModule, SpecialtyModule, ProductModule, CategoryModule],
 })
 export class AppModule {}
