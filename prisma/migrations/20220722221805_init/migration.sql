@@ -105,7 +105,7 @@ CREATE TABLE "Meet" (
     "id" TEXT NOT NULL,
     "from" TIMESTAMP(3),
     "to" TIMESTAMP(3),
-    "state" "StateMeet" DEFAULT 'RESERVADO',
+    "state" "StateMeet" DEFAULT E'RESERVADO',
     "reminder" JSONB DEFAULT '{"hour2": false, "hour24": false}',
     "patient_id" TEXT NOT NULL,
     "doctor_id" TEXT NOT NULL,
@@ -144,8 +144,8 @@ CREATE TABLE "DayOff" (
 CREATE TABLE "Sale" (
     "id" TEXT NOT NULL,
     "total_price" DECIMAL(65,30) DEFAULT 0.0,
-    "state" "StateSale" DEFAULT 'NO_PAGADO',
-    "description" TEXT DEFAULT '',
+    "state" "StateSale" DEFAULT E'NO_PAGADO',
+    "description" TEXT DEFAULT E'',
     "receipt_number" SERIAL,
     "odoo_sale_id" INTEGER,
     "patient_id" TEXT NOT NULL,
@@ -153,7 +153,6 @@ CREATE TABLE "Sale" (
     "delete_id" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "symptom" JSONB DEFAULT '[]',
     "transfer" DECIMAL(65,30) DEFAULT 0.0,
     "update_id" TEXT,
 
@@ -168,7 +167,7 @@ CREATE TABLE "Payment" (
     "sale_id" TEXT,
     "cashier_id" TEXT,
     "patient_id" TEXT,
-    "type" "TypePayment" DEFAULT 'EFECTIVO',
+    "type" "TypePayment" DEFAULT E'EFECTIVO',
     "active" BOOLEAN DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -294,7 +293,7 @@ CREATE TABLE "MedicalHistory" (
     "allergies" JSONB,
     "blood_type" TEXT,
     "state" BOOLEAN DEFAULT true,
-    "patient_type" "PatientType" DEFAULT 'EXTERNO',
+    "patient_type" "PatientType" DEFAULT E'EXTERNO',
     "patient_id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -319,7 +318,7 @@ CREATE TABLE "RecordUnderlyingDisease" (
 -- CreateTable
 CREATE TABLE "MedicalHistoryDetail" (
     "id" TEXT NOT NULL,
-    "medical_history_type" "MedicalHistoryType" DEFAULT 'CONSULTA',
+    "medical_history_type" "MedicalHistoryType" DEFAULT E'CONSULTA',
     "history_detail_number" SERIAL,
     "symptoms" TEXT,
     "prescription" TEXT,
@@ -441,7 +440,7 @@ CREATE TABLE "Laboratory" (
     "sale_id" TEXT,
     "description" TEXT,
     "observation" TEXT,
-    "type" "LaboratoryType" NOT NULL DEFAULT 'RECEPCION',
+    "type" "LaboratoryType" NOT NULL DEFAULT E'RECEPCION',
     "state" BOOLEAN DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -454,7 +453,7 @@ CREATE TABLE "Sample" (
     "id" TEXT NOT NULL,
     "laboratory_id" TEXT NOT NULL,
     "name" TEXT,
-    "type" "SampleType" DEFAULT 'PENDIENTE',
+    "type" "SampleType" DEFAULT E'PENDIENTE',
     "state" BOOLEAN NOT NULL DEFAULT true,
     "product_id" TEXT NOT NULL,
     "sale_detail_id" TEXT,
@@ -474,7 +473,7 @@ CREATE TABLE "SampleResult" (
     "result" TEXT,
     "within_range" TEXT,
     "out_of_range" TEXT,
-    "type" "SampleType" DEFAULT 'PENDIENTE',
+    "type" "SampleType" DEFAULT E'PENDIENTE',
     "state" BOOLEAN NOT NULL DEFAULT true,
     "value_reference" TEXT,
     "reference_value_id" TEXT,
@@ -522,7 +521,7 @@ CREATE TABLE "ReferenceValue" (
     "value_reference" TEXT,
     "unit_measurement" TEXT,
     "maker" TEXT,
-    "type" "ReferenceValueType" DEFAULT 'REACTIVO',
+    "type" "ReferenceValueType" DEFAULT E'REACTIVO',
     "state" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -537,7 +536,7 @@ CREATE TABLE "Imaging" (
     "doctor_id" TEXT,
     "sale_id" TEXT,
     "medical_history_detail_id" TEXT,
-    "type" "ImagingType" DEFAULT 'PENDIENTE',
+    "type" "ImagingType" DEFAULT E'PENDIENTE',
     "state" BOOLEAN DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -552,7 +551,7 @@ CREATE TABLE "ImagingDetail" (
     "imaging_id" TEXT,
     "name" TEXT,
     "description" TEXT,
-    "type" "ImagingType" DEFAULT 'PENDIENTE',
+    "type" "ImagingType" DEFAULT E'PENDIENTE',
     "sale_detail_id" TEXT,
     "state" BOOLEAN DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -634,22 +633,22 @@ CREATE UNIQUE INDEX "Imaging_sale_id_key" ON "Imaging"("sale_id");
 CREATE UNIQUE INDEX "ImagingDetail_sale_detail_id_key" ON "ImagingDetail"("sale_detail_id");
 
 -- AddForeignKey
-ALTER TABLE "UserRol" ADD CONSTRAINT "UserRol_rol_id_fkey" FOREIGN KEY ("rol_id") REFERENCES "Rol"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "UserRol" ADD CONSTRAINT "UserRol_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Session" ADD CONSTRAINT "Session_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserRol" ADD CONSTRAINT "UserRol_rol_id_fkey" FOREIGN KEY ("rol_id") REFERENCES "Rol"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Meet" ADD CONSTRAINT "Meet_specialty_id_fkey" FOREIGN KEY ("specialty_id") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Session" ADD CONSTRAINT "Session_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Meet" ADD CONSTRAINT "Meet_doctor_id_fkey" FOREIGN KEY ("doctor_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Meet" ADD CONSTRAINT "Meet_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Meet" ADD CONSTRAINT "Meet_specialty_id_fkey" FOREIGN KEY ("specialty_id") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "WorkingHour" ADD CONSTRAINT "WorkingHour_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -670,22 +669,22 @@ ALTER TABLE "Sale" ADD CONSTRAINT "Sale_patient_id_fkey" FOREIGN KEY ("patient_i
 ALTER TABLE "Sale" ADD CONSTRAINT "Sale_update_id_fkey" FOREIGN KEY ("update_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Payment" ADD CONSTRAINT "Payment_sale_id_fkey" FOREIGN KEY ("sale_id") REFERENCES "Sale"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_cashier_id_fkey" FOREIGN KEY ("cashier_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Payment" ADD CONSTRAINT "Payment_sale_id_fkey" FOREIGN KEY ("sale_id") REFERENCES "Sale"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "SaleDetail" ADD CONSTRAINT "SaleDetail_meet_id_fkey" FOREIGN KEY ("meet_id") REFERENCES "Meet"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SaleDetail" ADD CONSTRAINT "SaleDetail_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "SaleDetail" ADD CONSTRAINT "SaleDetail_sale_id_fkey" FOREIGN KEY ("sale_id") REFERENCES "Sale"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SaleDetail" ADD CONSTRAINT "SaleDetail_sale_id_fkey" FOREIGN KEY ("sale_id") REFERENCES "Sale"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "SaleDetail" ADD CONSTRAINT "SaleDetail_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -712,9 +711,6 @@ ALTER TABLE "AssignedDoctors" ADD CONSTRAINT "AssignedDoctors_medical_history_id
 ALTER TABLE "MedicalHistory" ADD CONSTRAINT "MedicalHistory_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_icd_id_fkey" FOREIGN KEY ("icd_id") REFERENCES "Icd"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_medical_history_id_fkey" FOREIGN KEY ("medical_history_id") REFERENCES "MedicalHistory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -724,10 +720,7 @@ ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_me
 ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_diagnostic_id_fkey" FOREIGN KEY ("diagnostic_id") REFERENCES "Diagnostic"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_specialty_id_fkey" FOREIGN KEY ("specialty_id") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_meet_id_fkey" FOREIGN KEY ("meet_id") REFERENCES "Meet"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_icd_id_fkey" FOREIGN KEY ("icd_id") REFERENCES "Icd"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_user_approve_id_fkey" FOREIGN KEY ("user_approve_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -736,46 +729,49 @@ ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_user_app
 ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_assigned_doctor_id_fkey" FOREIGN KEY ("assigned_doctor_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_medical_history_id_fkey" FOREIGN KEY ("medical_history_id") REFERENCES "MedicalHistory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_user_created_id_fkey" FOREIGN KEY ("user_created_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Diagnostic" ADD CONSTRAINT "Diagnostic_icd_id_fkey" FOREIGN KEY ("icd_id") REFERENCES "Icd"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_meet_id_fkey" FOREIGN KEY ("meet_id") REFERENCES "Meet"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_specialty_id_fkey" FOREIGN KEY ("specialty_id") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MedicalHistoryDetail" ADD CONSTRAINT "MedicalHistoryDetail_medical_history_id_fkey" FOREIGN KEY ("medical_history_id") REFERENCES "MedicalHistory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Diagnostic" ADD CONSTRAINT "Diagnostic_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "VitalSigns" ADD CONSTRAINT "VitalSigns_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Diagnostic" ADD CONSTRAINT "Diagnostic_icd_id_fkey" FOREIGN KEY ("icd_id") REFERENCES "Icd"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "VitalSigns" ADD CONSTRAINT "VitalSigns_user_created_id_fkey" FOREIGN KEY ("user_created_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Addendum" ADD CONSTRAINT "Addendum_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "VitalSigns" ADD CONSTRAINT "VitalSigns_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Addendum" ADD CONSTRAINT "Addendum_user_created_id_fkey" FOREIGN KEY ("user_created_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Addendum" ADD CONSTRAINT "Addendum_vital_signs_id_fkey" FOREIGN KEY ("vital_signs_id") REFERENCES "VitalSigns"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Addendum" ADD CONSTRAINT "Addendum_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Medication" ADD CONSTRAINT "Medication_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Addendum" ADD CONSTRAINT "Addendum_vital_signs_id_fkey" FOREIGN KEY ("vital_signs_id") REFERENCES "VitalSigns"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Medication" ADD CONSTRAINT "Medication_user_created_id_fkey" FOREIGN KEY ("user_created_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PhysicalExam" ADD CONSTRAINT "PhysicalExam_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Medication" ADD CONSTRAINT "Medication_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PhysicalExam" ADD CONSTRAINT "PhysicalExam_user_created_id_fkey" FOREIGN KEY ("user_created_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Laboratory" ADD CONSTRAINT "Laboratory_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "PhysicalExam" ADD CONSTRAINT "PhysicalExam_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Laboratory" ADD CONSTRAINT "Laboratory_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -784,25 +780,31 @@ ALTER TABLE "Laboratory" ADD CONSTRAINT "Laboratory_patient_id_fkey" FOREIGN KEY
 ALTER TABLE "Laboratory" ADD CONSTRAINT "Laboratory_sale_id_fkey" FOREIGN KEY ("sale_id") REFERENCES "Sale"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Sample" ADD CONSTRAINT "Sample_laboratory_id_fkey" FOREIGN KEY ("laboratory_id") REFERENCES "Laboratory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Sample" ADD CONSTRAINT "Sample_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Laboratory" ADD CONSTRAINT "Laboratory_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Sample" ADD CONSTRAINT "Sample_sale_detail_id_fkey" FOREIGN KEY ("sale_detail_id") REFERENCES "SaleDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SampleResult" ADD CONSTRAINT "SampleResult_sample_id_fkey" FOREIGN KEY ("sample_id") REFERENCES "Sample"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Sample" ADD CONSTRAINT "Sample_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SampleResult" ADD CONSTRAINT "SampleResult_reference_value_id_fkey" FOREIGN KEY ("reference_value_id") REFERENCES "ReferenceValue"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Sample" ADD CONSTRAINT "Sample_laboratory_id_fkey" FOREIGN KEY ("laboratory_id") REFERENCES "Laboratory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SampleResult" ADD CONSTRAINT "SampleResult_sample_id_fkey" FOREIGN KEY ("sample_id") REFERENCES "Sample"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SampleResult" ADD CONSTRAINT "SampleResult_analysis_id_fkey" FOREIGN KEY ("analysis_id") REFERENCES "Analysis"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "SampleResult" ADD CONSTRAINT "SampleResult_reference_value_id_fkey" FOREIGN KEY ("reference_value_id") REFERENCES "ReferenceValue"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Analysis" ADD CONSTRAINT "Analysis_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Analysis" ADD CONSTRAINT "Analysis_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "Analysis"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Analysis" ADD CONSTRAINT "Analysis_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "CategoryAnalysis"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -811,28 +813,25 @@ ALTER TABLE "Analysis" ADD CONSTRAINT "Analysis_category_id_fkey" FOREIGN KEY ("
 ALTER TABLE "Analysis" ADD CONSTRAINT "Analysis_reference_value_id_fkey" FOREIGN KEY ("reference_value_id") REFERENCES "ReferenceValue"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Analysis" ADD CONSTRAINT "Analysis_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "Analysis"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Imaging" ADD CONSTRAINT "Imaging_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Imaging" ADD CONSTRAINT "Imaging_sale_id_fkey" FOREIGN KEY ("sale_id") REFERENCES "Sale"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Imaging" ADD CONSTRAINT "Imaging_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Imaging" ADD CONSTRAINT "Imaging_doctor_id_fkey" FOREIGN KEY ("doctor_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ImagingDetail" ADD CONSTRAINT "ImagingDetail_imaging_id_fkey" FOREIGN KEY ("imaging_id") REFERENCES "Imaging"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Imaging" ADD CONSTRAINT "Imaging_sale_id_fkey" FOREIGN KEY ("sale_id") REFERENCES "Sale"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Imaging" ADD CONSTRAINT "Imaging_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ImagingDetail" ADD CONSTRAINT "ImagingDetail_sale_detail_id_fkey" FOREIGN KEY ("sale_detail_id") REFERENCES "SaleDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ImagingDetail" ADD CONSTRAINT "ImagingDetail_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ImagingDetail" ADD CONSTRAINT "ImagingDetail_sale_detail_id_fkey" FOREIGN KEY ("sale_detail_id") REFERENCES "SaleDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ImagingDetail" ADD CONSTRAINT "ImagingDetail_imaging_id_fkey" FOREIGN KEY ("imaging_id") REFERENCES "Imaging"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ImagingFiles" ADD CONSTRAINT "ImagingFiles_imaging_detail_id_fkey" FOREIGN KEY ("imaging_detail_id") REFERENCES "ImagingDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;

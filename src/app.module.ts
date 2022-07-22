@@ -15,6 +15,7 @@ import { ReferenceValueModule } from './reference-value/reference-value.module';
 import { AnalysisModule } from './analysis/analysis.module';
 import { CategoryAnalysisModule } from './category-analysis/category-analysis.module';
 import { SaleModule } from './sale/sale.module';
+import { SaleDetailModule } from './sale-detail/sale-detail.module';
 
 @Module({
   controllers: [AppController],
@@ -34,6 +35,7 @@ import { SaleModule } from './sale/sale.module';
     AnalysisModule,
     CategoryAnalysisModule,
     SaleModule,
+    SaleDetailModule,
   ],
 })
 export class AppModule {}
