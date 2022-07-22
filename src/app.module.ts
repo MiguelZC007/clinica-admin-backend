@@ -16,6 +16,7 @@ import { AnalysisModule } from './analysis/analysis.module';
 import { CategoryAnalysisModule } from './category-analysis/category-analysis.module';
 import { SaleModule } from './sale/sale.module';
 import { SaleDetailModule } from './sale-detail/sale-detail.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   controllers: [AppController],
@@ -36,6 +37,7 @@ import { SaleDetailModule } from './sale-detail/sale-detail.module';
     CategoryAnalysisModule,
     SaleModule,
     SaleDetailModule,
+    PaymentModule,
   ],
 })
 export class AppModule {}

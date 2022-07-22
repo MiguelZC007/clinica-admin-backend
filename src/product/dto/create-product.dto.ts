@@ -3,6 +3,7 @@ import {
   IsBoolean,
   IsDecimal,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -14,7 +15,7 @@ export class CreateProductDto {
   name: string;
   @ApiProperty()
   @IsOptional()
-  @IsDecimal()
+  @IsNumber()
   price: number | null;
   @ApiProperty()
   @IsOptional()
