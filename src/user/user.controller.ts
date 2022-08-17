@@ -14,7 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from '@prisma/client';
 import { compareSync, hashSync } from 'bcrypt';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolGuard } from 'src/guards/rol.guard';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -36,6 +36,86 @@ export class UserController {
       data: data as Prisma.UserUncheckedCreateInput,
     };
     return this.userService.create(params);
+  }
+
+  @Get('search')
+  @ApiOperation({
+    summary: 'Obtener todos los usuarios que coincidan con la busqueda',
+  })
+  async findSearch(
+    @Query('text') txt: string = '',
+    @Query('rol') rol: string = 'PACIENTE',
+  ) {
+    let result: any[] = [];
+
+    let params: Prisma.UserFindManyArgs = {
+      where: {
+        user_rol: {
+          some: {
+            rol: {
+              name: {
+                contains: rol.trimEnd(),
+                mode: 'insensitive',
+              },
+            },
+          },
+        },
+      },
+      orderBy: [
+        {
+          name: 'asc',
+        },
+        {
+          ci: 'asc',
+        },
+      ],
+      include: {
+        user_rol: {
+          include: {
+            rol: true,
+          },
+        },
+      },
+    };
+    if (txt != '') {
+      let ci = txt.replace(/\D/g, '');
+      let search = txt.replace(ci, '');
+      search = search.trimStart();
+      search = search.trimEnd();
+
+      if (search != '' && ci != '') {
+        params.where.OR = [
+          {
+            search: {
+              contains: search,
+              mode: 'insensitive',
+            },
+          },
+          {
+            ci: {
+              contains: ci.trimEnd(),
+              mode: 'insensitive',
+            },
+          },
+        ];
+      } else if (ci != '') {
+        params.where.OR = {
+          ci: {
+            contains: ci.trimEnd(),
+            mode: 'insensitive',
+          },
+        };
+      } else if (search != '') {
+        params.where.OR = {
+          search: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        };
+      }
+      result = await this.userService.findMany(params);
+    }
+    return result;
   }
 
   @Get()
