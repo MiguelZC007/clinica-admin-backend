@@ -14,19 +14,16 @@ import { CreateRolDto } from './dto/create-rol.dto';
 import { UpdateRolDto } from './dto/update-rol.dto';
 import { Prisma } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolGuard } from 'src/guards/rol.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Auth } from 'src/decorators/auth.decorator';
 
 @ApiTags('Roles')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'rol' })
 export class RolController {
   constructor(private readonly rolService: RolService) {}
 
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreateRolDto) {
     let params: Prisma.RolCreateArgs = {
       data: data as Prisma.RolUncheckedCreateInput,
@@ -35,6 +32,7 @@ export class RolController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: Prisma.RolFindManyArgs = {
       orderBy: {
@@ -51,6 +49,7 @@ export class RolController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.RolFindUniqueArgs = {
       where: { id: id },
@@ -59,6 +58,7 @@ export class RolController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateRolDto) {
     let params: Prisma.RolUpdateArgs = {
       where: { id: id },
@@ -68,6 +68,7 @@ export class RolController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.RolDeleteArgs = {
       where: { id: id },

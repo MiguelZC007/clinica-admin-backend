@@ -11,21 +11,18 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RolGuard } from 'src/guards/rol.guard';
+import { Auth } from 'src/decorators/auth.decorator';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @ApiTags('Category')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'category' })
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreateCategoryDto) {
     let params: Prisma.CategoryCreateArgs = {
       data: data as Prisma.CategoryUncheckedCreateInput,
@@ -34,6 +31,7 @@ export class CategoryController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: Prisma.CategoryFindManyArgs = {
       orderBy: {
@@ -50,6 +48,7 @@ export class CategoryController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.CategoryFindUniqueArgs = {
       where: { id: id },
@@ -58,6 +57,7 @@ export class CategoryController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateCategoryDto) {
     let params: Prisma.CategoryUpdateArgs = {
       where: { id: id },
@@ -67,6 +67,7 @@ export class CategoryController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.CategoryDeleteArgs = {
       where: { id: id },

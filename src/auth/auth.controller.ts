@@ -46,7 +46,6 @@ export class AuthController {
       },
     };
     let user = await this.usersService.findFirst(user_params);
-
     if (user != null && compareSync(data.password, user.password)) {
       return await this.authService.createToken(user);
     } else {

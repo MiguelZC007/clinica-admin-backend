@@ -15,7 +15,7 @@ export class RolGuard implements CanActivate {
       context.getHandler(),
     );
 
-    if (!roles) {
+    if (roles.length === 0) {
       return true;
     }
 
@@ -37,7 +37,7 @@ export class RolGuard implements CanActivate {
     if (hasRole()) {
       return true;
     } else {
-      throw new ForbiddenException({ message: 'Usuario no Autorizado' });
+      throw new ForbiddenException({ message: 'Usuario no autorizado' });
     }
   }
 }

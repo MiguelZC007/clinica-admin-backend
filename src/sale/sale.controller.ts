@@ -15,19 +15,16 @@ import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 import { Prisma } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolGuard } from 'src/guards/rol.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Auth } from 'src/decorators/auth.decorator';
 
 @ApiTags('sale')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'sale' })
 export class SaleController {
   constructor(private readonly saleService: SaleService) {}
 
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreateSaleDto) {
     let params: Prisma.SaleCreateArgs = {
       data: data as Prisma.SaleUncheckedCreateInput,
@@ -36,6 +33,7 @@ export class SaleController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: Prisma.SaleFindManyArgs = {
       orderBy: {
@@ -52,6 +50,7 @@ export class SaleController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.SaleFindUniqueArgs = {
       where: { id: id },
@@ -60,6 +59,7 @@ export class SaleController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateSaleDto) {
     let params: Prisma.SaleUpdateArgs = {
       where: { id: id },
@@ -69,6 +69,7 @@ export class SaleController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.SaleDeleteArgs = {
       where: { id: id },

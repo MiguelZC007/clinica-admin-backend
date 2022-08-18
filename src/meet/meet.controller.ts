@@ -14,19 +14,16 @@ import { CreateMeetDto } from './dto/create-meet.dto';
 import { UpdateMeetDto } from './dto/update-meet.dto';
 import { Prisma } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolGuard } from 'src/guards/rol.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Auth } from 'src/decorators/auth.decorator';
 
 @ApiTags('Meet')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'meet' })
 export class MeetController {
   constructor(private readonly meetService: MeetService) {}
 
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreateMeetDto) {
     let params: Prisma.MeetCreateArgs = {
       data: data as Prisma.MeetUncheckedCreateInput,
@@ -36,6 +33,7 @@ export class MeetController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: any = {
       select: this.meetService.meet_select,
@@ -54,6 +52,7 @@ export class MeetController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.MeetFindUniqueArgs = {
       where: { id: id },
@@ -63,6 +62,7 @@ export class MeetController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateMeetDto) {
     let params: Prisma.MeetUpdateArgs = {
       where: { id: id },
@@ -72,6 +72,7 @@ export class MeetController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.MeetDeleteArgs = {
       where: { id: id },

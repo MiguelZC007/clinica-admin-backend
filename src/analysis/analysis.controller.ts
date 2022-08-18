@@ -13,6 +13,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Auth } from 'src/decorators/auth.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolGuard } from 'src/guards/rol.guard';
 import { AnalysisService } from './analysis.service';
@@ -20,14 +21,13 @@ import { CreateAnalysisDto } from './dto/create-analysis.dto';
 import { UpdateAnalysisDto } from './dto/update-analysis.dto';
 
 @ApiTags('Analysis')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'analysis' })
 export class AnalysisController {
   constructor(private readonly analysisService: AnalysisService) {}
 
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreateAnalysisDto) {
     let params: Prisma.AnalysisCreateArgs = {
       data: data as Prisma.AnalysisUncheckedCreateInput,
@@ -36,6 +36,7 @@ export class AnalysisController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: Prisma.AnalysisFindManyArgs = {
       orderBy: {
@@ -52,6 +53,7 @@ export class AnalysisController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.AnalysisFindUniqueArgs = {
       where: { id: id },
@@ -60,6 +62,7 @@ export class AnalysisController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateAnalysisDto) {
     let params: Prisma.AnalysisUpdateArgs = {
       where: { id: id },
@@ -69,6 +72,7 @@ export class AnalysisController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.AnalysisDeleteArgs = {
       where: { id: id },

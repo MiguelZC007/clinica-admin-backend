@@ -15,19 +15,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from '@prisma/client';
 import { compareSync, hashSync } from 'bcrypt';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolGuard } from 'src/guards/rol.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Auth } from 'src/decorators/auth.decorator';
 
 @ApiTags('User')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'user' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreateUserDto) {
     if (data.password) {
       data.password = hashSync(data.password, Number(process.env.SALT_ROUND));
@@ -39,6 +36,7 @@ export class UserController {
   }
 
   @Get('search')
+  @Auth('ADMIN')
   @ApiOperation({
     summary: 'Obtener todos los usuarios que coincidan con la busqueda',
   })
@@ -119,6 +117,7 @@ export class UserController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: Prisma.UserFindManyArgs = {
       select: this.userService.user_public_select,
@@ -136,6 +135,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.UserFindUniqueArgs = {
       where: { id: id },
@@ -144,6 +144,7 @@ export class UserController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateUserDto) {
     if (data.password) {
       data.password = hashSync(data.password, Number(process.env.SALT_ROUND));
@@ -156,6 +157,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.UserDeleteArgs = {
       where: { id: id },

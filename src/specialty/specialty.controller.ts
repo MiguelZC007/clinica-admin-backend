@@ -14,19 +14,16 @@ import { CreateSpecialtyDto } from './dto/create-specialty.dto';
 import { UpdateSpecialtyDto } from './dto/update-specialty.dto';
 import { Prisma } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolGuard } from 'src/guards/rol.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Auth } from 'src/decorators/auth.decorator';
 
 @ApiTags('Specialty')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'specialty' })
 export class SpecialtyController {
   constructor(private readonly specialtyService: SpecialtyService) {}
 
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreateSpecialtyDto) {
     let params: Prisma.SpecialtyCreateArgs = {
       data: data as Prisma.SpecialtyUncheckedCreateInput,
@@ -35,6 +32,7 @@ export class SpecialtyController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: Prisma.SpecialtyFindManyArgs = {
       orderBy: {
@@ -51,6 +49,7 @@ export class SpecialtyController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.SpecialtyFindUniqueArgs = {
       where: { id: id },
@@ -59,6 +58,7 @@ export class SpecialtyController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateSpecialtyDto) {
     let params: Prisma.SpecialtyUpdateArgs = {
       where: { id: id },
@@ -68,6 +68,7 @@ export class SpecialtyController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.SpecialtyDeleteArgs = {
       where: { id: id },

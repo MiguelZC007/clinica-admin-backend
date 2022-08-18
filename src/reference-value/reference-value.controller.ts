@@ -14,19 +14,16 @@ import { CreateReferenceValueDto } from './dto/create-reference-value.dto';
 import { UpdateReferenceValueDto } from './dto/update-reference-value.dto';
 import { Prisma } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolGuard } from 'src/guards/rol.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Auth } from 'src/decorators/auth.decorator';
 
 @ApiTags('Reference Value')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'reference-value' })
 export class ReferenceValueController {
   constructor(private readonly referenceValueService: ReferenceValueService) {}
 
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreateReferenceValueDto) {
     let params: Prisma.ReferenceValueCreateArgs = {
       data: data as Prisma.ReferenceValueUncheckedCreateInput,
@@ -35,6 +32,7 @@ export class ReferenceValueController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: Prisma.ReferenceValueFindManyArgs = {
       orderBy: {
@@ -51,6 +49,7 @@ export class ReferenceValueController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.ReferenceValueFindUniqueArgs = {
       where: { id: id },
@@ -59,6 +58,7 @@ export class ReferenceValueController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateReferenceValueDto) {
     let params: Prisma.ReferenceValueUpdateArgs = {
       where: { id: id },
@@ -68,6 +68,7 @@ export class ReferenceValueController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.ReferenceValueDeleteArgs = {
       where: { id: id },

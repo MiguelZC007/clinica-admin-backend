@@ -43,7 +43,6 @@ model User {
   specialties                    DoctorSpecialty[]
   imagings                       Imaging[]              @relation("imaging")
   laboratories                   Laboratory[]           @relation("laboratory")
-  patient_medical_history        MedicalHistory?        @relation("medical_history")
   history_detail_doctor_assigned MedicalHistoryDetail[] @relation("medical_history_detail")
   history_detail_user_created    MedicalHistoryDetail[] @relation("medical_history_detail_created")
   medication_user_created        Medication[]           @relation("medication")
@@ -61,6 +60,8 @@ model User {
   imaging_doctor_assigned        Imaging[]              @relation("imaging_doctor_assigned")
   patient_credit_detail          Payment[]              @relation("patient_payment")
   cashier_credit_detail          Payment[]              @relation("cashier_payment")
+  patient_medical_history        MedicalHistory?        @relation("medical_history")
+  hemodialysis_history           Hemodialysis?
 }
 
 model UserRol {
@@ -146,8 +147,8 @@ model Sale {
   transfer       Decimal?     @default(0.0)
   update_id      String?
   cashier        User         @relation("cashier_sale", fields: [cashier_id], references: [id])
-  delete         User?        @relation("delete_sale", fields: [delete_id], references: [id])
   patient        User         @relation("patient_sale", fields: [patient_id], references: [id])
+  delete         User?        @relation("delete_sale", fields: [delete_id], references: [id])
   update         User?        @relation("update_sale", fields: [update_id], references: [id])
   laboratory     Laboratory?
   sale_detail    SaleDetail[] @relation("sale")
@@ -296,6 +297,128 @@ model MedicalHistory {
   record_underlying_disease RecordUnderlyingDisease[]
 }
 
+model Hemodialysis {
+  id                   String                @id @default(uuid())
+  patient              User                  @relation(fields: [patient_id], references: [id])
+  patient_id           String                @unique
+  vascular_access      VascularAccessType?   @default(CATETER)
+  history_number       Int                   @default(autoincrement())
+  regisration_date     DateTime
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  turn                 HemodialysisMachine?
+  files                Files[]
+  hemodialysis_session HemodialysisSession[]
+}
+
+model HemodialysisSession {
+  id                       String                   @id @default(uuid())
+  hemodialysis             Hemodialysis             @relation(fields: [hemodialysis_id], references: [id])
+  hemodialysis_id          String
+  number_session           String
+  dry_weight               Decimal?                 @default(0.0)
+  income_weight            Decimal?                 @default(0.0)
+  egress_weight            Decimal?                 @default(0.0)
+  number_machine           Int
+  check_in                 DateTime
+  check_out                DateTime
+  date                     DateTime
+  ultrafiltration_session  String
+  ultrafiltration_end      String
+  filter_type              String                   @default("Alto Flujo")
+  filter_reuse             String
+  line_reuse               String
+  heparin                  String
+  ktv                      String
+  ingest                   String                   @default("N/A")
+  oxygenation              Int
+  pa_entry                 String
+  vascular_access          VascularAccessType
+  nursing_evaluation       String?
+  clinic_evaluation        String?
+  treatment                String?
+  type_hemodialysis        TypeHemodialysis         @default(CONVENIO)
+  createdAt                DateTime                 @default(now())
+  updatedAt                DateTime                 @updatedAt
+  vital_signs_hemodialysis VitalSignsHemodialysis[]
+  medicaments              Medication[]
+}
+
+model VitalSignsHemodialysis {
+  id                      String              @id @default(uuid())
+  hemodialysis_session    HemodialysisSession @relation(fields: [hemodialysis_session_id], references: [id])
+  hemodialysis_session_id String
+  hour                    Int
+  pa                      String
+  fc                      Int
+  temp                    Decimal
+  blood_flow              Int
+  pv                      Int
+  ptm                     Int
+  conductivity            Decimal
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+}
+
+model Files {
+  id              String        @id @default(uuid())
+  file            String?
+  ext             String?
+  url             String?
+  description     String?
+  name            String?
+  state           Boolean?      @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  hemodialysis    Hemodialysis? @relation(fields: [hemodialysis_id], references: [id])
+  hemodialysis_id String
+}
+
+model HemodialysisMachine {
+  id              String       @id @default(uuid())
+  hemodialysis    Hemodialysis @relation(fields: [hemodialysis_id], references: [id])
+  hemodialysis_id String       @unique
+  turn_machine_id String
+  turn_machine    TurnMachine  @relation(fields: [turn_machine_id], references: [id])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model Turn {
+  id           String        @id @default(uuid())
+  name         String        @unique
+  description  String?
+  days         Json
+  check_in     DateTime
+  check_out    DateTime
+  active       Boolean?      @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  turn_machine TurnMachine[]
+}
+
+model TurnMachine {
+  id                   String                @id @default(uuid())
+  turn_id              String
+  machine_id           String
+  state                StateMachine          @default(LIBRE)
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  turn                 Turn                  @relation(fields: [turn_id], references: [id])
+  machine              Machine               @relation(fields: [machine_id], references: [id])
+  hemodialysis_machine HemodialysisMachine[]
+}
+
+model Machine {
+  id             String        @id @default(uuid())
+  number_machine Int           @default(autoincrement())
+  description    String?
+  active         Boolean?      @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  turn_machine   TurnMachine[]
+}
+
 model RecordUnderlyingDisease {
   id                        String                @id @default(uuid())
   disease                   String?
@@ -419,6 +542,8 @@ model Medication {
   medical_history_detail_id String
   user_created              User                 @relation("medication", fields: [user_created_id], references: [id])
   user_created_id           String
+  hemodialysis_session      HemodialysisSession? @relation(fields: [hemodialysis_session_id], references: [id])
+  hemodialysis_session_id   String?
 }
 
 model PhysicalExam {
@@ -664,4 +789,19 @@ enum ReferenceValueType {
   REACTIVO
   CONTEO
   OTRO
+}
+
+enum StateMachine {
+  LIBRE
+  OCUPADO
+}
+
+enum VascularAccessType {
+  CATETER
+  FISTULA
+}
+
+enum TypeHemodialysis {
+  CONVENIO
+  EXTRA
 }

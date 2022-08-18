@@ -15,19 +15,16 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Prisma } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolGuard } from 'src/guards/rol.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Auth } from 'src/decorators/auth.decorator';
 
 @ApiTags('Product')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'product' })
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreateProductDto) {
     let params: Prisma.ProductCreateArgs = {
       data: data as Prisma.ProductUncheckedCreateInput,
@@ -36,6 +33,7 @@ export class ProductController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: Prisma.ProductFindManyArgs = {
       orderBy: {
@@ -52,6 +50,7 @@ export class ProductController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.ProductFindUniqueArgs = {
       where: { id: id },
@@ -60,6 +59,7 @@ export class ProductController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateProductDto) {
     let params: Prisma.ProductUpdateArgs = {
       where: { id: id },
@@ -69,6 +69,7 @@ export class ProductController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.ProductDeleteArgs = {
       where: { id: id },

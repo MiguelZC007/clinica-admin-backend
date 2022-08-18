@@ -14,19 +14,16 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { Prisma } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolGuard } from 'src/guards/rol.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Auth } from 'src/decorators/auth.decorator';
 
 @ApiTags('Payment')
-@UseGuards(JwtAuthGuard, RolGuard)
-@Roles('ADMIN')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'payment' })
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Post()
+  @Auth('ADMIN')
   create(@Body() data: CreatePaymentDto) {
     let params: Prisma.PaymentCreateArgs = {
       data: data as Prisma.PaymentUncheckedCreateInput,
@@ -35,6 +32,7 @@ export class PaymentController {
   }
 
   @Get()
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     let params: Prisma.PaymentFindManyArgs = {
       orderBy: {
@@ -51,6 +49,7 @@ export class PaymentController {
   }
 
   @Get(':id')
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     let params: Prisma.PaymentFindUniqueArgs = {
       where: { id: id },
@@ -59,6 +58,7 @@ export class PaymentController {
   }
 
   @Put(':id')
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdatePaymentDto) {
     let params: Prisma.PaymentUpdateArgs = {
       where: { id: id },
@@ -68,6 +68,7 @@ export class PaymentController {
   }
 
   @Delete(':id')
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     let params: Prisma.PaymentDeleteArgs = {
       where: { id: id },

@@ -31,6 +31,15 @@ CREATE TYPE "PatientType" AS ENUM ('INTERNO', 'EXTERNO');
 -- CreateEnum
 CREATE TYPE "ReferenceValueType" AS ENUM ('REACTIVO', 'CONTEO', 'OTRO');
 
+-- CreateEnum
+CREATE TYPE "StateMachine" AS ENUM ('LIBRE', 'OCUPADO');
+
+-- CreateEnum
+CREATE TYPE "VascularAccessType" AS ENUM ('CATETER', 'FISTULA');
+
+-- CreateEnum
+CREATE TYPE "TypeHemodialysis" AS ENUM ('CONVENIO', 'EXTRA');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -302,6 +311,136 @@ CREATE TABLE "MedicalHistory" (
 );
 
 -- CreateTable
+CREATE TABLE "Hemodialysis" (
+    "id" TEXT NOT NULL,
+    "patient_id" TEXT NOT NULL,
+    "vascular_access" "VascularAccessType" DEFAULT E'CATETER',
+    "history_number" SERIAL NOT NULL,
+    "regisration_date" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Hemodialysis_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "HemodialysisSession" (
+    "id" TEXT NOT NULL,
+    "hemodialysis_id" TEXT NOT NULL,
+    "number_session" TEXT NOT NULL,
+    "dry_weight" DECIMAL(65,30) DEFAULT 0.0,
+    "income_weight" DECIMAL(65,30) DEFAULT 0.0,
+    "egress_weight" DECIMAL(65,30) DEFAULT 0.0,
+    "number_machine" INTEGER NOT NULL,
+    "check_in" TIMESTAMP(3) NOT NULL,
+    "check_out" TIMESTAMP(3) NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "ultrafiltration_session" TEXT NOT NULL,
+    "ultrafiltration_end" TEXT NOT NULL,
+    "filter_type" TEXT NOT NULL DEFAULT E'Alto Flujo',
+    "filter_reuse" TEXT NOT NULL,
+    "line_reuse" TEXT NOT NULL,
+    "heparin" TEXT NOT NULL,
+    "ktv" TEXT NOT NULL,
+    "ingest" TEXT NOT NULL DEFAULT E'N/A',
+    "oxygenation" INTEGER NOT NULL,
+    "pa_entry" TEXT NOT NULL,
+    "vascular_access" "VascularAccessType" NOT NULL,
+    "nursing_evaluation" TEXT,
+    "clinic_evaluation" TEXT,
+    "treatment" TEXT,
+    "type_hemodialysis" "TypeHemodialysis" NOT NULL DEFAULT E'CONVENIO',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "HemodialysisSession_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "VitalSignsHemodialysis" (
+    "id" TEXT NOT NULL,
+    "hemodialysis_session_id" TEXT NOT NULL,
+    "hour" INTEGER NOT NULL,
+    "pa" TEXT NOT NULL,
+    "fc" INTEGER NOT NULL,
+    "temp" DECIMAL(65,30) NOT NULL,
+    "blood_flow" INTEGER NOT NULL,
+    "pv" INTEGER NOT NULL,
+    "ptm" INTEGER NOT NULL,
+    "conductivity" DECIMAL(65,30) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "VitalSignsHemodialysis_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Files" (
+    "id" TEXT NOT NULL,
+    "file" TEXT,
+    "ext" TEXT,
+    "url" TEXT,
+    "description" TEXT,
+    "name" TEXT,
+    "state" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "hemodialysis_id" TEXT NOT NULL,
+
+    CONSTRAINT "Files_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "HemodialysisMachine" (
+    "id" TEXT NOT NULL,
+    "hemodialysis_id" TEXT NOT NULL,
+    "turn_machine_id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "HemodialysisMachine_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Turn" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "days" JSONB NOT NULL,
+    "check_in" TIMESTAMP(3) NOT NULL,
+    "check_out" TIMESTAMP(3) NOT NULL,
+    "active" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Turn_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TurnMachine" (
+    "id" TEXT NOT NULL,
+    "turn_id" TEXT NOT NULL,
+    "machine_id" TEXT NOT NULL,
+    "state" "StateMachine" NOT NULL DEFAULT E'LIBRE',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TurnMachine_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Machine" (
+    "id" TEXT NOT NULL,
+    "number_machine" SERIAL NOT NULL,
+    "description" TEXT,
+    "active" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Machine_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "RecordUnderlyingDisease" (
     "id" TEXT NOT NULL,
     "disease" TEXT,
@@ -412,6 +551,7 @@ CREATE TABLE "Medication" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "medical_history_detail_id" TEXT NOT NULL,
     "user_created_id" TEXT NOT NULL,
+    "hemodialysis_session_id" TEXT,
 
     CONSTRAINT "Medication_pkey" PRIMARY KEY ("id")
 );
@@ -606,6 +746,15 @@ CREATE UNIQUE INDEX "Specialty_name_key" ON "Specialty"("name");
 CREATE UNIQUE INDEX "MedicalHistory_patient_id_key" ON "MedicalHistory"("patient_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Hemodialysis_patient_id_key" ON "Hemodialysis"("patient_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "HemodialysisMachine_hemodialysis_id_key" ON "HemodialysisMachine"("hemodialysis_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Turn_name_key" ON "Turn"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "RecordUnderlyingDisease_diagnostic_id_key" ON "RecordUnderlyingDisease"("diagnostic_id");
 
 -- CreateIndex
@@ -660,10 +809,10 @@ ALTER TABLE "DayOff" ADD CONSTRAINT "DayOff_user_id_fkey" FOREIGN KEY ("user_id"
 ALTER TABLE "Sale" ADD CONSTRAINT "Sale_cashier_id_fkey" FOREIGN KEY ("cashier_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Sale" ADD CONSTRAINT "Sale_delete_id_fkey" FOREIGN KEY ("delete_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Sale" ADD CONSTRAINT "Sale_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Sale" ADD CONSTRAINT "Sale_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Sale" ADD CONSTRAINT "Sale_delete_id_fkey" FOREIGN KEY ("delete_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Sale" ADD CONSTRAINT "Sale_update_id_fkey" FOREIGN KEY ("update_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -709,6 +858,30 @@ ALTER TABLE "AssignedDoctors" ADD CONSTRAINT "AssignedDoctors_medical_history_id
 
 -- AddForeignKey
 ALTER TABLE "MedicalHistory" ADD CONSTRAINT "MedicalHistory_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Hemodialysis" ADD CONSTRAINT "Hemodialysis_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HemodialysisSession" ADD CONSTRAINT "HemodialysisSession_hemodialysis_id_fkey" FOREIGN KEY ("hemodialysis_id") REFERENCES "Hemodialysis"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "VitalSignsHemodialysis" ADD CONSTRAINT "VitalSignsHemodialysis_hemodialysis_session_id_fkey" FOREIGN KEY ("hemodialysis_session_id") REFERENCES "HemodialysisSession"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Files" ADD CONSTRAINT "Files_hemodialysis_id_fkey" FOREIGN KEY ("hemodialysis_id") REFERENCES "Hemodialysis"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HemodialysisMachine" ADD CONSTRAINT "HemodialysisMachine_hemodialysis_id_fkey" FOREIGN KEY ("hemodialysis_id") REFERENCES "Hemodialysis"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HemodialysisMachine" ADD CONSTRAINT "HemodialysisMachine_turn_machine_id_fkey" FOREIGN KEY ("turn_machine_id") REFERENCES "TurnMachine"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TurnMachine" ADD CONSTRAINT "TurnMachine_turn_id_fkey" FOREIGN KEY ("turn_id") REFERENCES "Turn"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TurnMachine" ADD CONSTRAINT "TurnMachine_machine_id_fkey" FOREIGN KEY ("machine_id") REFERENCES "Machine"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_medical_history_id_fkey" FOREIGN KEY ("medical_history_id") REFERENCES "MedicalHistory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -763,6 +936,9 @@ ALTER TABLE "Addendum" ADD CONSTRAINT "Addendum_vital_signs_id_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "Medication" ADD CONSTRAINT "Medication_user_created_id_fkey" FOREIGN KEY ("user_created_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Medication" ADD CONSTRAINT "Medication_hemodialysis_session_id_fkey" FOREIGN KEY ("hemodialysis_session_id") REFERENCES "HemodialysisSession"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Medication" ADD CONSTRAINT "Medication_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
