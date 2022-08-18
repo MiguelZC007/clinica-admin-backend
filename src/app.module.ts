@@ -17,6 +17,13 @@ import { CategoryAnalysisModule } from './category-analysis/category-analysis.mo
 import { SaleModule } from './sale/sale.module';
 import { SaleDetailModule } from './sale-detail/sale-detail.module';
 import { PaymentModule } from './payment/payment.module';
+import { MachineModule } from './machine/machine.module';
+import { TurnMachineModule } from './turn-machine/turn-machine.module';
+import { TurnModule } from './turn/turn.module';
+import { HemodialysisModule } from './hemodialysis/hemodialysis.module';
+import { HemodialysisMachineModule } from './hemodialysis-machine/hemodialysis-machine.module';
+import { HemodialysisSessionModule } from './hemodialysis-session/hemodialysis-session.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   controllers: [AppController],
@@ -38,6 +45,13 @@ import { PaymentModule } from './payment/payment.module';
     SaleModule,
     SaleDetailModule,
     PaymentModule,
+    MachineModule,
+    TurnMachineModule,
+    TurnModule,
+    HemodialysisModule,
+    HemodialysisMachineModule,
+    HemodialysisSessionModule,
+    FilesModule,
   ],
 })
 export class AppModule {}
