@@ -1,16 +1,36 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  IsArray,
+  IsBoolean,
+  IsDateString,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateTurnDto {
   @ApiProperty()
+  @IsString()
   name: string;
+
   @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
   description?: string | null;
+
   @ApiProperty()
-  days: Array<any>;
+  @IsArray()
+  days: Array<number>;
+
   @ApiProperty()
-  check_in: Date | string;
+  @IsDateString()
+  check_in: string;
+
   @ApiProperty()
-  check_out: Date | string;
+  @IsDateString()
+  check_out: string;
+
   @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
   active?: boolean | null;
 }

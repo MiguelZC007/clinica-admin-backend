@@ -1,8 +1,8 @@
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { join, resolve } from 'path';
+import { resolve } from 'path';
 import { AppModule } from './app.module';
 
 import * as express from 'express';
@@ -20,7 +20,6 @@ async function bootstrap() {
     }),
   );
   app.enableVersioning({ type: VersioningType.URI });
-
   const config = new DocumentBuilder()
     .setTitle('API ADMIN CLINICA ESPERANZA')
     .setDescription('Documentacion de los End-Points ')

@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 
 export const ErrorsManager = (error) => {
-  console.log('error manager', error);
   switch (error.code) {
     case 'P2025': {
       throw new NotFoundException('Registro no existe');
