@@ -44,6 +44,13 @@ export class AuthController {
         },
         active: true,
       },
+      include: {
+        user_rol: {
+          include: {
+            rol: true,
+          },
+        },
+      },
     };
     let user = await this.usersService.findFirst(user_params);
     if (user != null && compareSync(data.password, user.password)) {

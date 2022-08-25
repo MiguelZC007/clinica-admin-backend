@@ -47,6 +47,7 @@ export class AuthService {
           user_id: user.id,
         },
       });
+      console.log('token user', user);
       let User: JwtPayload = {
         email: user.email,
         id: user.id,

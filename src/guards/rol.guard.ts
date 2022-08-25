@@ -26,7 +26,7 @@ export class RolGuard implements CanActivate {
       let flag = false;
       roles.forEach((role) => {
         user.user_rol.forEach((rol) => {
-          if (rol.rol === role) {
+          if (rol.rol.name === role) {
             flag = true;
           }
         });
