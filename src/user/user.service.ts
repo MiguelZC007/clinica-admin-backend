@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   public user_select: Prisma.UserSelect = {
     id: true,
@@ -81,8 +81,9 @@ export class UserService {
 
   async create(params: Prisma.UserCreateArgs) {
     try {
-      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${params.data.mother_lastname || ''
-        }`;
+      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${
+        params.data.mother_lastname || ''
+      }`;
       search = search.trimEnd();
       params.data.search = search.toLocaleLowerCase();
       const data = await this.prisma.user.create(params);
@@ -121,8 +122,9 @@ export class UserService {
 
   async update(params: Prisma.UserUpdateArgs) {
     try {
-      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${params.data.mother_lastname || ''
-        }`;
+      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${
+        params.data.mother_lastname || ''
+      }`;
       search = search.trimEnd();
       params.data.search = search.toLocaleLowerCase();
       const data = await this.prisma.user.update(params);

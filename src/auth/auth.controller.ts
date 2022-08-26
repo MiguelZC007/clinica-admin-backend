@@ -7,7 +7,6 @@ import {
   Post,
   Put,
   Req,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -32,7 +31,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Entrar al sistema' })
   @Post('login')
   async login(@Body() data: LoginDto) {
-    let user_params: Prisma.UserFindFirstArgs = {
+    const user_params: Prisma.UserFindFirstArgs = {
       where: {
         email: data.email,
         user_rol: {
@@ -52,7 +51,7 @@ export class AuthController {
         },
       },
     };
-    let user = await this.usersService.findFirst(user_params);
+    const user = await this.usersService.findFirst(user_params);
     if (user != null && compareSync(data.password, user.password)) {
       return await this.authService.createToken(user);
     } else {
@@ -66,12 +65,12 @@ export class AuthController {
   @Get('profile')
   async profile(@Req() req: any) {
     try {
-      let user: any = req.user;
-      let user_params: Prisma.UserFindUniqueArgs = {
+      const user: any = req.user;
+      const user_params: Prisma.UserFindUniqueArgs = {
         where: { id: user.id },
         select: this.usersService.user_public_select,
       };
-      let response = await this.usersService.findUnique(user_params);
+      const response = await this.usersService.findUnique(user_params);
       return response;
     } catch (error) {
       throw new BadRequestException(error);
@@ -87,7 +86,7 @@ export class AuthController {
         password: hashSync(data.password, Number(process.env.SALT_ROUND)),
       },
     };
-    let response = await this.usersService.update(params);
+    const response = await this.usersService.update(params);
     await this.sessionService.updateMany({
       where: { user_id: response.id },
       data: {
@@ -102,7 +101,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async logout(@Req() req: any) {
-    let user: any = req.user;
+    const user: any = req.user;
     return await this.sessionService.update({
       where: { id: user.session_id },
       data: {

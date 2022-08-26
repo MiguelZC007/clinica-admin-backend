@@ -1,29 +1,33 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsDecimal,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateSaleDto {
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
   patient_id: string;
+
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
   cashier_id: string;
+
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   total_price?: number | null;
+
   @ApiProperty()
   @IsNumber()
   @IsOptional()
   transfer?: number | null;
+
   @ApiProperty({
     enum: [
       'PAGADO',
@@ -37,16 +41,20 @@ export class CreateSaleDto {
   @IsString()
   @IsOptional()
   state?: string | null;
+
   @ApiProperty()
   @IsString()
   @IsOptional()
   description?: string | null;
+
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   @IsOptional()
   delete_id?: string | null;
+
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   @IsOptional()
   update_id?: string | null;
+
 }

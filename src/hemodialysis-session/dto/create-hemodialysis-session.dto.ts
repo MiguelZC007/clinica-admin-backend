@@ -1,9 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsDateString, IsNumber, IsPositive, IsString, IsUUID } from 'class-validator';
 
 export class CreateHemodialysisSessionDto {
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   hemodialysis_id: string;
 
   @ApiProperty()
@@ -11,19 +11,20 @@ export class CreateHemodialysisSessionDto {
   number_session: string;
 
   @ApiProperty()
+  @IsPositive()
   number_machine: number;
 
   @ApiProperty()
-  @IsString()
-  check_in: Date | string;
+  @IsDateString()
+  check_in: string;
 
   @ApiProperty()
-  @IsString()
-  check_out: Date | string;
+  @IsDateString()
+  check_out: string;
 
   @ApiProperty()
-  @IsString()
-  date: Date | string;
+  @IsDateString()
+  date: string;
 
   @ApiProperty()
   @IsString()
@@ -50,6 +51,7 @@ export class CreateHemodialysisSessionDto {
   ktv: string;
 
   @ApiProperty()
+  @IsNumber()
   oxygenation: number;
 
   @ApiProperty()
@@ -63,12 +65,15 @@ export class CreateHemodialysisSessionDto {
   vascular_access: string;
 
   @ApiPropertyOptional()
+  @IsNumber()
   dry_weight?: number | null;
 
   @ApiPropertyOptional()
+  @IsNumber()
   income_weight?: number | null;
 
   @ApiPropertyOptional()
+  @IsNumber()
   egress_weight?: number | null;
 
   @ApiPropertyOptional()

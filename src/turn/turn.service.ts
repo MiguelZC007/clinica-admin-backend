@@ -9,7 +9,7 @@ export class TurnService {
   constructor(
     private prisma: PrismaService,
     private turnMachineService: TurnMachineService,
-  ) { }
+  ) {}
 
   public turn_include: Prisma.TurnInclude = {
     turn_machine: {
@@ -47,7 +47,7 @@ export class TurnService {
       }
       return this.findUnique({
         where: { id: response.id },
-        include: this.turn_include,
+        include: params.include,
       });
     } catch (e) {
       ErrorsManager(e);

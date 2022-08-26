@@ -18,7 +18,9 @@ export class HemodialysisSessionService {
 
   async create(params: Prisma.HemodialysisSessionCreateArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisSession.create(params);
+      const response: any = await this.prisma.hemodialysisSession.create(
+        params,
+      );
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -27,7 +29,7 @@ export class HemodialysisSessionService {
 
   async findMany(params: Prisma.HemodialysisSessionFindManyArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisSession.findMany(
+      const response: any = await this.prisma.hemodialysisSession.findMany(
         params,
       );
       return response;
@@ -38,7 +40,7 @@ export class HemodialysisSessionService {
 
   async findUnique(params: Prisma.HemodialysisSessionFindUniqueArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisSession.findUnique(
+      const response: any = await this.prisma.hemodialysisSession.findUnique(
         params,
       );
       return response;
@@ -49,7 +51,9 @@ export class HemodialysisSessionService {
 
   async update(params: Prisma.HemodialysisSessionUpdateArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisSession.update(params);
+      const response: any = await this.prisma.hemodialysisSession.update(
+        params,
+      );
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -58,7 +62,9 @@ export class HemodialysisSessionService {
 
   async delete(params: Prisma.HemodialysisSessionDeleteArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisSession.delete(params);
+      const response: any = await this.prisma.hemodialysisSession.delete(
+        params,
+      );
       return response;
     } catch (e) {
       ErrorsManager(e);

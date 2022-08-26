@@ -6,12 +6,15 @@ export class CreateSpecialtyDto {
   @IsNotEmpty()
   @IsString()
   name: string;
+
   @ApiProperty()
   @IsOptional()
   @IsString()
   description: string;
+
   @ApiProperty()
   @IsOptional()
   @IsBoolean()
   state?: boolean;
+
 }

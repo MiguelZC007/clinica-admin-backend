@@ -40,15 +40,15 @@ export class AuthService {
 
   async createToken(user: any) {
     try {
-      let session = await this.sessionService.create({
+      const session = await this.sessionService.create({
         data: {
           token: '',
           expire_in: process.env.JWT_TIME,
           user_id: user.id,
         },
       });
-      console.log('token user', user);
-      let User: JwtPayload = {
+
+      const User: JwtPayload = {
         email: user.email,
         id: user.id,
         name: user.name,

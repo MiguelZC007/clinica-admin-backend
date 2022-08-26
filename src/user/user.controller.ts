@@ -21,7 +21,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'user' })
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @Auth('ADMIN')
@@ -40,10 +40,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Obtener todos los usuarios que coincidan con la busqueda',
   })
-  async findSearch(
-    @Query('text') txt: string = '',
-    @Query('rol') rol: string = 'PACIENTE',
-  ) {
+  async findSearch(@Query('text') txt = '', @Query('rol') rol = 'PACIENTE') {
     let result: any[] = [];
 
     const params: Prisma.UserFindManyArgs = {
@@ -76,7 +73,7 @@ export class UserController {
       },
     };
     if (txt != '') {
-      let ci = txt.replace(/\D/g, '');
+      const ci = txt.replace(/\D/g, '');
       let search = txt.replace(ci, '');
       search = search.trimStart();
       search = search.trimEnd();

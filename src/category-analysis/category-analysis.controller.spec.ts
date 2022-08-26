@@ -11,7 +11,9 @@ describe('CategoryAnalysisController', () => {
       providers: [CategoryAnalysisService],
     }).compile();
 
-    controller = module.get<CategoryAnalysisController>(CategoryAnalysisController);
+    controller = module.get<CategoryAnalysisController>(
+      CategoryAnalysisController,
+    );
   });
 
   it('should be defined', () => {

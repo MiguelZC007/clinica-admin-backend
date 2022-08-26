@@ -1,9 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDateString, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateHemodialysisDto {
   @ApiProperty()
   @IsString()
+  @IsUUID()
   patient_id: string;
 
   @ApiPropertyOptional()

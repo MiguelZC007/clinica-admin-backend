@@ -1,21 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBase64, IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateFileDto {
   @ApiPropertyOptional()
   @IsOptional()
-  @IsString()
+  @IsBase64()
   file?: string | null;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  ext?: string | null;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  url?: string | null;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -34,6 +24,6 @@ export class CreateFileDto {
 
   @ApiProperty()
   @IsString()
+  @IsUUID()
   hemodialysis_id: string;
-
 }

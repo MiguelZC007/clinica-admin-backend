@@ -21,7 +21,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'user-rol' })
 export class UserRolController {
-  constructor(private readonly userRolService: UserRolService) { }
+  constructor(private readonly userRolService: UserRolService) {}
 
   @Post()
   @Auth('ADMIN')

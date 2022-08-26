@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserRolService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
   async create(params: Prisma.UserRolCreateArgs) {
     try {
       const data = await this.prisma.userRol.create(params);

@@ -22,7 +22,9 @@ export class HemodialysisMachineService {
   };
   async create(params: Prisma.HemodialysisMachineCreateArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisMachine.create(params);
+      const response: any = await this.prisma.hemodialysisMachine.create(
+        params,
+      );
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -31,7 +33,7 @@ export class HemodialysisMachineService {
 
   async findMany(params: Prisma.HemodialysisMachineFindManyArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisMachine.findMany(
+      const response: any = await this.prisma.hemodialysisMachine.findMany(
         params,
       );
       return response;
@@ -42,7 +44,7 @@ export class HemodialysisMachineService {
 
   async findUnique(params: Prisma.HemodialysisMachineFindUniqueArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisMachine.findUnique(
+      const response: any = await this.prisma.hemodialysisMachine.findUnique(
         params,
       );
       return response;
@@ -53,7 +55,9 @@ export class HemodialysisMachineService {
 
   async update(params: Prisma.HemodialysisMachineUpdateArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisMachine.update(params);
+      const response: any = await this.prisma.hemodialysisMachine.update(
+        params,
+      );
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -62,7 +66,9 @@ export class HemodialysisMachineService {
 
   async delete(params: Prisma.HemodialysisMachineDeleteArgs) {
     try {
-      let response: any = await this.prisma.hemodialysisMachine.delete(params);
+      const response: any = await this.prisma.hemodialysisMachine.delete(
+        params,
+      );
       return response;
     } catch (e) {
       ErrorsManager(e);

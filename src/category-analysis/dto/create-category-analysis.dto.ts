@@ -14,16 +14,19 @@ export class CreateCategoryAnalysisDto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
   @ApiProperty()
   @IsInt()
   @IsNumber()
   @IsPositive()
   @IsOptional()
   order: number | null;
+
   @ApiProperty()
   @IsString()
   @IsOptional()
   description: string | null;
+
   @ApiProperty()
   @IsBoolean()
   @IsOptional()

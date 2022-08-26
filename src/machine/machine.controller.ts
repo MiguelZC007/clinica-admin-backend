@@ -19,7 +19,7 @@ import { Prisma } from '@prisma/client';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'machine' })
 export class MachineController {
-  constructor(private readonly machineService: MachineService) { }
+  constructor(private readonly machineService: MachineService) {}
 
   @Post()
   @Auth()

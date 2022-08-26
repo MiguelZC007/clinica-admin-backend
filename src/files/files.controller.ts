@@ -19,7 +19,7 @@ import { Prisma } from '@prisma/client';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'files' })
 export class FilesController {
-  constructor(private readonly filesService: FilesService) { }
+  constructor(private readonly filesService: FilesService) {}
 
   @Post()
   create(@Body() data: CreateFileDto) {

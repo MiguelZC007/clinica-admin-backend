@@ -21,7 +21,7 @@ import { Prisma } from '@prisma/client';
 export class HemodialysisMachineController {
   constructor(
     private readonly hemodialysisMachineService: HemodialysisMachineService,
-  ) { }
+  ) {}
 
   @Post()
   @Auth()

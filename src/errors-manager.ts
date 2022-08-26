@@ -6,7 +6,32 @@ import {
 } from '@nestjs/common';
 
 export const ErrorsManager = (error) => {
-  switch (error.code) {
+  const flag = error.code != null ? error.code : error.status;
+  switch (flag) {
+    case 400: {
+      throw new BadRequestException({
+        message: error.message,
+        status: error.status,
+        name: error.name,
+      });
+    }
+
+    case 404: {
+      throw new NotFoundException({
+        message: error.message,
+        status: error.status,
+        name: error.name,
+      });
+    }
+
+    case 409: {
+      throw new ConflictException({
+        message: error.message,
+        status: error.status,
+        name: error.name,
+      });
+    }
+
     case 'P2025': {
       throw new NotFoundException('Registro no existe');
     }
@@ -33,6 +58,12 @@ export const ErrorsManager = (error) => {
     case 'P2003': {
       throw new BadRequestException(
         'La restricción de la Foreign Key no se cumple',
+      );
+    }
+
+    case 'P2022': {
+      throw new BadRequestException(
+        `La columna ${error.meta.column} no existe en la base de datos actual.`,
       );
     }
 

@@ -3,19 +3,14 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Auth } from 'src/decorators/auth.decorator';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RolGuard } from 'src/guards/rol.guard';
 import { AnalysisService } from './analysis.service';
 import { CreateAnalysisDto } from './dto/create-analysis.dto';
 import { UpdateAnalysisDto } from './dto/update-analysis.dto';
@@ -24,7 +19,7 @@ import { UpdateAnalysisDto } from './dto/update-analysis.dto';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'analysis' })
 export class AnalysisController {
-  constructor(private readonly analysisService: AnalysisService) { }
+  constructor(private readonly analysisService: AnalysisService) {}
 
   @Post()
   @Auth('ADMIN')

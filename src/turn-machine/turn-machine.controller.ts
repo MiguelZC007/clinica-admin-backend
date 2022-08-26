@@ -19,7 +19,7 @@ import { Prisma } from '@prisma/client';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'turn-machine' })
 export class TurnMachineController {
-  constructor(private readonly turnMachineService: TurnMachineService) { }
+  constructor(private readonly turnMachineService: TurnMachineService) {}
 
   @Post()
   @Auth()

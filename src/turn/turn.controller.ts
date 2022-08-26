@@ -19,7 +19,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'turn' })
 export class TurnController {
-  constructor(private readonly turnService: TurnService) { }
+  constructor(private readonly turnService: TurnService) {}
 
   @Post()
   @Auth()

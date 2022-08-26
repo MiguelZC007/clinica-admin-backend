@@ -24,6 +24,7 @@ import { HemodialysisModule } from './hemodialysis/hemodialysis.module';
 import { HemodialysisMachineModule } from './hemodialysis-machine/hemodialysis-machine.module';
 import { HemodialysisSessionModule } from './hemodialysis-session/hemodialysis-session.module';
 import { FilesModule } from './files/files.module';
+import { ArchiveModule } from './archive/archive.module';
 
 @Module({
   controllers: [AppController],
@@ -52,6 +53,7 @@ import { FilesModule } from './files/files.module';
     HemodialysisMachineModule,
     HemodialysisSessionModule,
     FilesModule,
+    ArchiveModule,
   ],
 })
 export class AppModule {}

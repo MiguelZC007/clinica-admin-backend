@@ -7,4 +7,4 @@ import { HemodialysisController } from './hemodialysis.controller';
   providers: [HemodialysisService],
   exports: [HemodialysisService],
 })
-export class HemodialysisModule { }
+export class HemodialysisModule {}

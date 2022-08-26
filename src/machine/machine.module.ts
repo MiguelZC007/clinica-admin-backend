@@ -7,4 +7,4 @@ import { MachineController } from './machine.controller';
   providers: [MachineService],
   exports: [MachineService],
 })
-export class MachineModule { }
+export class MachineModule {}

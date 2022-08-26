@@ -7,7 +7,6 @@ import {
   Delete,
   Query,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { MeetService } from './meet.service';
 import { CreateMeetDto } from './dto/create-meet.dto';
@@ -20,7 +19,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'meet' })
 export class MeetController {
-  constructor(private readonly meetService: MeetService) { }
+  constructor(private readonly meetService: MeetService) {}
 
   @Post()
   @Auth('ADMIN')

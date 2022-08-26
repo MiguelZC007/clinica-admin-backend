@@ -23,7 +23,7 @@ import { UpdateCategoryAnalysisDto } from './dto/update-category-analysis.dto';
 export class CategoryAnalysisController {
   constructor(
     private readonly categoryAnalysisService: CategoryAnalysisService,
-  ) { }
+  ) {}
 
   @Post()
   @Auth('ADMIN')

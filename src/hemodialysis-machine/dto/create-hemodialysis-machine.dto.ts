@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsUUID } from 'class-validator';
 
 export class CreateHemodialysisMachineDto {
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   hemodialysis_id: string;
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   turn_machine_id: string;
 }

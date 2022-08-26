@@ -9,7 +9,7 @@ export class MeetService {
   constructor(
     private prisma: PrismaService,
     private userService: UserService,
-  ) { }
+  ) {}
 
   public meet_select: Prisma.MeetSelect = {
     id: true,

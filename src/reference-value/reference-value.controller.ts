@@ -20,7 +20,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'reference-value' })
 export class ReferenceValueController {
-  constructor(private readonly referenceValueService: ReferenceValueService) { }
+  constructor(private readonly referenceValueService: ReferenceValueService) {}
 
   @Post()
   @Auth('ADMIN')

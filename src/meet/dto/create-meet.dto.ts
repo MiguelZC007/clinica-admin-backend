@@ -4,15 +4,18 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateMeetDto {
   @ApiProperty()
   @IsDateString()
-  from?: string | null = new Date().toISOString();
+  from?: string | null
+
   @ApiProperty()
   @IsDateString()
-  to?: string | null = new Date().toISOString();
+  to?: string | null
+
   @ApiProperty({
     enum: [
       'RESERVADO',
@@ -24,18 +27,22 @@ export class CreateMeetDto {
     ],
     default: 'RESERVADO',
   })
+  @IsOptional()
   @IsString({ message: 'El dato debe ser un string' })
   state?: string | null;
+
   @ApiProperty()
-  @IsString({ message: 'El dato debe ser un string' })
+  @IsUUID()
   @IsNotEmpty()
   patient_id: string;
+
   @ApiProperty()
-  @IsString({ message: 'El dato debe ser un string' })
+  @IsUUID()
   @IsNotEmpty()
   doctor_id: string;
+
   @ApiProperty()
-  @IsString({ message: 'El dato debe ser un string' })
+  @IsUUID()
   @IsOptional()
   specialty_id?: string | null;
 }

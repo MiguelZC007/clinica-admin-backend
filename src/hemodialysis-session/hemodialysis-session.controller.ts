@@ -21,7 +21,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 export class HemodialysisSessionController {
   constructor(
     private readonly hemodialysisSessionService: HemodialysisSessionService,
-  ) { }
+  ) {}
 
   @Post()
   @Auth()

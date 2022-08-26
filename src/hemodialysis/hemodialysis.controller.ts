@@ -19,7 +19,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'hemodialysis' })
 export class HemodialysisController {
-  constructor(private hemodialysisService: HemodialysisService) { }
+  constructor(private hemodialysisService: HemodialysisService) {}
 
   @Post()
   @Auth()

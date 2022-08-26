@@ -7,7 +7,7 @@ import { UpdateSaleDetailDto } from './dto/update-sale-detail.dto';
 
 @Injectable()
 export class SaleDetailService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(params: Prisma.SaleDetailCreateArgs) {
     try {

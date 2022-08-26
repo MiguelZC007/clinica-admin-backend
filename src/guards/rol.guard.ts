@@ -22,7 +22,7 @@ export class RolGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const { user } = request;
 
-    let hasRole = () => {
+    const hasRole = () => {
       let flag = false;
       roles.forEach((role) => {
         user.user_rol.forEach((rol) => {

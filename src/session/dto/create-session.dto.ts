@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateSessionDto {
   @ApiProperty()
@@ -18,6 +18,6 @@ export class CreateSessionDto {
   expire_in?: string | null;
 
   @ApiProperty()
-  @IsString({ message: 'El dato debe ser un string' })
+  @IsUUID()
   user_id: string;
 }

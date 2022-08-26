@@ -15,7 +15,7 @@ export class TurnMachineService {
 
   async create(params: Prisma.TurnMachineCreateArgs) {
     try {
-      let response: any = await this.prisma.turnMachine.create(params);
+      const response: any = await this.prisma.turnMachine.create(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -24,7 +24,7 @@ export class TurnMachineService {
 
   async findMany(params: Prisma.TurnMachineFindManyArgs) {
     try {
-      let response: any = await this.prisma.turnMachine.findMany(params);
+      const response: any = await this.prisma.turnMachine.findMany(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -33,7 +33,7 @@ export class TurnMachineService {
 
   async findUnique(params: Prisma.TurnMachineFindUniqueArgs) {
     try {
-      let response: any = await this.prisma.turnMachine.findUnique(params);
+      const response: any = await this.prisma.turnMachine.findUnique(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -42,7 +42,7 @@ export class TurnMachineService {
 
   async update(params: Prisma.TurnMachineUpdateArgs) {
     try {
-      let response: any = await this.prisma.turnMachine.update(params);
+      const response: any = await this.prisma.turnMachine.update(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -51,7 +51,7 @@ export class TurnMachineService {
 
   async delete(params: Prisma.TurnMachineDeleteArgs) {
     try {
-      let response: any = await this.prisma.turnMachine.delete(params);
+      const response: any = await this.prisma.turnMachine.delete(params);
       return response;
     } catch (e) {
       ErrorsManager(e);

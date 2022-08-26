@@ -20,7 +20,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'sale-detail' })
 export class SaleDetailController {
-  constructor(private readonly saleDetailService: SaleDetailService) { }
+  constructor(private readonly saleDetailService: SaleDetailService) {}
 
   @Post()
   @Auth('ADMIN')

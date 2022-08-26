@@ -3,15 +3,18 @@ import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateTurnMachineDto {
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   turn_id: string;
+
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   machine_id: string;
+
   @ApiPropertyOptional({
     enum: ['LIBRE', 'OCUPADO'],
   })
   @IsString()
   @IsOptional()
   state?: string;
+
 }
