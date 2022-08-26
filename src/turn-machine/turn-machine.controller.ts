@@ -19,7 +19,7 @@ import { Prisma } from '@prisma/client';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'turn-machine' })
 export class TurnMachineController {
-  constructor(private readonly turnMachineService: TurnMachineService) {}
+  constructor(private readonly turnMachineService: TurnMachineService) { }
 
   @Post()
   @Auth()
@@ -33,7 +33,7 @@ export class TurnMachineController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.TurnMachineFindManyArgs = {
       include: this.turnMachineService.turn_machine_include,
       orderBy: [
@@ -66,6 +66,18 @@ export class TurnMachineController {
       include: this.turnMachineService.turn_machine_include,
     };
     return this.turnMachineService.findUnique(params);
+  }
+
+  @Get('turn/:turn_id')
+  @Auth()
+  findTurn(@Param('turn_id') turn_id: string) {
+    const params: Prisma.TurnMachineFindManyArgs = {
+      where: { turn_id: turn_id },
+      include: {
+        machine: true
+      }
+    };
+    return this.turnMachineService.findMany(params);
   }
 
   @Put(':id')

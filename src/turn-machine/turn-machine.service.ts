@@ -2,12 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateTurnMachineDto } from './dto/create-turn-machine.dto';
-import { UpdateTurnMachineDto } from './dto/update-turn-machine.dto';
 
 @Injectable()
 export class TurnMachineService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   public turn_machine_include: Prisma.TurnMachineInclude = {
     turn: true,
     machine: true,

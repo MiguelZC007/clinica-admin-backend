@@ -20,7 +20,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'specialty' })
 export class SpecialtyController {
-  constructor(private readonly specialtyService: SpecialtyService) {}
+  constructor(private readonly specialtyService: SpecialtyService) { }
 
   @Post()
   @Auth('ADMIN')
@@ -33,7 +33,7 @@ export class SpecialtyController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.SpecialtyFindManyArgs = {
       orderBy: {
         createdAt: 'desc',

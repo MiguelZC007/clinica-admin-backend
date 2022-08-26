@@ -23,7 +23,7 @@ import { UpdateCategoryAnalysisDto } from './dto/update-category-analysis.dto';
 export class CategoryAnalysisController {
   constructor(
     private readonly categoryAnalysisService: CategoryAnalysisService,
-  ) {}
+  ) { }
 
   @Post()
   @Auth('ADMIN')
@@ -36,7 +36,7 @@ export class CategoryAnalysisController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.CategoryAnalysisFindManyArgs = {
       orderBy: {
         createdAt: 'desc',

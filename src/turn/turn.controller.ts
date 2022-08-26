@@ -19,23 +19,21 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'turn' })
 export class TurnController {
-  constructor(private readonly turnService: TurnService) {}
+  constructor(private readonly turnService: TurnService) { }
 
   @Post()
   @Auth()
   create(@Body() data: CreateTurnDto) {
     const params: Prisma.TurnCreateArgs = {
       data: data as Prisma.TurnUncheckedCreateInput,
-      include: this.turnService.turn_include,
     };
     return this.turnService.create(params);
   }
 
   @Get()
   @Auth()
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.TurnFindManyArgs = {
-      include: this.turnService.turn_include,
       orderBy: {
         name: 'asc',
       },
@@ -65,7 +63,6 @@ export class TurnController {
     const params: Prisma.TurnUpdateArgs = {
       where: { id: id },
       data: data as Prisma.TurnUncheckedUpdateInput,
-      include: this.turnService.turn_include,
     };
     return this.turnService.update(params);
   }
@@ -75,7 +72,6 @@ export class TurnController {
   remove(@Param('id') id: string) {
     const params: Prisma.TurnDeleteArgs = {
       where: { id: id },
-      include: this.turnService.turn_include,
     };
     return this.turnService.delete(params);
   }

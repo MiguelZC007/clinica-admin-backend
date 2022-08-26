@@ -19,7 +19,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'meet' })
 export class MeetController {
-  constructor(private readonly meetService: MeetService) {}
+  constructor(private readonly meetService: MeetService) { }
 
   @Post()
   @Auth('ADMIN')
@@ -33,7 +33,7 @@ export class MeetController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: any = {
       select: this.meetService.meet_select,
 

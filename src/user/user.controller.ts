@@ -21,7 +21,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'user' })
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   @Auth('ADMIN')
@@ -115,7 +115,7 @@ export class UserController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.UserFindManyArgs = {
       select: this.userService.user_public_select,
       orderBy: {

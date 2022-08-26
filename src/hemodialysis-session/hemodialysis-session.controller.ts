@@ -21,7 +21,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 export class HemodialysisSessionController {
   constructor(
     private readonly hemodialysisSessionService: HemodialysisSessionService,
-  ) {}
+  ) { }
 
   @Post()
   @Auth()
@@ -35,7 +35,7 @@ export class HemodialysisSessionController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.HemodialysisSessionFindManyArgs = {
       include: this.hemodialysisSessionService.hemodialysis_session_include,
       orderBy: [

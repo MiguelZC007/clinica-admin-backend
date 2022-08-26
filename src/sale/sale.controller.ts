@@ -21,7 +21,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'sale' })
 export class SaleController {
-  constructor(private readonly saleService: SaleService) {}
+  constructor(private readonly saleService: SaleService) { }
 
   @Post()
   @Auth('ADMIN')
@@ -34,7 +34,7 @@ export class SaleController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.SaleFindManyArgs = {
       orderBy: {
         createdAt: 'desc',

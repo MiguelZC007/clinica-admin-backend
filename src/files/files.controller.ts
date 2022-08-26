@@ -19,19 +19,20 @@ import { Prisma } from '@prisma/client';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'files' })
 export class FilesController {
-  constructor(private readonly filesService: FilesService) {}
+  constructor(private readonly filesService: FilesService) { }
 
   @Post()
   create(@Body() data: CreateFileDto) {
+    const { file, ...rsa } = data;
     const params: Prisma.FilesCreateArgs = {
-      data: data as Prisma.FilesUncheckedCreateInput,
+      data: rsa as Prisma.FilesUncheckedCreateInput,
     };
-    return this.filesService.create(params);
+    return this.filesService.create(params, file);
   }
 
   @Get()
   @Auth()
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.FilesFindManyArgs = {
       orderBy: [
         {

@@ -19,7 +19,7 @@ import { Prisma } from '@prisma/client';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'machine' })
 export class MachineController {
-  constructor(private readonly machineService: MachineService) {}
+  constructor(private readonly machineService: MachineService) { }
 
   @Post()
   @Auth()
@@ -32,7 +32,7 @@ export class MachineController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.MachineFindManyArgs = {
       orderBy: {
         number_machine: 'asc',

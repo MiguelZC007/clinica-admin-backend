@@ -19,7 +19,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'hemodialysis' })
 export class HemodialysisController {
-  constructor(private hemodialysisService: HemodialysisService) {}
+  constructor(private hemodialysisService: HemodialysisService) { }
 
   @Post()
   @Auth()
@@ -33,7 +33,7 @@ export class HemodialysisController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.HemodialysisFindManyArgs = {
       include: this.hemodialysisService.hemodialysis_include,
       orderBy: {

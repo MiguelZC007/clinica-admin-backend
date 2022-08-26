@@ -30,12 +30,11 @@ export class FilesService {
         });
         if (hemodialysis != null) {
           const at = await this.archiveService.fileUpload(
-            file,
+            params.data.ext + file,
             hemodialysis.patient_id,
             hemodialysis.patient,
           );
           if (at != null) {
-            params.data.ext = at.type;
             params.data.url = at.filename;
             const response: any = await this.prisma.files.create(params);
             return response;

@@ -21,7 +21,7 @@ import { Prisma } from '@prisma/client';
 export class HemodialysisMachineController {
   constructor(
     private readonly hemodialysisMachineService: HemodialysisMachineService,
-  ) {}
+  ) { }
 
   @Post()
   @Auth()
@@ -35,7 +35,7 @@ export class HemodialysisMachineController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.HemodialysisMachineFindManyArgs = {
       include: this.hemodialysisMachineService.hemodialysis_machine_include,
       orderBy: [

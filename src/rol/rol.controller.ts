@@ -20,7 +20,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'rol' })
 export class RolController {
-  constructor(private readonly rolService: RolService) {}
+  constructor(private readonly rolService: RolService) { }
 
   @Post()
   @Auth('ADMIN')
@@ -33,7 +33,7 @@ export class RolController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.RolFindManyArgs = {
       orderBy: {
         createdAt: 'desc',

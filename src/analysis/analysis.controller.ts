@@ -19,7 +19,7 @@ import { UpdateAnalysisDto } from './dto/update-analysis.dto';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'analysis' })
 export class AnalysisController {
-  constructor(private readonly analysisService: AnalysisService) {}
+  constructor(private readonly analysisService: AnalysisService) { }
 
   @Post()
   @Auth('ADMIN')
@@ -32,7 +32,7 @@ export class AnalysisController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.AnalysisFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
