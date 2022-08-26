@@ -18,7 +18,7 @@ export class AuthService {
     private jwtService: JwtService,
     private userService: UserService,
     private sessionService: SessionService,
-  ) {}
+  ) { }
 
   async validateToken(payload): Promise<any> {
     try {
@@ -74,7 +74,7 @@ export class AuthService {
   //   try {
   //     if (data.password === data.confirm_password) {
   //       let { rol_id, confirm_password, ...rsa } = data;
-  //       let params: Prisma.UserCreateArgs = {
+  //       const params: Prisma.UserCreateArgs = {
   //         data: {
   //           ...rsa,
   //           password: hashSync(data.password, Number(process.env.SALT_ROUND)),
@@ -103,7 +103,7 @@ export class AuthService {
 
   // async registerPatient(patient: CreatePatientDto) {
   //   try {
-  //     let params: Prisma.UserCreateArgs = {
+  //     const params: Prisma.UserCreateArgs = {
   //       data: {
   //         ...patient,
   //         user_rol: {
@@ -125,7 +125,7 @@ export class AuthService {
   // }
 
   // async login(login) {
-  //   let params: Prisma.UserFindFirstArgs = {
+  //   const params: Prisma.UserFindFirstArgs = {
   //     where: {
   //       email: login.email,
   //       active: true,

@@ -7,11 +7,11 @@ import { UpdateSaleDetailDto } from './dto/update-sale-detail.dto';
 
 @Injectable()
 export class SaleDetailService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(params: Prisma.SaleDetailCreateArgs) {
     try {
-      let data = await this.prisma.saleDetail.create(params);
+      const data = await this.prisma.saleDetail.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -20,7 +20,7 @@ export class SaleDetailService {
 
   async findMany(params: Prisma.SaleDetailFindManyArgs) {
     try {
-      let data = await this.prisma.saleDetail.findMany(params);
+      const data = await this.prisma.saleDetail.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -29,7 +29,7 @@ export class SaleDetailService {
 
   async findUnique(params: Prisma.SaleDetailFindUniqueArgs) {
     try {
-      let data = await this.prisma.saleDetail.findUnique(params);
+      const data = await this.prisma.saleDetail.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -38,7 +38,7 @@ export class SaleDetailService {
 
   async findFirst(params: Prisma.SaleDetailFindFirstArgs) {
     try {
-      let data = await this.prisma.saleDetail.findFirst(params);
+      const data = await this.prisma.saleDetail.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -47,7 +47,7 @@ export class SaleDetailService {
 
   async update(params: Prisma.SaleDetailUpdateArgs) {
     try {
-      let data = await this.prisma.saleDetail.update(params);
+      const data = await this.prisma.saleDetail.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -55,7 +55,7 @@ export class SaleDetailService {
   }
   async updateMany(params: Prisma.SaleDetailUpdateManyArgs) {
     try {
-      let data = await this.prisma.saleDetail.updateMany(params);
+      const data = await this.prisma.saleDetail.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -64,7 +64,7 @@ export class SaleDetailService {
 
   async delete(params: Prisma.SaleDetailDeleteArgs) {
     try {
-      let data = await this.prisma.saleDetail.delete(params);
+      const data = await this.prisma.saleDetail.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

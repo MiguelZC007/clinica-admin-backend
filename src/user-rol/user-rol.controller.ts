@@ -21,12 +21,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'user-rol' })
 export class UserRolController {
-  constructor(private readonly userRolService: UserRolService) {}
+  constructor(private readonly userRolService: UserRolService) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateUserRolDto) {
-    let params: Prisma.UserRolCreateArgs = {
+    const params: Prisma.UserRolCreateArgs = {
       data: data as Prisma.UserRolUncheckedCreateInput,
     };
     return this.userRolService.create(params);
@@ -34,15 +34,15 @@ export class UserRolController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.UserRolFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.UserRolFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -52,7 +52,7 @@ export class UserRolController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.UserRolFindUniqueArgs = {
+    const params: Prisma.UserRolFindUniqueArgs = {
       where: { id: id },
     };
     return this.userRolService.findUnique(params);
@@ -61,7 +61,7 @@ export class UserRolController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateUserRolDto) {
-    let params: Prisma.UserRolUpdateArgs = {
+    const params: Prisma.UserRolUpdateArgs = {
       where: { id: id },
       data: data as Prisma.UserRolUncheckedUpdateInput,
     };
@@ -71,7 +71,7 @@ export class UserRolController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.UserRolDeleteArgs = {
+    const params: Prisma.UserRolDeleteArgs = {
       where: { id: id },
     };
     return this.userRolService.delete(params);

@@ -6,27 +6,34 @@ export class CreateFileDto {
   @IsOptional()
   @IsString()
   file?: string | null;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   ext?: string | null;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   url?: string | null;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   description?: string | null;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   name?: string | null;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsBoolean()
   state?: boolean | null;
+
   @ApiProperty()
   @IsString()
   hemodialysis_id: string;
+
 }

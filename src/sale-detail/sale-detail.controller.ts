@@ -20,12 +20,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'sale-detail' })
 export class SaleDetailController {
-  constructor(private readonly saleDetailService: SaleDetailService) {}
+  constructor(private readonly saleDetailService: SaleDetailService) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateSaleDetailDto) {
-    let params: Prisma.SaleDetailCreateArgs = {
+    const params: Prisma.SaleDetailCreateArgs = {
       data: data as Prisma.SaleDetailUncheckedCreateInput,
     };
     return this.saleDetailService.create(params);
@@ -33,15 +33,15 @@ export class SaleDetailController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.SaleDetailFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.SaleDetailFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -51,7 +51,7 @@ export class SaleDetailController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.SaleDetailFindUniqueArgs = {
+    const params: Prisma.SaleDetailFindUniqueArgs = {
       where: { id: id },
     };
     return this.saleDetailService.findUnique(params);
@@ -60,7 +60,7 @@ export class SaleDetailController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateSaleDetailDto) {
-    let params: Prisma.SaleDetailUpdateArgs = {
+    const params: Prisma.SaleDetailUpdateArgs = {
       where: { id: id },
       data: data as Prisma.SaleDetailUncheckedUpdateInput,
     };
@@ -70,7 +70,7 @@ export class SaleDetailController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.SaleDetailDeleteArgs = {
+    const params: Prisma.SaleDetailDeleteArgs = {
       where: { id: id },
     };
     return this.saleDetailService.delete(params);

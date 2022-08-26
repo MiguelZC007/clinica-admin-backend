@@ -20,12 +20,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'reference-value' })
 export class ReferenceValueController {
-  constructor(private readonly referenceValueService: ReferenceValueService) {}
+  constructor(private readonly referenceValueService: ReferenceValueService) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateReferenceValueDto) {
-    let params: Prisma.ReferenceValueCreateArgs = {
+    const params: Prisma.ReferenceValueCreateArgs = {
       data: data as Prisma.ReferenceValueUncheckedCreateInput,
     };
     return this.referenceValueService.create(params);
@@ -33,15 +33,15 @@ export class ReferenceValueController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.ReferenceValueFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.ReferenceValueFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -51,7 +51,7 @@ export class ReferenceValueController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.ReferenceValueFindUniqueArgs = {
+    const params: Prisma.ReferenceValueFindUniqueArgs = {
       where: { id: id },
     };
     return this.referenceValueService.findUnique(params);
@@ -60,7 +60,7 @@ export class ReferenceValueController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateReferenceValueDto) {
-    let params: Prisma.ReferenceValueUpdateArgs = {
+    const params: Prisma.ReferenceValueUpdateArgs = {
       where: { id: id },
       data: data as Prisma.ReferenceValueUncheckedUpdateInput,
     };
@@ -70,7 +70,7 @@ export class ReferenceValueController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.ReferenceValueDeleteArgs = {
+    const params: Prisma.ReferenceValueDeleteArgs = {
       where: { id: id },
     };
     return this.referenceValueService.delete(params);

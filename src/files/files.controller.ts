@@ -19,11 +19,11 @@ import { Prisma } from '@prisma/client';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'files' })
 export class FilesController {
-  constructor(private readonly filesService: FilesService) {}
+  constructor(private readonly filesService: FilesService) { }
 
   @Post()
   create(@Body() data: CreateFileDto) {
-    let params: Prisma.FilesCreateArgs = {
+    const params: Prisma.FilesCreateArgs = {
       data: data as Prisma.FilesUncheckedCreateInput,
     };
     return this.filesService.create(params);
@@ -31,8 +31,8 @@ export class FilesController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.FilesFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.FilesFindManyArgs = {
       orderBy: [
         {
           hemodialysis: {
@@ -48,7 +48,7 @@ export class FilesController {
     };
     if (take > 0 && p > 0) {
       p = p > 0 ? p - 1 : 0;
-      let skip = p > 0 ? p * take : 0;
+      const skip = p > 0 ? p * take : 0;
       params.skip = +skip;
       params.take = +take;
     }
@@ -57,7 +57,7 @@ export class FilesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    let params: Prisma.FilesFindUniqueArgs = {
+    const params: Prisma.FilesFindUniqueArgs = {
       where: { id: id },
     };
     return this.filesService.findUnique(params);
@@ -65,7 +65,7 @@ export class FilesController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() data: UpdateFileDto) {
-    let params: Prisma.FilesUpdateArgs = {
+    const params: Prisma.FilesUpdateArgs = {
       where: { id: id },
       data: data as Prisma.FilesUncheckedUpdateInput,
     };
@@ -74,7 +74,7 @@ export class FilesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    let params: Prisma.FilesDeleteArgs = {
+    const params: Prisma.FilesDeleteArgs = {
       where: { id: id },
     };
     return this.filesService.delete(params);

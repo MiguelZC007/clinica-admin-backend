@@ -20,12 +20,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'rol' })
 export class RolController {
-  constructor(private readonly rolService: RolService) {}
+  constructor(private readonly rolService: RolService) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateRolDto) {
-    let params: Prisma.RolCreateArgs = {
+    const params: Prisma.RolCreateArgs = {
       data: data as Prisma.RolUncheckedCreateInput,
     };
     return this.rolService.create(params);
@@ -33,15 +33,15 @@ export class RolController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.RolFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.RolFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -51,7 +51,7 @@ export class RolController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.RolFindUniqueArgs = {
+    const params: Prisma.RolFindUniqueArgs = {
       where: { id: id },
     };
     return this.rolService.findUnique(params);
@@ -60,7 +60,7 @@ export class RolController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateRolDto) {
-    let params: Prisma.RolUpdateArgs = {
+    const params: Prisma.RolUpdateArgs = {
       where: { id: id },
       data: data as Prisma.RolUncheckedUpdateInput,
     };
@@ -70,7 +70,7 @@ export class RolController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.RolDeleteArgs = {
+    const params: Prisma.RolDeleteArgs = {
       where: { id: id },
     };
     return this.rolService.delete(params);

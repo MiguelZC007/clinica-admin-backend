@@ -7,11 +7,11 @@ import { UpdatePaymentDto } from './dto/update-payment.dto';
 
 @Injectable()
 export class PaymentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(params: Prisma.PaymentCreateArgs) {
     try {
-      let data = await this.prisma.payment.create(params);
+      const data = await this.prisma.payment.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -20,7 +20,7 @@ export class PaymentService {
 
   async findMany(params: Prisma.PaymentFindManyArgs) {
     try {
-      let data = await this.prisma.payment.findMany(params);
+      const data = await this.prisma.payment.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -29,7 +29,7 @@ export class PaymentService {
 
   async findUnique(params: Prisma.PaymentFindUniqueArgs) {
     try {
-      let data = await this.prisma.payment.findUnique(params);
+      const data = await this.prisma.payment.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -38,7 +38,7 @@ export class PaymentService {
 
   async findFirst(params: Prisma.PaymentFindFirstArgs) {
     try {
-      let data = await this.prisma.payment.findFirst(params);
+      const data = await this.prisma.payment.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -47,7 +47,7 @@ export class PaymentService {
 
   async update(params: Prisma.PaymentUpdateArgs) {
     try {
-      let data = await this.prisma.payment.update(params);
+      const data = await this.prisma.payment.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -55,7 +55,7 @@ export class PaymentService {
   }
   async updateMany(params: Prisma.PaymentUpdateManyArgs) {
     try {
-      let data = await this.prisma.payment.updateMany(params);
+      const data = await this.prisma.payment.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -64,7 +64,7 @@ export class PaymentService {
 
   async delete(params: Prisma.PaymentDeleteArgs) {
     try {
-      let data = await this.prisma.payment.delete(params);
+      const data = await this.prisma.payment.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

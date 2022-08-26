@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   public user_select: Prisma.UserSelect = {
     id: true,
@@ -81,12 +81,11 @@ export class UserService {
 
   async create(params: Prisma.UserCreateArgs) {
     try {
-      let search: string = `${params.data.name || ''} ${
-        params.data.lastname || ''
-      } ${params.data.mother_lastname || ''}`;
+      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${params.data.mother_lastname || ''
+        }`;
       search = search.trimEnd();
       params.data.search = search.toLocaleLowerCase();
-      let data = await this.prisma.user.create(params);
+      const data = await this.prisma.user.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -95,7 +94,7 @@ export class UserService {
 
   async findMany(params: Prisma.UserFindManyArgs) {
     try {
-      let data = await this.prisma.user.findMany(params);
+      const data = await this.prisma.user.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -104,7 +103,7 @@ export class UserService {
 
   async findUnique(params: Prisma.UserFindUniqueArgs) {
     try {
-      let data = await this.prisma.user.findUnique(params);
+      const data = await this.prisma.user.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -113,7 +112,7 @@ export class UserService {
 
   async findFirst(params: Prisma.UserFindFirstArgs) {
     try {
-      let data = await this.prisma.user.findFirst(params);
+      const data = await this.prisma.user.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -122,12 +121,11 @@ export class UserService {
 
   async update(params: Prisma.UserUpdateArgs) {
     try {
-      let search: string = `${params.data.name || ''} ${
-        params.data.lastname || ''
-      } ${params.data.mother_lastname || ''}`;
+      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${params.data.mother_lastname || ''
+        }`;
       search = search.trimEnd();
       params.data.search = search.toLocaleLowerCase();
-      let data = await this.prisma.user.update(params);
+      const data = await this.prisma.user.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -136,7 +134,7 @@ export class UserService {
 
   async delete(params: Prisma.UserDeleteArgs) {
     try {
-      let data = await this.prisma.user.delete(params);
+      const data = await this.prisma.user.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

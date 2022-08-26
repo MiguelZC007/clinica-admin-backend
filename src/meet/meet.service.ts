@@ -9,7 +9,7 @@ export class MeetService {
   constructor(
     private prisma: PrismaService,
     private userService: UserService,
-  ) {}
+  ) { }
 
   public meet_select: Prisma.MeetSelect = {
     id: true,
@@ -32,7 +32,7 @@ export class MeetService {
 
   async create(params: Prisma.MeetCreateArgs) {
     try {
-      let data = await this.prisma.meet.create(params);
+      const data = await this.prisma.meet.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -41,7 +41,7 @@ export class MeetService {
 
   async findMany(params: Prisma.MeetFindManyArgs) {
     try {
-      let data = await this.prisma.meet.findMany(params);
+      const data = await this.prisma.meet.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -50,7 +50,7 @@ export class MeetService {
 
   async findUnique(params: Prisma.MeetFindUniqueArgs) {
     try {
-      let data = await this.prisma.meet.findUnique(params);
+      const data = await this.prisma.meet.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -59,7 +59,7 @@ export class MeetService {
 
   async findFirst(params: Prisma.MeetFindFirstArgs) {
     try {
-      let data = await this.prisma.meet.findFirst(params);
+      const data = await this.prisma.meet.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -68,7 +68,7 @@ export class MeetService {
 
   async update(params: Prisma.MeetUpdateArgs) {
     try {
-      let data = await this.prisma.meet.update(params);
+      const data = await this.prisma.meet.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -76,7 +76,7 @@ export class MeetService {
   }
   async updateMany(params: Prisma.MeetUpdateManyArgs) {
     try {
-      let data = await this.prisma.meet.updateMany(params);
+      const data = await this.prisma.meet.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -85,7 +85,7 @@ export class MeetService {
 
   async delete(params: Prisma.MeetDeleteArgs) {
     try {
-      let data = await this.prisma.meet.delete(params);
+      const data = await this.prisma.meet.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

@@ -19,12 +19,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'hemodialysis' })
 export class HemodialysisController {
-  constructor(private readonly hemodialysisService: HemodialysisService) {}
+  constructor(private hemodialysisService: HemodialysisService) { }
 
   @Post()
   @Auth()
   create(@Body() data: CreateHemodialysisDto) {
-    let params: Prisma.HemodialysisCreateArgs = {
+    const params: Prisma.HemodialysisCreateArgs = {
       data: data as Prisma.HemodialysisUncheckedCreateInput,
       include: this.hemodialysisService.hemodialysis_include,
     };
@@ -33,8 +33,8 @@ export class HemodialysisController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.HemodialysisFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.HemodialysisFindManyArgs = {
       include: this.hemodialysisService.hemodialysis_include,
       orderBy: {
         patient: {
@@ -44,7 +44,7 @@ export class HemodialysisController {
     };
     if (take > 0 && p > 0) {
       p = p > 0 ? p - 1 : 0;
-      let skip = p > 0 ? p * take : 0;
+      const skip = p > 0 ? p * take : 0;
       params.skip = +skip;
       params.take = +take;
     }
@@ -53,7 +53,7 @@ export class HemodialysisController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    let params: Prisma.HemodialysisFindUniqueArgs = {
+    const params: Prisma.HemodialysisFindUniqueArgs = {
       where: { id: id },
       include: this.hemodialysisService.hemodialysis_include,
     };
@@ -63,7 +63,7 @@ export class HemodialysisController {
   @Put(':id')
   @Auth()
   update(@Param('id') id: string, @Body() data: UpdateHemodialysisDto) {
-    let params: Prisma.HemodialysisUpdateArgs = {
+    const params: Prisma.HemodialysisUpdateArgs = {
       where: {
         id: id,
       },
@@ -76,7 +76,7 @@ export class HemodialysisController {
   @Delete(':id')
   @Auth()
   remove(@Param('id') id: string) {
-    let params: Prisma.HemodialysisDeleteArgs = {
+    const params: Prisma.HemodialysisDeleteArgs = {
       where: { id: id },
       include: this.hemodialysisService.hemodialysis_include,
     };

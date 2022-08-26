@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AnalysisService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   public analysis_select: Prisma.AnalysisSelect = {
     id: true,
@@ -26,7 +26,7 @@ export class AnalysisService {
 
   async create(params: Prisma.AnalysisCreateArgs) {
     try {
-      let data = await this.prisma.analysis.create(params);
+      const data = await this.prisma.analysis.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -35,7 +35,7 @@ export class AnalysisService {
 
   async findMany(params: Prisma.AnalysisFindManyArgs) {
     try {
-      let data = await this.prisma.analysis.findMany(params);
+      const data = await this.prisma.analysis.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -44,7 +44,7 @@ export class AnalysisService {
 
   async findUnique(params: Prisma.AnalysisFindUniqueArgs) {
     try {
-      let data = await this.prisma.analysis.findUnique(params);
+      const data = await this.prisma.analysis.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -53,7 +53,7 @@ export class AnalysisService {
 
   async findFirst(params: Prisma.AnalysisFindFirstArgs) {
     try {
-      let data = await this.prisma.analysis.findFirst(params);
+      const data = await this.prisma.analysis.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -62,7 +62,7 @@ export class AnalysisService {
 
   async update(params: Prisma.AnalysisUpdateArgs) {
     try {
-      let data = await this.prisma.analysis.update(params);
+      const data = await this.prisma.analysis.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -70,7 +70,7 @@ export class AnalysisService {
   }
   async updateMany(params: Prisma.AnalysisUpdateManyArgs) {
     try {
-      let data = await this.prisma.analysis.updateMany(params);
+      const data = await this.prisma.analysis.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -79,7 +79,7 @@ export class AnalysisService {
 
   async delete(params: Prisma.AnalysisDeleteArgs) {
     try {
-      let data = await this.prisma.analysis.delete(params);
+      const data = await this.prisma.analysis.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

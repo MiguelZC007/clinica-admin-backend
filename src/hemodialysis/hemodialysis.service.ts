@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class HemodialysisService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   public hemodialysis_include: Prisma.HemodialysisInclude = {
     files: true,
@@ -25,7 +25,7 @@ export class HemodialysisService {
 
   async create(params: Prisma.HemodialysisCreateArgs) {
     try {
-      let response: any = await this.prisma.hemodialysis.create(params);
+      const response: any = await this.prisma.hemodialysis.create(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -38,7 +38,7 @@ export class HemodialysisService {
     },
   ) {
     try {
-      let response: any = await this.prisma.hemodialysis.findMany(params);
+      const response: any = await this.prisma.hemodialysis.findMany(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -47,7 +47,7 @@ export class HemodialysisService {
 
   async findUnique(params: Prisma.HemodialysisFindUniqueArgs) {
     try {
-      let response: any = await this.prisma.hemodialysis.findUnique(params);
+      const response: any = await this.prisma.hemodialysis.findUnique(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -56,7 +56,7 @@ export class HemodialysisService {
 
   async update(params: Prisma.HemodialysisUpdateArgs) {
     try {
-      let response: any = await this.prisma.hemodialysis.update(params);
+      const response: any = await this.prisma.hemodialysis.update(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -65,7 +65,7 @@ export class HemodialysisService {
 
   async delete(params: Prisma.HemodialysisDeleteArgs) {
     try {
-      let response: any = await this.prisma.hemodialysis.delete(params);
+      const response: any = await this.prisma.hemodialysis.delete(params);
       return response;
     } catch (e) {
       ErrorsManager(e);

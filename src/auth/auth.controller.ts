@@ -27,7 +27,7 @@ export class AuthController {
     private authService: AuthService,
     private sessionService: SessionService,
     private usersService: UserService,
-  ) {}
+  ) { }
 
   @ApiOperation({ summary: 'Entrar al sistema' })
   @Post('login')
@@ -81,7 +81,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Cambiar Contraseña' })
   @Put('change-password')
   async changePassword(@Body() data: ChangePasswordDto) {
-    let params: Prisma.UserUpdateArgs = {
+    const params: Prisma.UserUpdateArgs = {
       where: { email: data.email },
       data: {
         password: hashSync(data.password, Number(process.env.SALT_ROUND)),

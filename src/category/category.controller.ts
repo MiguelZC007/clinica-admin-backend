@@ -20,11 +20,11 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'category' })
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) { }
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateCategoryDto) {
-    let params: Prisma.CategoryCreateArgs = {
+    const params: Prisma.CategoryCreateArgs = {
       data: data as Prisma.CategoryUncheckedCreateInput,
     };
     return this.categoryService.create(params);
@@ -32,15 +32,15 @@ export class CategoryController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.CategoryFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.CategoryFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -50,7 +50,7 @@ export class CategoryController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.CategoryFindUniqueArgs = {
+    const params: Prisma.CategoryFindUniqueArgs = {
       where: { id: id },
     };
     return this.categoryService.findUnique(params);
@@ -59,7 +59,7 @@ export class CategoryController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateCategoryDto) {
-    let params: Prisma.CategoryUpdateArgs = {
+    const params: Prisma.CategoryUpdateArgs = {
       where: { id: id },
       data: data as Prisma.CategoryUncheckedUpdateInput,
     };
@@ -69,7 +69,7 @@ export class CategoryController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.CategoryDeleteArgs = {
+    const params: Prisma.CategoryDeleteArgs = {
       where: { id: id },
     };
     return this.categoryService.delete(params);

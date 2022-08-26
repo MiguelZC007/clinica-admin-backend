@@ -7,7 +7,6 @@ import {
   Delete,
   Query,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
@@ -20,12 +19,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'payment' })
 export class PaymentController {
-  constructor(private readonly paymentService: PaymentService) {}
+  constructor(private readonly paymentService: PaymentService) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreatePaymentDto) {
-    let params: Prisma.PaymentCreateArgs = {
+    const params: Prisma.PaymentCreateArgs = {
       data: data as Prisma.PaymentUncheckedCreateInput,
     };
     return this.paymentService.create(params);
@@ -33,15 +32,15 @@ export class PaymentController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.PaymentFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.PaymentFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -51,7 +50,7 @@ export class PaymentController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.PaymentFindUniqueArgs = {
+    const params: Prisma.PaymentFindUniqueArgs = {
       where: { id: id },
     };
     return this.paymentService.findUnique(params);
@@ -60,7 +59,7 @@ export class PaymentController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdatePaymentDto) {
-    let params: Prisma.PaymentUpdateArgs = {
+    const params: Prisma.PaymentUpdateArgs = {
       where: { id: id },
       data: data as Prisma.PaymentUncheckedUpdateInput,
     };
@@ -70,7 +69,7 @@ export class PaymentController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.PaymentDeleteArgs = {
+    const params: Prisma.PaymentDeleteArgs = {
       where: { id: id },
     };
     return this.paymentService.delete(params);

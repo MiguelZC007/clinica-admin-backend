@@ -23,12 +23,12 @@ import { UpdateCategoryAnalysisDto } from './dto/update-category-analysis.dto';
 export class CategoryAnalysisController {
   constructor(
     private readonly categoryAnalysisService: CategoryAnalysisService,
-  ) {}
+  ) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateCategoryAnalysisDto) {
-    let params: Prisma.CategoryAnalysisCreateArgs = {
+    const params: Prisma.CategoryAnalysisCreateArgs = {
       data: data as Prisma.CategoryAnalysisUncheckedCreateInput,
     };
     return this.categoryAnalysisService.create(params);
@@ -36,15 +36,15 @@ export class CategoryAnalysisController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.CategoryAnalysisFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.CategoryAnalysisFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -54,7 +54,7 @@ export class CategoryAnalysisController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.CategoryAnalysisFindUniqueArgs = {
+    const params: Prisma.CategoryAnalysisFindUniqueArgs = {
       where: { id: id },
     };
     return this.categoryAnalysisService.findUnique(params);
@@ -63,7 +63,7 @@ export class CategoryAnalysisController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateCategoryAnalysisDto) {
-    let params: Prisma.CategoryAnalysisUpdateArgs = {
+    const params: Prisma.CategoryAnalysisUpdateArgs = {
       where: { id: id },
       data: data as Prisma.CategoryAnalysisUncheckedUpdateInput,
     };
@@ -73,7 +73,7 @@ export class CategoryAnalysisController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.CategoryAnalysisDeleteArgs = {
+    const params: Prisma.CategoryAnalysisDeleteArgs = {
       where: { id: id },
     };
     return this.categoryAnalysisService.delete(params);

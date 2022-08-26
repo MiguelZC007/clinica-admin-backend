@@ -5,13 +5,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class MachineService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   public machine_include: Prisma.MachineInclude = {};
 
   async create(params: Prisma.MachineCreateArgs) {
     try {
-      let response: any = await this.prisma.machine.create(params);
+      const response: any = await this.prisma.machine.create(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -20,7 +20,7 @@ export class MachineService {
 
   async findMany(params: Prisma.MachineFindManyArgs) {
     try {
-      let response: any = await this.prisma.machine.findMany(params);
+      const response: any = await this.prisma.machine.findMany(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -29,7 +29,7 @@ export class MachineService {
 
   async findUnique(params: Prisma.MachineFindUniqueArgs) {
     try {
-      let response: any = await this.prisma.machine.findUnique(params);
+      const response: any = await this.prisma.machine.findUnique(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -38,7 +38,7 @@ export class MachineService {
 
   async update(params: Prisma.MachineUpdateArgs) {
     try {
-      let response: any = await this.prisma.machine.update(params);
+      const response: any = await this.prisma.machine.update(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -47,7 +47,7 @@ export class MachineService {
 
   async delete(params: Prisma.MachineDeleteArgs) {
     try {
-      let response: any = await this.prisma.machine.delete(params);
+      const response: any = await this.prisma.machine.delete(params);
       return response;
     } catch (e) {
       ErrorsManager(e);

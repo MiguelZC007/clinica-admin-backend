@@ -19,12 +19,12 @@ import { Prisma } from '@prisma/client';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'machine' })
 export class MachineController {
-  constructor(private readonly machineService: MachineService) {}
+  constructor(private readonly machineService: MachineService) { }
 
   @Post()
   @Auth()
   create(@Body() data: CreateMachineDto) {
-    let params: Prisma.MachineCreateArgs = {
+    const params: Prisma.MachineCreateArgs = {
       data: data as Prisma.MachineUncheckedCreateInput,
     };
     return this.machineService.create(params);
@@ -32,15 +32,15 @@ export class MachineController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.MachineFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.MachineFindManyArgs = {
       orderBy: {
         number_machine: 'asc',
       },
     };
     if (take > 0 && p > 0) {
       p = p > 0 ? p - 1 : 0;
-      let skip = p > 0 ? p * take : 0;
+      const skip = p > 0 ? p * take : 0;
       params.skip = +skip;
       params.take = +take;
     }
@@ -50,7 +50,7 @@ export class MachineController {
   @Get(':id')
   @Auth()
   findOne(@Param('id') id: string) {
-    let params: Prisma.MachineFindUniqueArgs = {
+    const params: Prisma.MachineFindUniqueArgs = {
       where: { id: id },
     };
     return this.machineService.findUnique(params);
@@ -59,7 +59,7 @@ export class MachineController {
   @Put(':id')
   @Auth()
   update(@Param('id') id: string, @Body() data: UpdateMachineDto) {
-    let params: Prisma.MachineUpdateArgs = {
+    const params: Prisma.MachineUpdateArgs = {
       where: { id: id },
       data: data as Prisma.MachineUncheckedUpdateInput,
     };
@@ -69,7 +69,7 @@ export class MachineController {
   @Delete(':id')
   @Auth()
   remove(@Param('id') id: string) {
-    let params: Prisma.MachineDeleteArgs = {
+    const params: Prisma.MachineDeleteArgs = {
       where: { id: id },
     };
     return this.machineService.delete(params);

@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ProductService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   public product_select: Prisma.ProductSelect = {
     id: true,
@@ -39,7 +39,7 @@ export class ProductService {
 
   async create(params: Prisma.ProductCreateArgs) {
     try {
-      let data = await this.prisma.product.create(params);
+      const data = await this.prisma.product.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -48,7 +48,7 @@ export class ProductService {
 
   async findMany(params: Prisma.ProductFindManyArgs) {
     try {
-      let data = await this.prisma.product.findMany(params);
+      const data = await this.prisma.product.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -57,7 +57,7 @@ export class ProductService {
 
   async findUnique(params: Prisma.ProductFindUniqueArgs) {
     try {
-      let data = await this.prisma.product.findUnique(params);
+      const data = await this.prisma.product.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -66,7 +66,7 @@ export class ProductService {
 
   async findFirst(params: Prisma.ProductFindFirstArgs) {
     try {
-      let data = await this.prisma.product.findFirst(params);
+      const data = await this.prisma.product.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -75,7 +75,7 @@ export class ProductService {
 
   async update(params: Prisma.ProductUpdateArgs) {
     try {
-      let data = await this.prisma.product.update(params);
+      const data = await this.prisma.product.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -83,7 +83,7 @@ export class ProductService {
   }
   async updateMany(params: Prisma.ProductUpdateManyArgs) {
     try {
-      let data = await this.prisma.product.updateMany(params);
+      const data = await this.prisma.product.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -92,7 +92,7 @@ export class ProductService {
 
   async delete(params: Prisma.ProductDeleteArgs) {
     try {
-      let data = await this.prisma.product.delete(params);
+      const data = await this.prisma.product.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

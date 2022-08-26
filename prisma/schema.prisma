@@ -303,7 +303,9 @@ model Hemodialysis {
   patient_id           String                @unique
   vascular_access      VascularAccessType?   @default(CATETER)
   history_number       Int                   @default(autoincrement())
-  regisration_date     DateTime
+  regisration_date     DateTime?
+  diagnostic           String?
+  pathologies          String?
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
   turn                 HemodialysisMachine?
@@ -342,6 +344,7 @@ model HemodialysisSession {
   updatedAt                DateTime                 @updatedAt
   vital_signs_hemodialysis VitalSignsHemodialysis[]
   medicaments              Medication[]
+  laboratories             Laboratory[]
 }
 
 model VitalSignsHemodialysis {
@@ -362,7 +365,6 @@ model VitalSignsHemodialysis {
 
 model Files {
   id              String        @id @default(uuid())
-  file            String?
   ext             String?
   url             String?
   description     String?
@@ -576,6 +578,8 @@ model Laboratory {
   patient                   User                  @relation("laboratory", fields: [patient_id], references: [id])
   sale                      Sale?                 @relation(fields: [sale_id], references: [id])
   sample                    Sample[]
+  hemodialysis_session      HemodialysisSession?  @relation(fields: [hemodialysis_session_id], references: [id])
+  hemodialysis_session_id   String?
 }
 
 model Sample {

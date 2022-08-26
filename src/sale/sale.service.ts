@@ -5,11 +5,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class SaleService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(params: Prisma.SaleCreateArgs) {
     try {
-      let data = await this.prisma.sale.create(params);
+      const data = await this.prisma.sale.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -18,7 +18,7 @@ export class SaleService {
 
   async findMany(params: Prisma.SaleFindManyArgs) {
     try {
-      let data = await this.prisma.sale.findMany(params);
+      const data = await this.prisma.sale.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -27,7 +27,7 @@ export class SaleService {
 
   async findUnique(params: Prisma.SaleFindUniqueArgs) {
     try {
-      let data = await this.prisma.sale.findUnique(params);
+      const data = await this.prisma.sale.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -36,7 +36,7 @@ export class SaleService {
 
   async findFirst(params: Prisma.SaleFindFirstArgs) {
     try {
-      let data = await this.prisma.sale.findFirst(params);
+      const data = await this.prisma.sale.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -45,7 +45,7 @@ export class SaleService {
 
   async update(params: Prisma.SaleUpdateArgs) {
     try {
-      let data = await this.prisma.sale.update(params);
+      const data = await this.prisma.sale.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -53,7 +53,7 @@ export class SaleService {
   }
   async updateMany(params: Prisma.SaleUpdateManyArgs) {
     try {
-      let data = await this.prisma.sale.updateMany(params);
+      const data = await this.prisma.sale.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -62,7 +62,7 @@ export class SaleService {
 
   async delete(params: Prisma.SaleDeleteArgs) {
     try {
-      let data = await this.prisma.sale.delete(params);
+      const data = await this.prisma.sale.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

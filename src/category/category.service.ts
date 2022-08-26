@@ -5,11 +5,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CategoryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(params: Prisma.CategoryCreateArgs) {
     try {
-      let data = await this.prisma.category.create(params);
+      const data = await this.prisma.category.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -18,7 +18,7 @@ export class CategoryService {
 
   async findMany(params: Prisma.CategoryFindManyArgs) {
     try {
-      let data = await this.prisma.category.findMany(params);
+      const data = await this.prisma.category.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -27,7 +27,7 @@ export class CategoryService {
 
   async findUnique(params: Prisma.CategoryFindUniqueArgs) {
     try {
-      let data = await this.prisma.category.findUnique(params);
+      const data = await this.prisma.category.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -36,7 +36,7 @@ export class CategoryService {
 
   async findFirst(params: Prisma.CategoryFindFirstArgs) {
     try {
-      let data = await this.prisma.category.findFirst(params);
+      const data = await this.prisma.category.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -45,7 +45,7 @@ export class CategoryService {
 
   async update(params: Prisma.CategoryUpdateArgs) {
     try {
-      let data = await this.prisma.category.update(params);
+      const data = await this.prisma.category.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -53,7 +53,7 @@ export class CategoryService {
   }
   async updateMany(params: Prisma.CategoryUpdateManyArgs) {
     try {
-      let data = await this.prisma.category.updateMany(params);
+      const data = await this.prisma.category.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -62,7 +62,7 @@ export class CategoryService {
 
   async delete(params: Prisma.CategoryDeleteArgs) {
     try {
-      let data = await this.prisma.category.delete(params);
+      const data = await this.prisma.category.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

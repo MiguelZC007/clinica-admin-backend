@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class SpecialtyService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   public specialty_select: Prisma.SpecialtySelect = {
     id: true,
@@ -18,7 +18,7 @@ export class SpecialtyService {
 
   async create(params: Prisma.SpecialtyCreateArgs) {
     try {
-      let data = await this.prisma.specialty.create(params);
+      const data = await this.prisma.specialty.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -27,7 +27,7 @@ export class SpecialtyService {
 
   async findMany(params: Prisma.SpecialtyFindManyArgs) {
     try {
-      let data = await this.prisma.specialty.findMany(params);
+      const data = await this.prisma.specialty.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -36,7 +36,7 @@ export class SpecialtyService {
 
   async findUnique(params: Prisma.SpecialtyFindUniqueArgs) {
     try {
-      let data = await this.prisma.specialty.findUnique(params);
+      const data = await this.prisma.specialty.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -45,7 +45,7 @@ export class SpecialtyService {
 
   async findFirst(params: Prisma.SpecialtyFindFirstArgs) {
     try {
-      let data = await this.prisma.specialty.findFirst(params);
+      const data = await this.prisma.specialty.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -54,7 +54,7 @@ export class SpecialtyService {
 
   async update(params: Prisma.SpecialtyUpdateArgs) {
     try {
-      let data = await this.prisma.specialty.update(params);
+      const data = await this.prisma.specialty.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -62,7 +62,7 @@ export class SpecialtyService {
   }
   async updateMany(params: Prisma.SpecialtyUpdateManyArgs) {
     try {
-      let data = await this.prisma.specialty.updateMany(params);
+      const data = await this.prisma.specialty.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -71,7 +71,7 @@ export class SpecialtyService {
 
   async delete(params: Prisma.SpecialtyDeleteArgs) {
     try {
-      let data = await this.prisma.specialty.delete(params);
+      const data = await this.prisma.specialty.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

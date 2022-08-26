@@ -5,6 +5,6 @@ import { HemodialysisController } from './hemodialysis.controller';
 @Module({
   controllers: [HemodialysisController],
   providers: [HemodialysisService],
-  exports:[HemodialysisService]
+  exports: [HemodialysisService],
 })
-export class HemodialysisModule {}
+export class HemodialysisModule { }

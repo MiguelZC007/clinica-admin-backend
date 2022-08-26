@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ReferenceValueService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   public reference_value_select: Prisma.ReferenceValueSelect = {
     id: true,
@@ -22,7 +22,7 @@ export class ReferenceValueService {
 
   async create(params: Prisma.ReferenceValueCreateArgs) {
     try {
-      let data = await this.prisma.referenceValue.create(params);
+      const data = await this.prisma.referenceValue.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -31,7 +31,7 @@ export class ReferenceValueService {
 
   async findMany(params: Prisma.ReferenceValueFindManyArgs) {
     try {
-      let data = await this.prisma.referenceValue.findMany(params);
+      const data = await this.prisma.referenceValue.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -40,7 +40,7 @@ export class ReferenceValueService {
 
   async findUnique(params: Prisma.ReferenceValueFindUniqueArgs) {
     try {
-      let data = await this.prisma.referenceValue.findUnique(params);
+      const data = await this.prisma.referenceValue.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -49,7 +49,7 @@ export class ReferenceValueService {
 
   async findFirst(params: Prisma.ReferenceValueFindFirstArgs) {
     try {
-      let data = await this.prisma.referenceValue.findFirst(params);
+      const data = await this.prisma.referenceValue.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -58,7 +58,7 @@ export class ReferenceValueService {
 
   async update(params: Prisma.ReferenceValueUpdateArgs) {
     try {
-      let data = await this.prisma.referenceValue.update(params);
+      const data = await this.prisma.referenceValue.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -66,7 +66,7 @@ export class ReferenceValueService {
   }
   async updateMany(params: Prisma.ReferenceValueUpdateManyArgs) {
     try {
-      let data = await this.prisma.referenceValue.updateMany(params);
+      const data = await this.prisma.referenceValue.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -75,7 +75,7 @@ export class ReferenceValueService {
 
   async delete(params: Prisma.ReferenceValueDeleteArgs) {
     try {
-      let data = await this.prisma.referenceValue.delete(params);
+      const data = await this.prisma.referenceValue.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

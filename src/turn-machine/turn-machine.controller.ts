@@ -19,12 +19,12 @@ import { Prisma } from '@prisma/client';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'turn-machine' })
 export class TurnMachineController {
-  constructor(private readonly turnMachineService: TurnMachineService) {}
+  constructor(private readonly turnMachineService: TurnMachineService) { }
 
   @Post()
   @Auth()
   create(@Body() data: CreateTurnMachineDto) {
-    let params: Prisma.TurnMachineCreateArgs = {
+    const params: Prisma.TurnMachineCreateArgs = {
       data: data as Prisma.TurnMachineUncheckedCreateInput,
       include: this.turnMachineService.turn_machine_include,
     };
@@ -33,8 +33,8 @@ export class TurnMachineController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.TurnMachineFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.TurnMachineFindManyArgs = {
       include: this.turnMachineService.turn_machine_include,
       orderBy: [
         {
@@ -51,7 +51,7 @@ export class TurnMachineController {
     };
     if (take > 0 && p > 0) {
       p = p > 0 ? p - 1 : 0;
-      let skip = p > 0 ? p * take : 0;
+      const skip = p > 0 ? p * take : 0;
       params.skip = +skip;
       params.take = +take;
     }
@@ -61,7 +61,7 @@ export class TurnMachineController {
   @Get(':id')
   @Auth()
   findOne(@Param('id') id: string) {
-    let params: Prisma.TurnMachineFindUniqueArgs = {
+    const params: Prisma.TurnMachineFindUniqueArgs = {
       where: { id: id },
       include: this.turnMachineService.turn_machine_include,
     };
@@ -71,7 +71,7 @@ export class TurnMachineController {
   @Put(':id')
   @Auth()
   update(@Param('id') id: string, @Body() data: UpdateTurnMachineDto) {
-    let params: Prisma.TurnMachineUpdateArgs = {
+    const params: Prisma.TurnMachineUpdateArgs = {
       where: { id: id },
       data: data as Prisma.TurnMachineUncheckedUpdateInput,
       include: this.turnMachineService.turn_machine_include,
@@ -82,7 +82,7 @@ export class TurnMachineController {
   @Delete(':id')
   @Auth()
   remove(@Param('id') id: string) {
-    let params: Prisma.TurnMachineDeleteArgs = {
+    const params: Prisma.TurnMachineDeleteArgs = {
       where: { id: id },
       include: this.turnMachineService.turn_machine_include,
     };

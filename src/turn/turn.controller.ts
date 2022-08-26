@@ -19,12 +19,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'turn' })
 export class TurnController {
-  constructor(private readonly turnService: TurnService) {}
+  constructor(private readonly turnService: TurnService) { }
 
   @Post()
   @Auth()
   create(@Body() data: CreateTurnDto) {
-    let params: Prisma.TurnCreateArgs = {
+    const params: Prisma.TurnCreateArgs = {
       data: data as Prisma.TurnUncheckedCreateInput,
       include: this.turnService.turn_include,
     };
@@ -33,8 +33,8 @@ export class TurnController {
 
   @Get()
   @Auth()
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.TurnFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.TurnFindManyArgs = {
       include: this.turnService.turn_include,
       orderBy: {
         name: 'asc',
@@ -42,7 +42,7 @@ export class TurnController {
     };
     if (take > 0 && p > 0) {
       p = p > 0 ? p - 1 : 0;
-      let skip = p > 0 ? p * take : 0;
+      const skip = p > 0 ? p * take : 0;
       params.skip = +skip;
       params.take = +take;
     }
@@ -52,7 +52,7 @@ export class TurnController {
   @Get(':id')
   @Auth()
   findOne(@Param('id') id: string) {
-    let params: Prisma.TurnFindUniqueArgs = {
+    const params: Prisma.TurnFindUniqueArgs = {
       where: { id: id },
       include: this.turnService.turn_include,
     };
@@ -62,7 +62,7 @@ export class TurnController {
   @Put(':id')
   @Auth()
   update(@Param('id') id: string, @Body() data: UpdateTurnDto) {
-    let params: Prisma.TurnUpdateArgs = {
+    const params: Prisma.TurnUpdateArgs = {
       where: { id: id },
       data: data as Prisma.TurnUncheckedUpdateInput,
       include: this.turnService.turn_include,
@@ -73,7 +73,7 @@ export class TurnController {
   @Delete(':id')
   @Auth()
   remove(@Param('id') id: string) {
-    let params: Prisma.TurnDeleteArgs = {
+    const params: Prisma.TurnDeleteArgs = {
       where: { id: id },
       include: this.turnService.turn_include,
     };

@@ -5,10 +5,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserRolService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   async create(params: Prisma.UserRolCreateArgs) {
     try {
-      let data = await this.prisma.userRol.create(params);
+      const data = await this.prisma.userRol.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -17,7 +17,7 @@ export class UserRolService {
 
   async findMany(params: Prisma.UserRolFindManyArgs) {
     try {
-      let data = await this.prisma.userRol.findMany(params);
+      const data = await this.prisma.userRol.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -26,7 +26,7 @@ export class UserRolService {
 
   async findUnique(params: Prisma.UserRolFindUniqueArgs) {
     try {
-      let data = await this.prisma.userRol.findUnique(params);
+      const data = await this.prisma.userRol.findUnique(params);
 
       return data;
     } catch (error) {
@@ -36,7 +36,7 @@ export class UserRolService {
 
   async findFirst(params: Prisma.UserRolFindFirstArgs) {
     try {
-      let data = await this.prisma.userRol.findFirst(params);
+      const data = await this.prisma.userRol.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -45,7 +45,7 @@ export class UserRolService {
 
   async update(params: Prisma.UserRolUpdateArgs) {
     try {
-      let data = await this.prisma.userRol.update(params);
+      const data = await this.prisma.userRol.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -54,7 +54,7 @@ export class UserRolService {
 
   async delete(params: Prisma.UserRolDeleteArgs) {
     try {
-      let data = await this.prisma.userRol.delete(params);
+      const data = await this.prisma.userRol.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

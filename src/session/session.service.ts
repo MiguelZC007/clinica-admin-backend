@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class SessionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   public session_include: Prisma.SessionInclude = {
     user: {
@@ -30,7 +30,7 @@ export class SessionService {
   };
   async create(params: Prisma.SessionCreateArgs) {
     try {
-      let data = await this.prisma.session.create(params);
+      const data = await this.prisma.session.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -39,7 +39,7 @@ export class SessionService {
 
   async findMany(params: Prisma.SessionFindManyArgs) {
     try {
-      let data = await this.prisma.session.findMany(params);
+      const data = await this.prisma.session.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -48,7 +48,7 @@ export class SessionService {
 
   async findUnique(params: Prisma.SessionFindUniqueArgs) {
     try {
-      let data = await this.prisma.session.findUnique(params);
+      const data = await this.prisma.session.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -57,7 +57,7 @@ export class SessionService {
 
   async findFirst(params: Prisma.SessionFindFirstArgs) {
     try {
-      let data = await this.prisma.session.findFirst(params);
+      const data = await this.prisma.session.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -66,7 +66,7 @@ export class SessionService {
 
   async update(params: Prisma.SessionUpdateArgs) {
     try {
-      let data = await this.prisma.session.update(params);
+      const data = await this.prisma.session.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -74,7 +74,7 @@ export class SessionService {
   }
   async updateMany(params: Prisma.SessionUpdateManyArgs) {
     try {
-      let data = await this.prisma.session.updateMany(params);
+      const data = await this.prisma.session.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -83,7 +83,7 @@ export class SessionService {
 
   async delete(params: Prisma.SessionDeleteArgs) {
     try {
-      let data = await this.prisma.session.delete(params);
+      const data = await this.prisma.session.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

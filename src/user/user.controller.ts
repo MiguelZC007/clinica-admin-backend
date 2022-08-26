@@ -21,7 +21,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'user' })
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   @Auth('ADMIN')
@@ -29,7 +29,7 @@ export class UserController {
     if (data.password) {
       data.password = hashSync(data.password, Number(process.env.SALT_ROUND));
     }
-    let params: Prisma.UserCreateArgs = {
+    const params: Prisma.UserCreateArgs = {
       data: data as Prisma.UserUncheckedCreateInput,
     };
     return this.userService.create(params);
@@ -46,7 +46,7 @@ export class UserController {
   ) {
     let result: any[] = [];
 
-    let params: Prisma.UserFindManyArgs = {
+    const params: Prisma.UserFindManyArgs = {
       where: {
         user_rol: {
           some: {
@@ -118,8 +118,8 @@ export class UserController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.UserFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.UserFindManyArgs = {
       select: this.userService.user_public_select,
       orderBy: {
         createdAt: 'desc',
@@ -127,7 +127,7 @@ export class UserController {
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -137,7 +137,7 @@ export class UserController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.UserFindUniqueArgs = {
+    const params: Prisma.UserFindUniqueArgs = {
       where: { id: id },
     };
     return this.userService.findUnique(params);
@@ -149,7 +149,7 @@ export class UserController {
     if (data.password) {
       data.password = hashSync(data.password, Number(process.env.SALT_ROUND));
     }
-    let params: Prisma.UserUpdateArgs = {
+    const params: Prisma.UserUpdateArgs = {
       where: { id: id },
       data: data as Prisma.UserUncheckedUpdateInput,
     };
@@ -159,7 +159,7 @@ export class UserController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.UserDeleteArgs = {
+    const params: Prisma.UserDeleteArgs = {
       where: { id: id },
     };
     return this.userService.delete(params);

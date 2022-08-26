@@ -21,12 +21,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'product' })
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateProductDto) {
-    let params: Prisma.ProductCreateArgs = {
+    const params: Prisma.ProductCreateArgs = {
       data: data as Prisma.ProductUncheckedCreateInput,
     };
     return this.productService.create(params);
@@ -34,15 +34,15 @@ export class ProductController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.ProductFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.ProductFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -52,7 +52,7 @@ export class ProductController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.ProductFindUniqueArgs = {
+    const params: Prisma.ProductFindUniqueArgs = {
       where: { id: id },
     };
     return this.productService.findUnique(params);
@@ -61,7 +61,7 @@ export class ProductController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateProductDto) {
-    let params: Prisma.ProductUpdateArgs = {
+    const params: Prisma.ProductUpdateArgs = {
       where: { id: id },
       data: data as Prisma.ProductUncheckedUpdateInput,
     };
@@ -71,7 +71,7 @@ export class ProductController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.ProductDeleteArgs = {
+    const params: Prisma.ProductDeleteArgs = {
       where: { id: id },
     };
     return this.productService.delete(params);

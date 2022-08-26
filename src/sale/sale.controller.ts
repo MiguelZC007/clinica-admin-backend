@@ -21,12 +21,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'sale' })
 export class SaleController {
-  constructor(private readonly saleService: SaleService) {}
+  constructor(private readonly saleService: SaleService) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateSaleDto) {
-    let params: Prisma.SaleCreateArgs = {
+    const params: Prisma.SaleCreateArgs = {
       data: data as Prisma.SaleUncheckedCreateInput,
     };
     return this.saleService.create(params);
@@ -34,15 +34,15 @@ export class SaleController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.SaleFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.SaleFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -52,7 +52,7 @@ export class SaleController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.SaleFindUniqueArgs = {
+    const params: Prisma.SaleFindUniqueArgs = {
       where: { id: id },
     };
     return this.saleService.findUnique(params);
@@ -61,7 +61,7 @@ export class SaleController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateSaleDto) {
-    let params: Prisma.SaleUpdateArgs = {
+    const params: Prisma.SaleUpdateArgs = {
       where: { id: id },
       data: data as Prisma.SaleUncheckedUpdateInput,
     };
@@ -71,7 +71,7 @@ export class SaleController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.SaleDeleteArgs = {
+    const params: Prisma.SaleDeleteArgs = {
       where: { id: id },
     };
     return this.saleService.delete(params);

@@ -20,12 +20,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'specialty' })
 export class SpecialtyController {
-  constructor(private readonly specialtyService: SpecialtyService) {}
+  constructor(private readonly specialtyService: SpecialtyService) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateSpecialtyDto) {
-    let params: Prisma.SpecialtyCreateArgs = {
+    const params: Prisma.SpecialtyCreateArgs = {
       data: data as Prisma.SpecialtyUncheckedCreateInput,
     };
     return this.specialtyService.create(params);
@@ -33,15 +33,15 @@ export class SpecialtyController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: Prisma.SpecialtyFindManyArgs = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: Prisma.SpecialtyFindManyArgs = {
       orderBy: {
         createdAt: 'desc',
       },
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -51,7 +51,7 @@ export class SpecialtyController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.SpecialtyFindUniqueArgs = {
+    const params: Prisma.SpecialtyFindUniqueArgs = {
       where: { id: id },
     };
     return this.specialtyService.findUnique(params);
@@ -60,7 +60,7 @@ export class SpecialtyController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateSpecialtyDto) {
-    let params: Prisma.SpecialtyUpdateArgs = {
+    const params: Prisma.SpecialtyUpdateArgs = {
       where: { id: id },
       data: data as Prisma.SpecialtyUncheckedUpdateInput,
     };
@@ -70,7 +70,7 @@ export class SpecialtyController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.SpecialtyDeleteArgs = {
+    const params: Prisma.SpecialtyDeleteArgs = {
       where: { id: id },
     };
     return this.specialtyService.delete(params);

@@ -20,12 +20,12 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'meet' })
 export class MeetController {
-  constructor(private readonly meetService: MeetService) {}
+  constructor(private readonly meetService: MeetService) { }
 
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateMeetDto) {
-    let params: Prisma.MeetCreateArgs = {
+    const params: Prisma.MeetCreateArgs = {
       data: data as Prisma.MeetUncheckedCreateInput,
       select: this.meetService.meet_select,
     };
@@ -34,8 +34,8 @@ export class MeetController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    let params: any = {
+  findAll(@Query('take') take = 0, @Query('page') p = 0) {
+    const params: any = {
       select: this.meetService.meet_select,
 
       orderBy: {
@@ -44,7 +44,7 @@ export class MeetController {
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
-      let skip = +p > 0 ? +p * +take : 0;
+      const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
@@ -54,7 +54,7 @@ export class MeetController {
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
-    let params: Prisma.MeetFindUniqueArgs = {
+    const params: Prisma.MeetFindUniqueArgs = {
       where: { id: id },
       select: this.meetService.meet_select,
     };
@@ -64,7 +64,7 @@ export class MeetController {
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateMeetDto) {
-    let params: Prisma.MeetUpdateArgs = {
+    const params: Prisma.MeetUpdateArgs = {
       where: { id: id },
       data: data as Prisma.MeetUncheckedUpdateInput,
     };
@@ -74,7 +74,7 @@ export class MeetController {
   @Delete(':id')
   @Auth('ADMIN')
   remove(@Param('id') id: string) {
-    let params: Prisma.MeetDeleteArgs = {
+    const params: Prisma.MeetDeleteArgs = {
       where: { id: id },
       select: this.meetService.meet_select,
     };

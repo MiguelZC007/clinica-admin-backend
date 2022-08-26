@@ -9,10 +9,20 @@ export class CreateHemodialysisDto {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
-  vascular_access?: string;
+  vascular_access: string;
 
   @ApiPropertyOptional()
   @IsDateString()
   @IsOptional()
-  registration_date?: string;
+  regisration_date: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  diagnostic: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  pathologies: string;
 }

@@ -5,11 +5,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CategoryAnalysisService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(params: Prisma.CategoryAnalysisCreateArgs) {
     try {
-      let data = await this.prisma.categoryAnalysis.create(params);
+      const data = await this.prisma.categoryAnalysis.create(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -18,7 +18,7 @@ export class CategoryAnalysisService {
 
   async findMany(params: Prisma.CategoryAnalysisFindManyArgs) {
     try {
-      let data = await this.prisma.categoryAnalysis.findMany(params);
+      const data = await this.prisma.categoryAnalysis.findMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -27,7 +27,7 @@ export class CategoryAnalysisService {
 
   async findUnique(params: Prisma.CategoryAnalysisFindUniqueArgs) {
     try {
-      let data = await this.prisma.categoryAnalysis.findUnique(params);
+      const data = await this.prisma.categoryAnalysis.findUnique(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -36,7 +36,7 @@ export class CategoryAnalysisService {
 
   async findFirst(params: Prisma.CategoryAnalysisFindFirstArgs) {
     try {
-      let data = await this.prisma.categoryAnalysis.findFirst(params);
+      const data = await this.prisma.categoryAnalysis.findFirst(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -45,7 +45,7 @@ export class CategoryAnalysisService {
 
   async update(params: Prisma.CategoryAnalysisUpdateArgs) {
     try {
-      let data = await this.prisma.categoryAnalysis.update(params);
+      const data = await this.prisma.categoryAnalysis.update(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -53,7 +53,7 @@ export class CategoryAnalysisService {
   }
   async updateMany(params: Prisma.CategoryAnalysisUpdateManyArgs) {
     try {
-      let data = await this.prisma.categoryAnalysis.updateMany(params);
+      const data = await this.prisma.categoryAnalysis.updateMany(params);
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -62,7 +62,7 @@ export class CategoryAnalysisService {
 
   async delete(params: Prisma.CategoryAnalysisDeleteArgs) {
     try {
-      let data = await this.prisma.categoryAnalysis.delete(params);
+      const data = await this.prisma.categoryAnalysis.delete(params);
       return data;
     } catch (error) {
       ErrorsManager(error);

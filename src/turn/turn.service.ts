@@ -9,7 +9,7 @@ export class TurnService {
   constructor(
     private prisma: PrismaService,
     private turnMachineService: TurnMachineService,
-  ) {}
+  ) { }
 
   public turn_include: Prisma.TurnInclude = {
     turn_machine: {
@@ -21,8 +21,12 @@ export class TurnService {
 
   async create(params: Prisma.TurnCreateArgs) {
     try {
-      let response = await this.prisma.turn.create(params);
-      let machines = await this.prisma.machine.findMany({});
+      const response = await this.prisma.turn.create(params);
+      const machines = await this.prisma.machine.findMany({
+        where: {
+          active: true,
+        },
+      });
       if (machines.length > 0) {
         for (const item of machines) {
           await this.turnMachineService.create({
@@ -52,7 +56,7 @@ export class TurnService {
 
   async findMany(params: Prisma.TurnFindManyArgs) {
     try {
-      let response = await this.prisma.turn.findMany(params);
+      const response = await this.prisma.turn.findMany(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -61,7 +65,7 @@ export class TurnService {
 
   async findUnique(params: Prisma.TurnFindUniqueArgs) {
     try {
-      let response = await this.prisma.turn.findUnique(params);
+      const response = await this.prisma.turn.findUnique(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -70,7 +74,7 @@ export class TurnService {
 
   async update(params: Prisma.TurnUpdateArgs) {
     try {
-      let response = await this.prisma.turn.update(params);
+      const response = await this.prisma.turn.update(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -79,7 +83,7 @@ export class TurnService {
 
   async delete(params: Prisma.TurnDeleteArgs) {
     try {
-      let response = await this.prisma.turn.delete(params);
+      const response = await this.prisma.turn.delete(params);
       return response;
     } catch (e) {
       ErrorsManager(e);
