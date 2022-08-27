@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class HemodialysisMachineService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   public hemodialysis_machine_include: Prisma.HemodialysisMachineInclude = {
     hemodialysis: {
@@ -45,6 +45,17 @@ export class HemodialysisMachineService {
   async findUnique(params: Prisma.HemodialysisMachineFindUniqueArgs) {
     try {
       const response: any = await this.prisma.hemodialysisMachine.findUnique(
+        params,
+      );
+      return response;
+    } catch (e) {
+      ErrorsManager(e);
+    }
+  }
+
+  async findFirst(params: Prisma.HemodialysisMachineFindFirstArgs) {
+    try {
+      const response: any = await this.prisma.hemodialysisMachine.findFirst(
         params,
       );
       return response;

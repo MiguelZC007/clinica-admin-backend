@@ -7,7 +7,6 @@ import {
   Delete,
   Query,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { SpecialtyService } from './specialty.service';
 import { CreateSpecialtyDto } from './dto/create-specialty.dto';

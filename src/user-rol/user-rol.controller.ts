@@ -3,12 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { UserRolService } from './user-rol.service';
 import { CreateUserRolDto } from './dto/create-user-rol.dto';
@@ -56,6 +54,18 @@ export class UserRolController {
       where: { id: id },
     };
     return this.userRolService.findUnique(params);
+  }
+
+  @Get('user/:user_id')
+  @Auth('ADMIN')
+  user(@Param('user_id') user_id: string) {
+    const params: Prisma.UserRolFindManyArgs = {
+      where: { user_id: user_id },
+      orderBy: {
+        updatedAt: "desc"
+      }
+    };
+    return this.userRolService.findMany(params);
   }
 
   @Put(':id')

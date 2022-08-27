@@ -22,7 +22,7 @@ export class HemodialysisController {
   constructor(private hemodialysisService: HemodialysisService) { }
 
   @Post()
-  @Auth()
+  @Auth("ADMIN")
   create(@Body() data: CreateHemodialysisDto) {
     const params: Prisma.HemodialysisCreateArgs = {
       data: data as Prisma.HemodialysisUncheckedCreateInput,
@@ -32,7 +32,7 @@ export class HemodialysisController {
   }
 
   @Get()
-  @Auth()
+  @Auth("ADMIN")
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.HemodialysisFindManyArgs = {
       include: this.hemodialysisService.hemodialysis_include,
@@ -61,7 +61,7 @@ export class HemodialysisController {
   }
 
   @Put(':id')
-  @Auth()
+  @Auth("ADMIN")
   update(@Param('id') id: string, @Body() data: UpdateHemodialysisDto) {
     const params: Prisma.HemodialysisUpdateArgs = {
       where: {
@@ -74,7 +74,7 @@ export class HemodialysisController {
   }
 
   @Delete(':id')
-  @Auth()
+  @Auth("ADMIN")
   remove(@Param('id') id: string) {
     const params: Prisma.HemodialysisDeleteArgs = {
       where: { id: id },

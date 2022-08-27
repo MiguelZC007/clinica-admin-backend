@@ -22,7 +22,7 @@ export class TurnController {
   constructor(private readonly turnService: TurnService) { }
 
   @Post()
-  @Auth()
+  @Auth("ADMIN")
   create(@Body() data: CreateTurnDto) {
     const params: Prisma.TurnCreateArgs = {
       data: data as Prisma.TurnUncheckedCreateInput,
@@ -31,7 +31,7 @@ export class TurnController {
   }
 
   @Get()
-  @Auth()
+  @Auth("ADMIN")
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.TurnFindManyArgs = {
       orderBy: {
@@ -48,7 +48,7 @@ export class TurnController {
   }
 
   @Get(':id')
-  @Auth()
+  @Auth("ADMIN")
   findOne(@Param('id') id: string) {
     const params: Prisma.TurnFindUniqueArgs = {
       where: { id: id },
@@ -58,7 +58,7 @@ export class TurnController {
   }
 
   @Put(':id')
-  @Auth()
+  @Auth("ADMIN")
   update(@Param('id') id: string, @Body() data: UpdateTurnDto) {
     const params: Prisma.TurnUpdateArgs = {
       where: { id: id },
@@ -68,7 +68,7 @@ export class TurnController {
   }
 
   @Delete(':id')
-  @Auth()
+  @Auth("ADMIN")
   remove(@Param('id') id: string) {
     const params: Prisma.TurnDeleteArgs = {
       where: { id: id },

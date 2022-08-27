@@ -6,14 +6,13 @@ import {
   Put,
   Param,
   Delete,
-  UseGuards,
   Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from '@prisma/client';
-import { compareSync, hashSync } from 'bcrypt';
+import { hashSync } from 'bcrypt';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorators/auth.decorator';
 
@@ -129,6 +128,72 @@ export class UserController {
       params.skip = +skip;
     }
     return this.userService.findMany(params);
+  }
+
+  @Get("patients")
+  @Auth('ADMIN')
+  async findAllPatients(@Query('take') take: number = 0, @Query('page') p: number = 0) {
+    const params: Prisma.UserFindManyArgs = {
+      where: {
+        user_rol: {
+          some: {
+            rol: {
+              name: "PACIENTE",
+            }
+          }
+        }
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    };
+    const count = await this.userService.count(params as any);
+    if (p > 0 && take > 0) {
+      p = +p > 0 ? +p - 1 : 0;
+      const skip = +p > 0 ? +p * +take : 0;
+      params.take = +take;
+      params.skip = +skip;
+    }
+    const data = await this.userService.findMany(params);
+    return {
+      data: data,
+      page: +p > 0 ? +p + 1 : +p,
+      take: +take,
+      count: count
+    }
+  }
+
+  @Get("employees")
+  @Auth('ADMIN')
+  async findAllEmployees(@Query('take') take: number = 0, @Query('page') p: number = 0) {
+    const params: Prisma.UserFindManyArgs = {
+      where: {
+        user_rol: {
+          none: {
+            rol: {
+              name: "PACIENTE",
+            }
+          }
+        }
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    };
+    const count = await this.userService.count(params as any);
+    if (p > 0 && take > 0) {
+      p = +p > 0 ? +p - 1 : 0;
+      const skip = +p > 0 ? +p * +take : 0;
+      params.take = +take;
+      params.skip = +skip;
+    }
+    const data = await this.userService.findMany(params);
+    return {
+      data: data,
+      page: +p > 0 ? +p + 1 : +p,
+      take: +take,
+      count: count
+    }
   }
 
   @Get(':id')

@@ -22,7 +22,7 @@ export class MachineController {
   constructor(private readonly machineService: MachineService) { }
 
   @Post()
-  @Auth()
+  @Auth("ADMIN")
   create(@Body() data: CreateMachineDto) {
     const params: Prisma.MachineCreateArgs = {
       data: data as Prisma.MachineUncheckedCreateInput,
@@ -31,7 +31,7 @@ export class MachineController {
   }
 
   @Get()
-  @Auth()
+  @Auth("ADMIN")
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.MachineFindManyArgs = {
       orderBy: {
@@ -48,7 +48,7 @@ export class MachineController {
   }
 
   @Get(':id')
-  @Auth()
+  @Auth("ADMIN")
   findOne(@Param('id') id: string) {
     const params: Prisma.MachineFindUniqueArgs = {
       where: { id: id },
@@ -57,7 +57,7 @@ export class MachineController {
   }
 
   @Put(':id')
-  @Auth()
+  @Auth("ADMIN")
   update(@Param('id') id: string, @Body() data: UpdateMachineDto) {
     const params: Prisma.MachineUpdateArgs = {
       where: { id: id },
@@ -67,7 +67,7 @@ export class MachineController {
   }
 
   @Delete(':id')
-  @Auth()
+  @Auth("ADMIN")
   remove(@Param('id') id: string) {
     const params: Prisma.MachineDeleteArgs = {
       where: { id: id },

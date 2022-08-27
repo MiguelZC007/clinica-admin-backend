@@ -3,12 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Query,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { SaleService } from './sale.service';
 import { CreateSaleDto } from './dto/create-sale.dto';
@@ -56,6 +54,20 @@ export class SaleController {
       where: { id: id },
     };
     return this.saleService.findUnique(params);
+  }
+
+  @Get('patient/:patient_id')
+  @Auth('ADMIN')
+  findPatient(@Param('patient_id') patient_id: string) {
+    const params: Prisma.SaleFindManyArgs = {
+      where: {
+        patient_id: patient_id,
+      },
+      orderBy: {
+        updatedAt: "desc"
+      }
+    };
+    return this.saleService.findMany(params);
   }
 
   @Put(':id')

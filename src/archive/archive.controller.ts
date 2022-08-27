@@ -10,7 +10,7 @@ export class ArchiveController {
   constructor(private readonly archiveService: ArchiveService) { }
 
   @Get()
-  @Auth()
+  @Auth("ADMIN")
   async obtenerDocumento(@Query('filename') filename: string, @Res() res) {
     this.archiveService
       .getFile(filename)

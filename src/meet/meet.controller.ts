@@ -60,6 +60,27 @@ export class MeetController {
     return this.meetService.findUnique(params);
   }
 
+  @Get('patient/:patient_id')
+  @Auth('ADMIN')
+  meetsPatient(@Param('patient_id') patient_id: string) {
+    const params: Prisma.MeetFindManyArgs = {
+      where: { patient_id: patient_id },
+      select: this.meetService.meet_select,
+    };
+    return this.meetService.findMany(params);
+  }
+
+  @Get('doctor/:doctor_id')
+  @Auth('ADMIN')
+  meetsDoctor(@Param('doctor_id') doctor_id: string) {
+    const params: Prisma.MeetFindManyArgs = {
+      where: { doctor_id: doctor_id },
+      select: this.meetService.meet_select,
+    };
+    return this.meetService.findMany(params);
+  }
+
+
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateMeetDto) {

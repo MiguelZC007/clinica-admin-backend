@@ -6,7 +6,6 @@ import {
   Param,
   Delete,
   Put,
-  UseGuards,
   Query,
 } from '@nestjs/common';
 import { SessionService } from './session.service';
@@ -55,6 +54,18 @@ export class SessionController {
       where: { id: id },
     };
     return this.sessionService.findUnique(params);
+  }
+
+  @Get('user/:user_id')
+  @Auth('ADMIN')
+  users(@Param('user_id') user_id: string) {
+    const params: Prisma.SessionFindManyArgs = {
+      where: { user_id: user_id },
+      orderBy: {
+        updatedAt: "desc"
+      }
+    };
+    return this.sessionService.findMany(params);
   }
 
   @Put(':id')

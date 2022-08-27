@@ -7,7 +7,6 @@ import {
   Delete,
   Query,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { SaleDetailService } from './sale-detail.service';
 import { CreateSaleDetailDto } from './dto/create-sale-detail.dto';
@@ -55,6 +54,18 @@ export class SaleDetailController {
       where: { id: id },
     };
     return this.saleDetailService.findUnique(params);
+  }
+
+  @Get('sale/:sale_id')
+  @Auth('ADMIN')
+  findSale(@Param('sale_id') sale_id: string) {
+    const params: Prisma.SaleDetailFindManyArgs = {
+      where: { sale_id: sale_id },
+      orderBy: {
+        updatedAt: "desc"
+      }
+    };
+    return this.saleDetailService.findMany(params);
   }
 
   @Put(':id')

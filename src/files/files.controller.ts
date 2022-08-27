@@ -31,7 +31,7 @@ export class FilesController {
   }
 
   @Get()
-  @Auth()
+  @Auth("ADMIN")
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.FilesFindManyArgs = {
       orderBy: [

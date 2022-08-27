@@ -22,7 +22,7 @@ export class TurnMachineController {
   constructor(private readonly turnMachineService: TurnMachineService) { }
 
   @Post()
-  @Auth()
+  @Auth("ADMIN")
   create(@Body() data: CreateTurnMachineDto) {
     const params: Prisma.TurnMachineCreateArgs = {
       data: data as Prisma.TurnMachineUncheckedCreateInput,
@@ -32,7 +32,7 @@ export class TurnMachineController {
   }
 
   @Get()
-  @Auth()
+  @Auth("ADMIN")
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.TurnMachineFindManyArgs = {
       include: this.turnMachineService.turn_machine_include,
@@ -59,7 +59,7 @@ export class TurnMachineController {
   }
 
   @Get(':id')
-  @Auth()
+  @Auth("ADMIN")
   findOne(@Param('id') id: string) {
     const params: Prisma.TurnMachineFindUniqueArgs = {
       where: { id: id },
@@ -69,7 +69,7 @@ export class TurnMachineController {
   }
 
   @Get('turn/:turn_id')
-  @Auth()
+  @Auth("ADMIN")
   findTurn(@Param('turn_id') turn_id: string) {
     const params: Prisma.TurnMachineFindManyArgs = {
       where: { turn_id: turn_id },
@@ -81,7 +81,7 @@ export class TurnMachineController {
   }
 
   @Put(':id')
-  @Auth()
+  @Auth("ADMIN")
   update(@Param('id') id: string, @Body() data: UpdateTurnMachineDto) {
     const params: Prisma.TurnMachineUpdateArgs = {
       where: { id: id },
@@ -92,7 +92,7 @@ export class TurnMachineController {
   }
 
   @Delete(':id')
-  @Auth()
+  @Auth("ADMIN")
   remove(@Param('id') id: string) {
     const params: Prisma.TurnMachineDeleteArgs = {
       where: { id: id },

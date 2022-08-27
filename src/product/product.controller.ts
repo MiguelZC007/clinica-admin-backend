@@ -3,12 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -56,6 +54,18 @@ export class ProductController {
       where: { id: id },
     };
     return this.productService.findUnique(params);
+  }
+
+  @Get('category/:category_id')
+  @Auth('ADMIN')
+  categories(@Param('category_id') category_id: string) {
+    const params: Prisma.ProductFindManyArgs = {
+      where: { category_id: category_id },
+      orderBy: {
+        name: "asc"
+      }
+    };
+    return this.productService.findMany(params);
   }
 
   @Put(':id')

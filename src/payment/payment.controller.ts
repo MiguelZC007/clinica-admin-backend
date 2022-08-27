@@ -56,6 +56,19 @@ export class PaymentController {
     return this.paymentService.findUnique(params);
   }
 
+  @Get('sale/:sale_id')
+  @Auth('ADMIN')
+  payment(@Param('sale_id') sale_id: string) {
+    const params: Prisma.PaymentFindManyArgs = {
+      where: { sale_id: sale_id },
+      orderBy: {
+        updatedAt: "desc"
+      }
+    };
+    return this.paymentService.findMany(params);
+  }
+
+
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdatePaymentDto) {

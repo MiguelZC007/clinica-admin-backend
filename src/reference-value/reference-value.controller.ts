@@ -7,7 +7,6 @@ import {
   Delete,
   Query,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { ReferenceValueService } from './reference-value.service';
 import { CreateReferenceValueDto } from './dto/create-reference-value.dto';

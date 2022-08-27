@@ -56,6 +56,29 @@ export class AnalysisController {
     return this.analysisService.findUnique(params);
   }
 
+  @Get('category-analysis/:category_id')
+  @Auth('ADMIN')
+  Categories(@Param('category_id') category_id: string) {
+    const params: Prisma.AnalysisFindManyArgs = {
+      where: {
+        category_id: category_id
+      },
+    };
+    return this.analysisService.findMany(params);
+  }
+
+  @Get('product/:product_id')
+  @Auth('ADMIN')
+  Products(@Param('product_id') product_id: string) {
+    const params: Prisma.AnalysisFindManyArgs = {
+      where: {
+        product_id: product_id
+      },
+    };
+    return this.analysisService.findMany(params);
+  }
+
+
   @Put(':id')
   @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateAnalysisDto) {
