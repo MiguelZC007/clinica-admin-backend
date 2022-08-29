@@ -114,13 +114,24 @@ export class UserController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
+  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0, @Query('rol') rol: string = '') {
     const params: Prisma.UserFindManyArgs = {
       select: this.userService.user_public_select,
       orderBy: {
         createdAt: 'desc',
       },
     };
+    if (rol != "") {
+      params.where = {
+        user_rol: {
+          some: {
+            rol: {
+              name: rol.toUpperCase(),
+            }
+          }
+        }
+      }
+    }
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
       const skip = +p > 0 ? +p * +take : 0;
@@ -147,54 +158,16 @@ export class UserController {
         name: 'asc',
       },
     };
-    const count = await this.userService.count(params as any);
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
       const skip = +p > 0 ? +p * +take : 0;
       params.take = +take;
       params.skip = +skip;
     }
-    const data = await this.userService.findMany(params);
-    return {
-      data: data,
-      page: +p > 0 ? +p + 1 : +p,
-      take: +take,
-      count: count
-    }
+    return this.userService.findMany(params);
+
   }
 
-  @Get("employees")
-  @Auth('ADMIN')
-  async findAllEmployees(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    const params: Prisma.UserFindManyArgs = {
-      where: {
-        user_rol: {
-          none: {
-            rol: {
-              name: "PACIENTE",
-            }
-          }
-        }
-      },
-      orderBy: {
-        name: 'asc',
-      },
-    };
-    const count = await this.userService.count(params as any);
-    if (p > 0 && take > 0) {
-      p = +p > 0 ? +p - 1 : 0;
-      const skip = +p > 0 ? +p * +take : 0;
-      params.take = +take;
-      params.skip = +skip;
-    }
-    const data = await this.userService.findMany(params);
-    return {
-      data: data,
-      page: +p > 0 ? +p + 1 : +p,
-      take: +take,
-      count: count
-    }
-  }
 
   @Get(':id')
   @Auth('ADMIN')
