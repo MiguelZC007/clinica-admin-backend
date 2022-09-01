@@ -25,6 +25,11 @@ import { HemodialysisMachineModule } from './hemodialysis-machine/hemodialysis-m
 import { HemodialysisSessionModule } from './hemodialysis-session/hemodialysis-session.module';
 import { FilesModule } from './files/files.module';
 import { ArchiveModule } from './archive/archive.module';
+import { LaboratoryModule } from './laboratory/laboratory.module';
+import { SampleModule } from './sample/sample.module';
+import { SampleResultModule } from './sample-result/sample-result.module';
+import { WorkingHourModule } from './working-hour/working-hour.module';
+import { DayOffModule } from './day-off/day-off.module';
 
 @Module({
   controllers: [AppController],
@@ -54,6 +59,11 @@ import { ArchiveModule } from './archive/archive.module';
     HemodialysisSessionModule,
     FilesModule,
     ArchiveModule,
+    LaboratoryModule,
+    SampleModule,
+    SampleResultModule,
+    WorkingHourModule,
+    DayOffModule,
   ],
 })
 export class AppModule {}
