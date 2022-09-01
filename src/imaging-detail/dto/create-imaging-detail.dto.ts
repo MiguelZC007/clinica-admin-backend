@@ -7,25 +7,31 @@ import {
     IsUUID,
 } from 'class-validator';
 
-export class CreateImagingDto {
+export class CreateImagingDetailDto {
     @ApiProperty()
-    @IsUUID()
     @IsNotEmpty()
-    patient_id: string;
+    @IsUUID()
+    sale_detail_id: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsUUID()
+    product_id: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsUUID()
+    imaging_id: string;
 
     @ApiPropertyOptional()
     @IsOptional()
-    doctor_id?: string | null;
-
-    @ApiProperty()
-    @IsUUID()
-    @IsNotEmpty()
-    sale_id?: string | null;
+    @IsString()
+    name: string | null;
 
     @ApiPropertyOptional()
     @IsOptional()
-    @IsUUID()
-    medical_history_detail_id?: string | null;
+    @IsString()
+    description: string | null;
 
     @ApiPropertyOptional({
         default: 'PENDIENTE',
@@ -33,10 +39,11 @@ export class CreateImagingDto {
     })
     @IsOptional()
     @IsString()
-    type?: string | null;
+    type: string | null;
 
     @ApiPropertyOptional()
     @IsOptional()
     @IsBoolean()
-    state?: boolean | null;
+    state: boolean | null;
 }
+
