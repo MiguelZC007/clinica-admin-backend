@@ -30,6 +30,23 @@ import { SampleModule } from './sample/sample.module';
 import { SampleResultModule } from './sample-result/sample-result.module';
 import { WorkingHourModule } from './working-hour/working-hour.module';
 import { DayOffModule } from './day-off/day-off.module';
+import { TemplateProductModule } from './template-product/template-product.module';
+import { LaboratoryTemplateModule } from './laboratory-template/laboratory-template.module';
+import { DoctorSpecialtyModule } from './doctor-specialty/doctor-specialty.module';
+import { AssignedDoctorsModule } from './assigned-doctors/assigned-doctors.module';
+import { MedicalHistoryModule } from './medical-history/medical-history.module';
+import { VitalSignsHemodialysisModule } from './vital-signs-hemodialysis/vital-signs-hemodialysis.module';
+import { RecordUnderlyingDiseaseModule } from './record-underlying-disease/record-underlying-disease.module';
+import { MedicalHistoryDetailModule } from './medical-history-detail/medical-history-detail.module';
+import { DiagnosticModule } from './diagnostic/diagnostic.module';
+import { IcdModule } from './icd/icd.module';
+import { VitalSignsModule } from './vital-signs/vital-signs.module';
+import { AddendumModule } from './addendum/addendum.module';
+import { MedicationModule } from './medication/medication.module';
+import { PhysicalExamModule } from './physical-exam/physical-exam.module';
+import { ImagingModule } from './imaging/imaging.module';
+import { ImagingDetailModule } from './imaging-detail/imaging-detail.module';
+import { ImagingFilesModule } from './imaging-files/imaging-files.module';
 
 @Module({
   controllers: [AppController],
@@ -64,6 +81,23 @@ import { DayOffModule } from './day-off/day-off.module';
     SampleResultModule,
     WorkingHourModule,
     DayOffModule,
+    TemplateProductModule,
+    LaboratoryTemplateModule,
+    DoctorSpecialtyModule,
+    AssignedDoctorsModule,
+    MedicalHistoryModule,
+    VitalSignsHemodialysisModule,
+    RecordUnderlyingDiseaseModule,
+    MedicalHistoryDetailModule,
+    DiagnosticModule,
+    IcdModule,
+    VitalSignsModule,
+    AddendumModule,
+    MedicationModule,
+    PhysicalExamModule,
+    ImagingModule,
+    ImagingDetailModule,
+    ImagingFilesModule,
   ],
 })
 export class AppModule {}
