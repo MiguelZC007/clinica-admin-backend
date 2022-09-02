@@ -11,7 +11,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Prisma } from '@prisma/client';
+import { User, Prisma } from '@prisma/client';
 import { hashSync } from 'bcrypt';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorators/auth.decorator';
@@ -39,7 +39,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Obtener todos los usuarios que coincidan con la busqueda',
   })
-  async findSearch(@Query('text') txt = '', @Query('rol') rol = 'PACIENTE') {
+  async findSearch(@Query('text') txt: string, @Query('rol') rol: string = 'PACIENTE'): Promise<User[]> {
     let result: any[] = [];
 
     const params: Prisma.UserFindManyArgs = {

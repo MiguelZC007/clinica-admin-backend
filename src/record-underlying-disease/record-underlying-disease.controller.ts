@@ -13,8 +13,11 @@ import { CreateRecordUnderlyingDiseaseDto } from './dto/create-record-underlying
 import { UpdateRecordUnderlyingDiseaseDto } from './dto/update-record-underlying-disease.dto';
 import { Prisma } from '@prisma/client';
 import { Auth } from 'src/decorators/auth.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@Controller('record-underlying-disease')
+@ApiTags('Antecedentes de enfermedades de los Pacientes')
+@ApiBearerAuth()
+@Controller({ version: '1', path: 'record-underlying-disease' })
 export class RecordUnderlyingDiseaseController {
   constructor(
     private readonly recordUnderlyingDiseaseService: RecordUnderlyingDiseaseService,

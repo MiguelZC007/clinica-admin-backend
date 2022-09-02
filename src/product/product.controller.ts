@@ -34,9 +34,16 @@ export class ProductController {
   @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.ProductFindManyArgs = {
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: [
+        {
+          category: {
+            name: 'asc',
+          },
+        },
+        {
+          name: 'asc',
+        },
+      ],
     };
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
@@ -56,14 +63,28 @@ export class ProductController {
     return this.productService.findUnique(params);
   }
 
+  @Get(':id')
+  @Auth('ADMIN')
+  search(@Query('search') search: string) {
+    const params: Prisma.ProductFindManyArgs = {
+      where: {
+        name: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+    };
+    return this.productService.findMany(params);
+  }
+
   @Get('category/:category_id')
   @Auth('ADMIN')
   categories(@Param('category_id') category_id: string) {
     const params: Prisma.ProductFindManyArgs = {
       where: { category_id: category_id },
       orderBy: {
-        name: "asc"
-      }
+        name: 'asc',
+      },
     };
     return this.productService.findMany(params);
   }

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { HemodialysisService } from './hemodialysis.service';
 import { CreateHemodialysisDto } from './dto/create-hemodialysis.dto';
@@ -21,8 +22,21 @@ import { Auth } from 'src/decorators/auth.decorator';
 export class HemodialysisController {
   constructor(private hemodialysisService: HemodialysisService) { }
 
+  @Get('patient/:patient_id')
+  async findPatient(@Param('patient_id') patient_id: string) {
+    const params: Prisma.HemodialysisFindUniqueArgs = {
+      where: { patient_id: patient_id },
+      include: this.hemodialysisService.hemodialysis_include,
+    };
+    const data = await this.hemodialysisService.findUnique(params);
+    if (!data) {
+      throw new NotFoundException({ message: 'No se encontró el Paciente' });
+    }
+    return data;
+  }
+
   @Post()
-  @Auth("ADMIN")
+  @Auth('ADMIN')
   create(@Body() data: CreateHemodialysisDto) {
     const params: Prisma.HemodialysisCreateArgs = {
       data: data as Prisma.HemodialysisUncheckedCreateInput,
@@ -32,7 +46,7 @@ export class HemodialysisController {
   }
 
   @Get()
-  @Auth("ADMIN")
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.HemodialysisFindManyArgs = {
       include: this.hemodialysisService.hemodialysis_include,
@@ -52,25 +66,20 @@ export class HemodialysisController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     const params: Prisma.HemodialysisFindUniqueArgs = {
       where: { id: id },
       include: this.hemodialysisService.hemodialysis_include,
     };
-    return this.hemodialysisService.findUnique(params);
-  }
-
-  @Get('patient/:patient_id')
-  findPatient(@Param('patient_id') patient_id: string) {
-    const params: Prisma.HemodialysisFindUniqueArgs = {
-      where: { patient_id: patient_id },
-      include: this.hemodialysisService.hemodialysis_include,
-    };
-    return this.hemodialysisService.findUnique(params);
+    const data = await this.hemodialysisService.findUnique(params);
+    if (!data) {
+      throw new NotFoundException({ message: 'No se encontró el registro' });
+    }
+    return data
   }
 
   @Put(':id')
-  @Auth("ADMIN")
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateHemodialysisDto) {
     const params: Prisma.HemodialysisUpdateArgs = {
       where: {
@@ -83,7 +92,7 @@ export class HemodialysisController {
   }
 
   @Delete(':id')
-  @Auth("ADMIN")
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     const params: Prisma.HemodialysisDeleteArgs = {
       where: { id: id },
