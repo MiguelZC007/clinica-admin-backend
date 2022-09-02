@@ -60,6 +60,15 @@ export class HemodialysisController {
     return this.hemodialysisService.findUnique(params);
   }
 
+  @Get('patient/:patient_id')
+  findPatient(@Param('patient_id') patient_id: string) {
+    const params: Prisma.HemodialysisFindUniqueArgs = {
+      where: { patient_id: patient_id },
+      include: this.hemodialysisService.hemodialysis_include,
+    };
+    return this.hemodialysisService.findUnique(params);
+  }
+
   @Put(':id')
   @Auth("ADMIN")
   update(@Param('id') id: string, @Body() data: UpdateHemodialysisDto) {

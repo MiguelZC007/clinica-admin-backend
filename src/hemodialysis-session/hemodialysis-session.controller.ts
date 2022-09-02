@@ -70,11 +70,15 @@ export class HemodialysisSessionController {
 
   @Get('patient/:patient_id')
   @Auth("ADMIN")
-  findPatient(@Param('patient_id') patient_id: string) {
+  findPatient(@Param('patient_id') patient_id: string, @Query('from') from: string, @Query('to') to: string) {
     const params: Prisma.HemodialysisSessionFindManyArgs = {
       where: {
         hemodialysis: {
           patient_id: patient_id,
+        },
+        createdAt: {
+          gte: from,
+          lte: to,
         }
       },
       include: this.hemodialysisSessionService.hemodialysis_session_include,

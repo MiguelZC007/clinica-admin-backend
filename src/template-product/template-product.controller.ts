@@ -4,8 +4,11 @@ import { CreateTemplateProductDto } from './dto/create-template-product.dto';
 import { UpdateTemplateProductDto } from './dto/update-template-product.dto';
 import { Prisma } from '@prisma/client';
 import { Auth } from 'src/decorators/auth.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@Controller('template-product')
+@ApiTags('Productos asignados a un Template')
+@ApiBearerAuth()
+@Controller({ version: '1', path: 'template-product' })
 export class TemplateProductController {
   constructor(private readonly templateProductService: TemplateProductService) { }
 
