@@ -21,6 +21,21 @@ import { Auth } from 'src/decorators/auth.decorator';
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
 
+
+  @Get('search')
+  @Auth('ADMIN')
+  search(@Query('search') search: string) {
+    const params: Prisma.ProductFindManyArgs = {
+      where: {
+        name: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+    };
+    return this.productService.findMany(params);
+  }
+
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateProductDto) {
@@ -61,20 +76,6 @@ export class ProductController {
       where: { id: id },
     };
     return this.productService.findUnique(params);
-  }
-
-  @Get('search')
-  @Auth('ADMIN')
-  search(@Query('search') search: string) {
-    const params: Prisma.ProductFindManyArgs = {
-      where: {
-        name: {
-          contains: search,
-          mode: 'insensitive',
-        },
-      },
-    };
-    return this.productService.findMany(params);
   }
 
   @Get('category/:category_id')
