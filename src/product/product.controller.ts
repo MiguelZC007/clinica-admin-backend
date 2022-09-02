@@ -63,7 +63,7 @@ export class ProductController {
     return this.productService.findUnique(params);
   }
 
-  @Get(':id')
+  @Get('search')
   @Auth('ADMIN')
   search(@Query('search') search: string) {
     const params: Prisma.ProductFindManyArgs = {
