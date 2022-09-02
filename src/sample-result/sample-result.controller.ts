@@ -16,8 +16,13 @@ export class SampleResultController {
   @Post()
   @Auth('ADMIN')
   create(@Body() data: CreateSampleResultDto) {
+    let { file, ext, ...rsa } = data;
+    if (file && ext) {
+      file = "";
+      ext = ""
+    }
     const params: Prisma.SampleResultCreateArgs = {
-      data: data as Prisma.SampleResultUncheckedCreateInput,
+      data: rsa as Prisma.SampleResultUncheckedCreateInput,
     };
     return this.sampleResultService.create(params);
   }
@@ -56,9 +61,14 @@ export class SampleResultController {
     @Param('id') id: string,
     @Body() data: UpdateSampleResultDto,
   ) {
+    let { file, ext, ...rsa } = data;
+    if (file && ext) {
+      file = "";
+      ext = ""
+    }
     const params: Prisma.SampleResultUpdateArgs = {
       where: { id: id },
-      data: data as Prisma.SampleResultUncheckedUpdateInput,
+      data: rsa as Prisma.SampleResultUncheckedUpdateInput,
     };
     return this.sampleResultService.update(params);
   }
