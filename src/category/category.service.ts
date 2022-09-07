@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -9,8 +9,8 @@ export class CategoryService {
 
   async create(params: Prisma.CategoryCreateArgs) {
     try {
-      const data = await this.prisma.category.create(params);
-      return data;
+      const response = await this.prisma.category.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -18,8 +18,8 @@ export class CategoryService {
 
   async findMany(params: Prisma.CategoryFindManyArgs) {
     try {
-      const data = await this.prisma.category.findMany(params);
-      return data;
+      const response = await this.prisma.category.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -27,8 +27,11 @@ export class CategoryService {
 
   async findUnique(params: Prisma.CategoryFindUniqueArgs) {
     try {
-      const data = await this.prisma.category.findUnique(params);
-      return data;
+      const response = await this.prisma.category.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -36,8 +39,11 @@ export class CategoryService {
 
   async findFirst(params: Prisma.CategoryFindFirstArgs) {
     try {
-      const data = await this.prisma.category.findFirst(params);
-      return data;
+      const response = await this.prisma.category.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -45,16 +51,16 @@ export class CategoryService {
 
   async update(params: Prisma.CategoryUpdateArgs) {
     try {
-      const data = await this.prisma.category.update(params);
-      return data;
+      const response = await this.prisma.category.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.CategoryUpdateManyArgs) {
     try {
-      const data = await this.prisma.category.updateMany(params);
-      return data;
+      const response = await this.prisma.category.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -62,8 +68,8 @@ export class CategoryService {
 
   async delete(params: Prisma.CategoryDeleteArgs) {
     try {
-      const data = await this.prisma.category.delete(params);
-      return data;
+      const response = await this.prisma.category.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

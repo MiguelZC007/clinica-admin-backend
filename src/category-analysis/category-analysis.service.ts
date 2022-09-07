@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -9,8 +9,8 @@ export class CategoryAnalysisService {
 
   async create(params: Prisma.CategoryAnalysisCreateArgs) {
     try {
-      const data = await this.prisma.categoryAnalysis.create(params);
-      return data;
+      const response = await this.prisma.categoryAnalysis.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -18,8 +18,8 @@ export class CategoryAnalysisService {
 
   async findMany(params: Prisma.CategoryAnalysisFindManyArgs) {
     try {
-      const data = await this.prisma.categoryAnalysis.findMany(params);
-      return data;
+      const response = await this.prisma.categoryAnalysis.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -27,8 +27,11 @@ export class CategoryAnalysisService {
 
   async findUnique(params: Prisma.CategoryAnalysisFindUniqueArgs) {
     try {
-      const data = await this.prisma.categoryAnalysis.findUnique(params);
-      return data;
+      const response = await this.prisma.categoryAnalysis.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -36,8 +39,11 @@ export class CategoryAnalysisService {
 
   async findFirst(params: Prisma.CategoryAnalysisFindFirstArgs) {
     try {
-      const data = await this.prisma.categoryAnalysis.findFirst(params);
-      return data;
+      const response = await this.prisma.categoryAnalysis.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -45,16 +51,16 @@ export class CategoryAnalysisService {
 
   async update(params: Prisma.CategoryAnalysisUpdateArgs) {
     try {
-      const data = await this.prisma.categoryAnalysis.update(params);
-      return data;
+      const response = await this.prisma.categoryAnalysis.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.CategoryAnalysisUpdateManyArgs) {
     try {
-      const data = await this.prisma.categoryAnalysis.updateMany(params);
-      return data;
+      const response = await this.prisma.categoryAnalysis.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -62,8 +68,8 @@ export class CategoryAnalysisService {
 
   async delete(params: Prisma.CategoryAnalysisDeleteArgs) {
     try {
-      const data = await this.prisma.categoryAnalysis.delete(params);
-      return data;
+      const response = await this.prisma.categoryAnalysis.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

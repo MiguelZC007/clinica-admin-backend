@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -37,6 +37,9 @@ export class UserRolService {
   async findFirst(params: Prisma.UserRolFindFirstArgs) {
     try {
       const data = await this.prisma.userRol.findFirst(params);
+      if (data === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
       return data;
     } catch (error) {
       ErrorsManager(error);

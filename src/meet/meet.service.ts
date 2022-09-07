@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -32,8 +32,8 @@ export class MeetService {
 
   async create(params: Prisma.MeetCreateArgs) {
     try {
-      const data = await this.prisma.meet.create(params);
-      return data;
+      const response = await this.prisma.meet.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -41,8 +41,8 @@ export class MeetService {
 
   async findMany(params: Prisma.MeetFindManyArgs) {
     try {
-      const data = await this.prisma.meet.findMany(params);
-      return data;
+      const response = await this.prisma.meet.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -50,8 +50,11 @@ export class MeetService {
 
   async findUnique(params: Prisma.MeetFindUniqueArgs) {
     try {
-      const data = await this.prisma.meet.findUnique(params);
-      return data;
+      const response = await this.prisma.meet.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -59,8 +62,11 @@ export class MeetService {
 
   async findFirst(params: Prisma.MeetFindFirstArgs) {
     try {
-      const data = await this.prisma.meet.findFirst(params);
-      return data;
+      const response = await this.prisma.meet.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -68,16 +74,16 @@ export class MeetService {
 
   async update(params: Prisma.MeetUpdateArgs) {
     try {
-      const data = await this.prisma.meet.update(params);
-      return data;
+      const response = await this.prisma.meet.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.MeetUpdateManyArgs) {
     try {
-      const data = await this.prisma.meet.updateMany(params);
-      return data;
+      const response = await this.prisma.meet.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -85,8 +91,8 @@ export class MeetService {
 
   async delete(params: Prisma.MeetDeleteArgs) {
     try {
-      const data = await this.prisma.meet.delete(params);
-      return data;
+      const response = await this.prisma.meet.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

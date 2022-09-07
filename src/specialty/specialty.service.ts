@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -18,8 +18,8 @@ export class SpecialtyService {
 
   async create(params: Prisma.SpecialtyCreateArgs) {
     try {
-      const data = await this.prisma.specialty.create(params);
-      return data;
+      const response = await this.prisma.specialty.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -27,8 +27,8 @@ export class SpecialtyService {
 
   async findMany(params: Prisma.SpecialtyFindManyArgs) {
     try {
-      const data = await this.prisma.specialty.findMany(params);
-      return data;
+      const response = await this.prisma.specialty.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -36,8 +36,11 @@ export class SpecialtyService {
 
   async findUnique(params: Prisma.SpecialtyFindUniqueArgs) {
     try {
-      const data = await this.prisma.specialty.findUnique(params);
-      return data;
+      const response = await this.prisma.specialty.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -45,8 +48,11 @@ export class SpecialtyService {
 
   async findFirst(params: Prisma.SpecialtyFindFirstArgs) {
     try {
-      const data = await this.prisma.specialty.findFirst(params);
-      return data;
+      const response = await this.prisma.specialty.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -54,16 +60,16 @@ export class SpecialtyService {
 
   async update(params: Prisma.SpecialtyUpdateArgs) {
     try {
-      const data = await this.prisma.specialty.update(params);
-      return data;
+      const response = await this.prisma.specialty.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.SpecialtyUpdateManyArgs) {
     try {
-      const data = await this.prisma.specialty.updateMany(params);
-      return data;
+      const response = await this.prisma.specialty.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -71,8 +77,8 @@ export class SpecialtyService {
 
   async delete(params: Prisma.SpecialtyDeleteArgs) {
     try {
-      const data = await this.prisma.specialty.delete(params);
-      return data;
+      const response = await this.prisma.specialty.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

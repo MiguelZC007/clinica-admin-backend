@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   public user_select: Prisma.UserSelect = {
     id: true,
@@ -81,8 +81,9 @@ export class UserService {
 
   async create(params: Prisma.UserCreateArgs) {
     try {
-      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${params.data.mother_lastname || ''
-        }`;
+      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${
+        params.data.mother_lastname || ''
+      }`;
       search = search.trimEnd();
       params.data.search = search.toLocaleLowerCase();
       const data = await this.prisma.user.create(params);
@@ -113,6 +114,9 @@ export class UserService {
   async findUnique(params: Prisma.UserFindUniqueArgs) {
     try {
       const data = await this.prisma.user.findUnique(params);
+      if (data === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -122,6 +126,9 @@ export class UserService {
   async findFirst(params: Prisma.UserFindFirstArgs) {
     try {
       const data = await this.prisma.user.findFirst(params);
+      if (data === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
       return data;
     } catch (error) {
       ErrorsManager(error);
@@ -130,8 +137,9 @@ export class UserService {
 
   async update(params: Prisma.UserUpdateArgs) {
     try {
-      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${params.data.mother_lastname || ''
-        }`;
+      let search = `${params.data.name || ''} ${params.data.lastname || ''} ${
+        params.data.mother_lastname || ''
+      }`;
       search = search.trimEnd();
       params.data.search = search.toLocaleLowerCase();
       const data = await this.prisma.user.update(params);

@@ -1,9 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
 
 @Injectable()
 export class PaymentService {
@@ -11,8 +9,8 @@ export class PaymentService {
 
   async create(params: Prisma.PaymentCreateArgs) {
     try {
-      const data = await this.prisma.payment.create(params);
-      return data;
+      const response = await this.prisma.payment.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -20,8 +18,8 @@ export class PaymentService {
 
   async findMany(params: Prisma.PaymentFindManyArgs) {
     try {
-      const data = await this.prisma.payment.findMany(params);
-      return data;
+      const response = await this.prisma.payment.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -29,8 +27,11 @@ export class PaymentService {
 
   async findUnique(params: Prisma.PaymentFindUniqueArgs) {
     try {
-      const data = await this.prisma.payment.findUnique(params);
-      return data;
+      const response = await this.prisma.payment.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -38,8 +39,11 @@ export class PaymentService {
 
   async findFirst(params: Prisma.PaymentFindFirstArgs) {
     try {
-      const data = await this.prisma.payment.findFirst(params);
-      return data;
+      const response = await this.prisma.payment.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -47,16 +51,16 @@ export class PaymentService {
 
   async update(params: Prisma.PaymentUpdateArgs) {
     try {
-      const data = await this.prisma.payment.update(params);
-      return data;
+      const response = await this.prisma.payment.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.PaymentUpdateManyArgs) {
     try {
-      const data = await this.prisma.payment.updateMany(params);
-      return data;
+      const response = await this.prisma.payment.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -64,8 +68,8 @@ export class PaymentService {
 
   async delete(params: Prisma.PaymentDeleteArgs) {
     try {
-      const data = await this.prisma.payment.delete(params);
-      return data;
+      const response = await this.prisma.payment.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

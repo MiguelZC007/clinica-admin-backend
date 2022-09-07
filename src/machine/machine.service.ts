@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -30,6 +30,9 @@ export class MachineService {
   async findUnique(params: Prisma.MachineFindUniqueArgs) {
     try {
       const response: any = await this.prisma.machine.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
       return response;
     } catch (e) {
       ErrorsManager(e);

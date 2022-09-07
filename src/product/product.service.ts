@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -39,8 +39,8 @@ export class ProductService {
 
   async create(params: Prisma.ProductCreateArgs) {
     try {
-      const data = await this.prisma.product.create(params);
-      return data;
+      const response = await this.prisma.product.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -48,8 +48,8 @@ export class ProductService {
 
   async findMany(params: Prisma.ProductFindManyArgs) {
     try {
-      const data = await this.prisma.product.findMany(params);
-      return data;
+      const response = await this.prisma.product.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -57,8 +57,11 @@ export class ProductService {
 
   async findUnique(params: Prisma.ProductFindUniqueArgs) {
     try {
-      const data = await this.prisma.product.findUnique(params);
-      return data;
+      const response = await this.prisma.product.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -66,8 +69,11 @@ export class ProductService {
 
   async findFirst(params: Prisma.ProductFindFirstArgs) {
     try {
-      const data = await this.prisma.product.findFirst(params);
-      return data;
+      const response = await this.prisma.product.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -75,16 +81,16 @@ export class ProductService {
 
   async update(params: Prisma.ProductUpdateArgs) {
     try {
-      const data = await this.prisma.product.update(params);
-      return data;
+      const response = await this.prisma.product.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.ProductUpdateManyArgs) {
     try {
-      const data = await this.prisma.product.updateMany(params);
-      return data;
+      const response = await this.prisma.product.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -92,8 +98,8 @@ export class ProductService {
 
   async delete(params: Prisma.ProductDeleteArgs) {
     try {
-      const data = await this.prisma.product.delete(params);
-      return data;
+      const response = await this.prisma.product.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

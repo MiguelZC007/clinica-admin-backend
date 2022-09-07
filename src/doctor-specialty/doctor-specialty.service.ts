@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DoctorSpecialtyService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(params: Prisma.DoctorSpecialtyCreateArgs) {
     try {
@@ -27,7 +27,12 @@ export class DoctorSpecialtyService {
 
   async findUnique(params: Prisma.DoctorSpecialtyFindUniqueArgs) {
     try {
-      const response: any = await this.prisma.doctorSpecialty.findUnique(params);
+      const response: any = await this.prisma.doctorSpecialty.findUnique(
+        params,
+      );
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -52,3 +57,4 @@ export class DoctorSpecialtyService {
     }
   }
 }
+

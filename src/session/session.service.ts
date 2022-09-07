@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -30,8 +30,8 @@ export class SessionService {
   };
   async create(params: Prisma.SessionCreateArgs) {
     try {
-      const data = await this.prisma.session.create(params);
-      return data;
+      const response = await this.prisma.session.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -39,8 +39,8 @@ export class SessionService {
 
   async findMany(params: Prisma.SessionFindManyArgs) {
     try {
-      const data = await this.prisma.session.findMany(params);
-      return data;
+      const response = await this.prisma.session.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -48,8 +48,11 @@ export class SessionService {
 
   async findUnique(params: Prisma.SessionFindUniqueArgs) {
     try {
-      const data = await this.prisma.session.findUnique(params);
-      return data;
+      const response = await this.prisma.session.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -57,8 +60,11 @@ export class SessionService {
 
   async findFirst(params: Prisma.SessionFindFirstArgs) {
     try {
-      const data = await this.prisma.session.findFirst(params);
-      return data;
+      const response = await this.prisma.session.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -66,16 +72,16 @@ export class SessionService {
 
   async update(params: Prisma.SessionUpdateArgs) {
     try {
-      const data = await this.prisma.session.update(params);
-      return data;
+      const response = await this.prisma.session.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.SessionUpdateManyArgs) {
     try {
-      const data = await this.prisma.session.updateMany(params);
-      return data;
+      const response = await this.prisma.session.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -83,8 +89,8 @@ export class SessionService {
 
   async delete(params: Prisma.SessionDeleteArgs) {
     try {
-      const data = await this.prisma.session.delete(params);
-      return data;
+      const response = await this.prisma.session.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

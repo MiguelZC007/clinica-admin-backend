@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class LaboratoryTemplateService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(params: Prisma.LaboratoryTemplateCreateArgs) {
     try {
@@ -18,7 +18,9 @@ export class LaboratoryTemplateService {
 
   async findMany(params: Prisma.LaboratoryTemplateFindManyArgs) {
     try {
-      const response: any = await this.prisma.laboratoryTemplate.findMany(params);
+      const response: any = await this.prisma.laboratoryTemplate.findMany(
+        params,
+      );
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -27,7 +29,12 @@ export class LaboratoryTemplateService {
 
   async findUnique(params: Prisma.LaboratoryTemplateFindUniqueArgs) {
     try {
-      const response: any = await this.prisma.laboratoryTemplate.findUnique(params);
+      const response: any = await this.prisma.laboratoryTemplate.findUnique(
+        params,
+      );
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -52,3 +59,4 @@ export class LaboratoryTemplateService {
     }
   }
 }
+

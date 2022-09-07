@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -8,8 +8,8 @@ export class RolService {
   constructor(private prisma: PrismaService) {}
   async create(params: Prisma.RolCreateArgs) {
     try {
-      const data = await this.prisma.rol.create(params);
-      return data;
+      const response = await this.prisma.rol.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -17,8 +17,8 @@ export class RolService {
 
   async findMany(params: Prisma.RolFindManyArgs) {
     try {
-      const data = await this.prisma.rol.findMany(params);
-      return data;
+      const response = await this.prisma.rol.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -26,8 +26,11 @@ export class RolService {
 
   async findUnique(params: Prisma.RolFindUniqueArgs) {
     try {
-      const data = await this.prisma.rol.findUnique(params);
-      return data;
+      const response = await this.prisma.rol.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -35,8 +38,11 @@ export class RolService {
 
   async findFirst(params: Prisma.RolFindFirstArgs) {
     try {
-      const data = await this.prisma.rol.findFirst(params);
-      return data;
+      const response = await this.prisma.rol.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -44,16 +50,16 @@ export class RolService {
 
   async update(params: Prisma.RolUpdateArgs) {
     try {
-      const data = await this.prisma.rol.update(params);
-      return data;
+      const response = await this.prisma.rol.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.RolUpdateManyArgs) {
     try {
-      const data = await this.prisma.rol.updateMany(params);
-      return data;
+      const response = await this.prisma.rol.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -61,8 +67,8 @@ export class RolService {
 
   async delete(params: Prisma.RolDeleteArgs) {
     try {
-      const data = await this.prisma.rol.delete(params);
-      return data;
+      const response = await this.prisma.rol.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

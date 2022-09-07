@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -22,8 +22,8 @@ export class ReferenceValueService {
 
   async create(params: Prisma.ReferenceValueCreateArgs) {
     try {
-      const data = await this.prisma.referenceValue.create(params);
-      return data;
+      const response = await this.prisma.referenceValue.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -31,8 +31,8 @@ export class ReferenceValueService {
 
   async findMany(params: Prisma.ReferenceValueFindManyArgs) {
     try {
-      const data = await this.prisma.referenceValue.findMany(params);
-      return data;
+      const response = await this.prisma.referenceValue.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -40,8 +40,11 @@ export class ReferenceValueService {
 
   async findUnique(params: Prisma.ReferenceValueFindUniqueArgs) {
     try {
-      const data = await this.prisma.referenceValue.findUnique(params);
-      return data;
+      const response = await this.prisma.referenceValue.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -49,8 +52,11 @@ export class ReferenceValueService {
 
   async findFirst(params: Prisma.ReferenceValueFindFirstArgs) {
     try {
-      const data = await this.prisma.referenceValue.findFirst(params);
-      return data;
+      const response = await this.prisma.referenceValue.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -58,16 +64,16 @@ export class ReferenceValueService {
 
   async update(params: Prisma.ReferenceValueUpdateArgs) {
     try {
-      const data = await this.prisma.referenceValue.update(params);
-      return data;
+      const response = await this.prisma.referenceValue.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.ReferenceValueUpdateManyArgs) {
     try {
-      const data = await this.prisma.referenceValue.updateMany(params);
-      return data;
+      const response = await this.prisma.referenceValue.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -75,8 +81,8 @@ export class ReferenceValueService {
 
   async delete(params: Prisma.ReferenceValueDeleteArgs) {
     try {
-      const data = await this.prisma.referenceValue.delete(params);
-      return data;
+      const response = await this.prisma.referenceValue.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

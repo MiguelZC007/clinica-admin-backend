@@ -15,12 +15,16 @@ import { User, Prisma } from '@prisma/client';
 import { hashSync } from 'bcrypt';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorators/auth.decorator';
+import { RolService } from 'src/rol/rol.service';
 
 @ApiTags('User')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'user' })
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(
+    private readonly userService: UserService,
+    private rolService: RolService,
+  ) {}
 
   @Post()
   @Auth('ADMIN')
@@ -39,7 +43,10 @@ export class UserController {
   @ApiOperation({
     summary: 'Obtener todos los usuarios que coincidan con la busqueda',
   })
-  async findSearch(@Query('text') txt: string, @Query('rol') rol: string = 'PACIENTE'): Promise<User[]> {
+  async findSearch(
+    @Query('text') txt: string,
+    @Query('rol') rol: string = 'PACIENTE',
+  ): Promise<User[]> {
     let result: any[] = [];
 
     const params: Prisma.UserFindManyArgs = {
@@ -114,23 +121,27 @@ export class UserController {
 
   @Get()
   @Auth('ADMIN')
-  findAll(@Query('take') take: number = 0, @Query('page') p: number = 0, @Query('rol') rol: string = '') {
+  findAll(
+    @Query('take') take: number = 0,
+    @Query('page') p: number = 0,
+    @Query('rol') rol: string = '',
+  ) {
     const params: Prisma.UserFindManyArgs = {
       select: this.userService.user_public_select,
       orderBy: {
         createdAt: 'desc',
       },
     };
-    if (rol != "") {
+    if (rol != '') {
       params.where = {
         user_rol: {
           some: {
             rol: {
               name: rol.toUpperCase(),
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      };
     }
     if (p > 0 && take > 0) {
       p = +p > 0 ? +p - 1 : 0;
@@ -141,19 +152,32 @@ export class UserController {
     return this.userService.findMany(params);
   }
 
-  @Get("patients")
+  @Get('employees')
   @Auth('ADMIN')
-  async findAllPatients(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    const params: Prisma.UserFindManyArgs = {
-      where: {
+  async findAllPatients(
+    @Query('take') take: number = 0,
+    @Query('page') p: number = 0,
+  ) {
+    const roles = await this.rolService.findMany({
+      where: { NOT: { name: 'PACIENTE' } },
+    });
+    const or = [];
+    roles.forEach((rol) => {
+      or.push({
         user_rol: {
           some: {
             rol: {
-              name: "PACIENTE",
-            }
-          }
-        }
+              name: rol.name,
+            },
+          },
+        },
+      });
+    });
+    const params: Prisma.UserFindManyArgs = {
+      where: {
+        OR: or,
       },
+      select: this.userService.user_public_select,
       orderBy: {
         name: 'asc',
       },
@@ -165,9 +189,7 @@ export class UserController {
       params.skip = +skip;
     }
     return this.userService.findMany(params);
-
   }
-
 
   @Get(':id')
   @Auth('ADMIN')

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -26,8 +26,8 @@ export class AnalysisService {
 
   async create(params: Prisma.AnalysisCreateArgs) {
     try {
-      const data = await this.prisma.analysis.create(params);
-      return data;
+      const response = await this.prisma.analysis.create(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -35,8 +35,8 @@ export class AnalysisService {
 
   async findMany(params: Prisma.AnalysisFindManyArgs) {
     try {
-      const data = await this.prisma.analysis.findMany(params);
-      return data;
+      const response = await this.prisma.analysis.findMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -44,8 +44,11 @@ export class AnalysisService {
 
   async findUnique(params: Prisma.AnalysisFindUniqueArgs) {
     try {
-      const data = await this.prisma.analysis.findUnique(params);
-      return data;
+      const response = await this.prisma.analysis.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -53,8 +56,11 @@ export class AnalysisService {
 
   async findFirst(params: Prisma.AnalysisFindFirstArgs) {
     try {
-      const data = await this.prisma.analysis.findFirst(params);
-      return data;
+      const response = await this.prisma.analysis.findFirst(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -62,16 +68,16 @@ export class AnalysisService {
 
   async update(params: Prisma.AnalysisUpdateArgs) {
     try {
-      const data = await this.prisma.analysis.update(params);
-      return data;
+      const response = await this.prisma.analysis.update(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
   }
   async updateMany(params: Prisma.AnalysisUpdateManyArgs) {
     try {
-      const data = await this.prisma.analysis.updateMany(params);
-      return data;
+      const response = await this.prisma.analysis.updateMany(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }
@@ -79,8 +85,8 @@ export class AnalysisService {
 
   async delete(params: Prisma.AnalysisDeleteArgs) {
     try {
-      const data = await this.prisma.analysis.delete(params);
-      return data;
+      const response = await this.prisma.analysis.delete(params);
+      return response;
     } catch (error) {
       ErrorsManager(error);
     }

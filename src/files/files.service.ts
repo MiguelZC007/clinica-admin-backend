@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { ArchiveService } from 'src/archive/archive.service';
@@ -9,7 +13,7 @@ export class FilesService {
   constructor(
     private prisma: PrismaService,
     private archiveService: ArchiveService,
-  ) { }
+  ) {}
 
   public files_include: Prisma.FilesInclude = {
     hemodialysis: {
@@ -108,6 +112,9 @@ export class FilesService {
   async findUnique(params: Prisma.FilesFindUniqueArgs) {
     try {
       const response: any = await this.prisma.files.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
       return response;
     } catch (e) {
       ErrorsManager(e);

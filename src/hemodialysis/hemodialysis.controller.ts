@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   Query,
-  NotFoundException,
 } from '@nestjs/common';
 import { HemodialysisService } from './hemodialysis.service';
 import { CreateHemodialysisDto } from './dto/create-hemodialysis.dto';
@@ -20,19 +19,15 @@ import { Auth } from 'src/decorators/auth.decorator';
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'hemodialysis' })
 export class HemodialysisController {
-  constructor(private hemodialysisService: HemodialysisService) { }
+  constructor(private hemodialysisService: HemodialysisService) {}
 
   @Get('patient/:patient_id')
-  async findPatient(@Param('patient_id') patient_id: string) {
+  findPatient(@Param('patient_id') patient_id: string) {
     const params: Prisma.HemodialysisFindUniqueArgs = {
       where: { patient_id: patient_id },
       include: this.hemodialysisService.hemodialysis_include,
     };
-    const data = await this.hemodialysisService.findUnique(params);
-    if (!data) {
-      throw new NotFoundException({ message: 'No se encontró el Paciente' });
-    }
-    return data;
+    return this.hemodialysisService.findUnique(params);
   }
 
   @Post()
@@ -71,11 +66,7 @@ export class HemodialysisController {
       where: { id: id },
       include: this.hemodialysisService.hemodialysis_include,
     };
-    const data = await this.hemodialysisService.findUnique(params);
-    if (!data) {
-      throw new NotFoundException({ message: 'No se encontró el registro' });
-    }
-    return data
+    return this.hemodialysisService.findUnique(params);
   }
 
   @Put(':id')

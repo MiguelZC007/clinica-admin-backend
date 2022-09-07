@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ErrorsManager } from 'src/errors-manager';
 import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class ImagingFilesService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(params: Prisma.ImagingFilesCreateArgs) {
     try {
@@ -27,6 +27,9 @@ export class ImagingFilesService {
   async findUnique(params: Prisma.ImagingFilesFindUniqueArgs) {
     try {
       const response: any = await this.prisma.imagingFiles.findUnique(params);
+      if (response === null) {
+        throw new NotFoundException({ message: 'No se encontró el registro' });
+      }
       return response;
     } catch (e) {
       ErrorsManager(e);
@@ -51,3 +54,4 @@ export class ImagingFilesService {
     }
   }
 }
+
