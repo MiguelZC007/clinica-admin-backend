@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { HemodialysisService } from './hemodialysis.service';
 import { CreateHemodialysisDto } from './dto/create-hemodialysis.dto';
@@ -42,6 +43,7 @@ export class HemodialysisController {
     @Query('from') from: string,
     @Query('to') to: string,
   ) {
+    const sessions_dto: Prisma.HemodialysisSessionUncheckedCreateInput[] = [];
     const hemodialysis = await this.hemodialysisService.findUnique({
       where: { patient_id: patient_id },
       include: {
@@ -61,10 +63,10 @@ export class HemodialysisController {
       const { hemodialysis_machine } = hemodialysis;
       const { turn_machine } = hemodialysis_machine;
       const { turn, machine } = turn_machine;
-      const sessions_dto: Prisma.HemodialysisSessionUncheckedCreateInput[] = [];
+
       let d = from;
       let n = 1;
-      while (moment(d).isBetween(from, to)) {
+      while (moment(d).isBetween(from, to, undefined, '[]')) {
         if (turn.days.filter((item) => item == moment(d).day()).length > 0) {
           const r: Prisma.HemodialysisSessionUncheckedCreateInput = {
             check_in: turn.check_in,
@@ -102,23 +104,25 @@ export class HemodialysisController {
           data: sessions_dto,
         } as Prisma.HemodialysisSessionCreateManyArgs);
       }
-      return this.hemodialysisSessionService.findMany({
-        where: {
-          hemodialysis: {
-            patient_id: patient_id,
-          },
-          date: {
-            gte: from,
-            lte: to,
-          },
-        },
-        orderBy: {
-          number_session: 'asc',
-        },
-      });
     } else {
-      throw new Error('No se ha asignado una máquina al paciente');
+      return new BadRequestException({
+        message: 'El paciente no tiene asignado un turno',
+      });
     }
+    return this.hemodialysisSessionService.findMany({
+      where: {
+        hemodialysis: {
+          patient_id: patient_id,
+        },
+        date: {
+          gte: from,
+          lte: to,
+        },
+      },
+      orderBy: {
+        number_session: 'asc',
+      },
+    });
   }
 
   @Post()
