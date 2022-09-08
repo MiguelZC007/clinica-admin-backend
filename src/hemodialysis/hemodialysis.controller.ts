@@ -64,7 +64,7 @@ export class HemodialysisController {
       const sessions_dto: Prisma.HemodialysisSessionUncheckedCreateInput[] = [];
       let d = from;
       let n = 1;
-      while (moment(from).isBetween(from, to)) {
+      while (moment(d).isBetween(from, to)) {
         if (turn.days.filter((item) => item == moment(d).day()).length > 0) {
           const r: Prisma.HemodialysisSessionUncheckedCreateInput = {
             check_in: turn.check_in,
