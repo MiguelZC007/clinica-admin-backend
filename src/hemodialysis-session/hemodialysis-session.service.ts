@@ -27,6 +27,17 @@ export class HemodialysisSessionService {
     }
   }
 
+  async createMany(params: Prisma.HemodialysisSessionCreateManyArgs) {
+    try {
+      const response: any = await this.prisma.hemodialysisSession.createMany(
+        params,
+      );
+      return response;
+    } catch (e) {
+      ErrorsManager(e);
+    }
+  }
+
   async findMany(params: Prisma.HemodialysisSessionFindManyArgs) {
     try {
       const response: any = await this.prisma.hemodialysisSession.findMany(

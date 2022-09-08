@@ -21,10 +21,10 @@ import { Auth } from 'src/decorators/auth.decorator';
 export class HemodialysisSessionController {
   constructor(
     private readonly hemodialysisSessionService: HemodialysisSessionService,
-  ) { }
+  ) {}
 
   @Post()
-  @Auth("ADMIN")
+  @Auth('ADMIN')
   create(@Body() data: CreateHemodialysisSessionDto) {
     const params: Prisma.HemodialysisSessionCreateArgs = {
       data: data as Prisma.HemodialysisSessionUncheckedCreateInput,
@@ -34,7 +34,7 @@ export class HemodialysisSessionController {
   }
 
   @Get()
-  @Auth("ADMIN")
+  @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
     const params: Prisma.HemodialysisSessionFindManyArgs = {
       include: this.hemodialysisSessionService.hemodialysis_session_include,
@@ -59,7 +59,7 @@ export class HemodialysisSessionController {
   }
 
   @Get(':id')
-  @Auth("ADMIN")
+  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     const params: Prisma.HemodialysisSessionFindUniqueArgs = {
       where: { id: id },
@@ -69,8 +69,12 @@ export class HemodialysisSessionController {
   }
 
   @Get('patient/:patient_id')
-  @Auth("ADMIN")
-  findPatient(@Param('patient_id') patient_id: string, @Query('from') from: string, @Query('to') to: string) {
+  @Auth('ADMIN')
+  findPatient(
+    @Param('patient_id') patient_id: string,
+    @Query('from') from: string,
+    @Query('to') to: string,
+  ) {
     const params: Prisma.HemodialysisSessionFindManyArgs = {
       where: {
         hemodialysis: {
@@ -79,15 +83,18 @@ export class HemodialysisSessionController {
         createdAt: {
           gte: from,
           lte: to,
-        }
+        },
       },
       include: this.hemodialysisSessionService.hemodialysis_session_include,
+      orderBy: {
+        number_session: 'asc',
+      },
     };
     return this.hemodialysisSessionService.findMany(params);
   }
 
   @Put(':id')
-  @Auth("ADMIN")
+  @Auth('ADMIN')
   update(@Param('id') id: string, @Body() data: UpdateHemodialysisSessionDto) {
     const params: Prisma.HemodialysisSessionUpdateArgs = {
       where: { id: id },
@@ -98,7 +105,7 @@ export class HemodialysisSessionController {
   }
 
   @Delete(':id')
-  @Auth("ADMIN")
+  @Auth('ADMIN')
   remove(@Param('id') id: string) {
     const params: Prisma.HemodialysisSessionDeleteArgs = {
       where: { id: id },

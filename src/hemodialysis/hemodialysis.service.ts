@@ -10,7 +10,7 @@ export class HemodialysisService {
   public hemodialysis_include: Prisma.HemodialysisInclude = {
     files: true,
     patient: true,
-    turn: {
+    hemodialysis_machine: {
       include: {
         turn_machine: {
           include: {

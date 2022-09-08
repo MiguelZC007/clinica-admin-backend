@@ -228,7 +228,7 @@ model LaboratoryTemplate {
   state            Boolean           @default(true)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
-  tamplate_product TemplateProduct[]
+  template_product TemplateProduct[]
 }
 
 model Category {
@@ -306,10 +306,11 @@ model Hemodialysis {
   regisration_date     DateTime?
   diagnostic           String?
   pathologies          String?
+  deceased             Boolean?              @default(false)
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
-  turn                 HemodialysisMachine?
   files                Files[]
+  hemodialysis_machine HemodialysisMachine?
   hemodialysis_session HemodialysisSession[]
 }
 

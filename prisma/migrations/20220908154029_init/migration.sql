@@ -319,6 +319,7 @@ CREATE TABLE "Hemodialysis" (
     "regisration_date" TIMESTAMP(3),
     "diagnostic" TEXT,
     "pathologies" TEXT,
+    "deceased" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateHemodialysisDto {
   @ApiProperty()
@@ -26,4 +32,11 @@ export class CreateHemodialysisDto {
   @IsString()
   @IsOptional()
   pathologies: string;
+
+  @ApiPropertyOptional({
+    default: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  deceased: boolean;
 }
