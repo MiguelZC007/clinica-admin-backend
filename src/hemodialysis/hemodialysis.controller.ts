@@ -65,7 +65,6 @@ export class HemodialysisController {
         const { hemodialysis_machine } = hemodialysis;
         const { turn_machine } = hemodialysis_machine;
         const { turn, machine } = turn_machine;
-
         let d = from;
         let n = 1;
         while (moment(d).isBetween(from, to, undefined, '[]')) {
@@ -122,7 +121,7 @@ export class HemodialysisController {
           },
         },
         orderBy: {
-          number_session: 'asc',
+          date: 'asc',
         },
       });
     } catch (e) {

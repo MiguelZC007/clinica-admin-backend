@@ -80,14 +80,14 @@ export class HemodialysisSessionController {
         hemodialysis: {
           patient_id: patient_id,
         },
-        createdAt: {
+        date: {
           gte: from,
           lte: to,
         },
       },
       include: this.hemodialysisSessionService.hemodialysis_session_include,
       orderBy: {
-        number_session: 'asc',
+        date: 'asc',
       },
     };
     return this.hemodialysisSessionService.findMany(params);
