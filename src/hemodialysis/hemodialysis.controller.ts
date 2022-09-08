@@ -67,7 +67,7 @@ export class HemodialysisController {
       while (moment(from).isBetween(from, to)) {
         if (turn.days.filter((item) => item == moment(d).day()).length > 0) {
           const r: Prisma.HemodialysisSessionUncheckedCreateInput = {
-            check_in: new Date(turn.check_in).toISOString(),
+            check_in: turn.check_in,
             check_out: turn.check_out,
             number_machine: machine.number_machine,
             number_session: `${n}`,
@@ -94,7 +94,7 @@ export class HemodialysisController {
           };
           sessions_dto.push(r);
         }
-        d = moment(d).add(1, 'day').format('YYYY-MM-DD');
+        d = moment(d).add(1, 'day').toISOString();
         n++;
       }
       if (sessions_dto.length > 0) {
