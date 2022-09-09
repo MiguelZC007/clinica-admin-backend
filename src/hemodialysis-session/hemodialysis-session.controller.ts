@@ -26,7 +26,6 @@ export class HemodialysisSessionController {
   @Get()
   @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
-    console.log('toy aqui');
     const params: Prisma.HemodialysisSessionFindManyArgs = {
       include: this.hemodialysisSessionService.hemodialysis_session_include,
       orderBy: [
@@ -77,8 +76,6 @@ export class HemodialysisSessionController {
     @Query('from') from: string,
     @Query('to') to: string,
   ) {
-    console.log('toy aqui 3');
-
     const params: Prisma.HemodialysisSessionFindManyArgs = {
       where: {
         hemodialysis: {
