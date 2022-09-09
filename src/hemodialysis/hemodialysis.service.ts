@@ -8,7 +8,11 @@ export class HemodialysisService {
   constructor(private prisma: PrismaService) {}
 
   public hemodialysis_include: Prisma.HemodialysisInclude = {
-    files: true,
+    files: {
+      orderBy: {
+        createdAt: 'asc',
+      },
+    },
     patient: true,
     hemodialysis_machine: {
       include: {
@@ -20,7 +24,11 @@ export class HemodialysisService {
         },
       },
     },
-    hemodialysis_session: true,
+    hemodialysis_session: {
+      orderBy: {
+        date: 'asc',
+      },
+    },
   };
 
   async create(params: Prisma.HemodialysisCreateArgs) {

@@ -16,6 +16,7 @@ import { hashSync } from 'bcrypt';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorators/auth.decorator';
 import { RolService } from 'src/rol/rol.service';
+import * as moment from 'moment';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -149,6 +150,39 @@ export class UserController {
       params.take = +take;
       params.skip = +skip;
     }
+    return this.userService.findMany(params);
+  }
+
+  @Get('report')
+  @ApiOperation({
+    summary:
+      'Reporte de usuarios creados en el rango de fecha, segun el Rol por defecto PACIENTE',
+  })
+  @Auth('ADMIN')
+  report(
+    @Query('from') from: string = moment().startOf('month').toISOString(),
+    @Query('to') to: string = moment().endOf('month').toISOString(),
+    @Query('rol') rol: string = 'PACIENTE',
+  ) {
+    const params: Prisma.UserFindManyArgs = {
+      where: {
+        createdAt: {
+          gte: from,
+          lte: to,
+        },
+        user_rol: {
+          some: {
+            rol: {
+              name: rol.toUpperCase(),
+            },
+          },
+        },
+      },
+      select: { ...this.userService.user_public_select, user_rol: false },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    };
     return this.userService.findMany(params);
   }
 

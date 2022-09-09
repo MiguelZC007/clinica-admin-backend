@@ -16,6 +16,14 @@ export const ErrorsManager = (error) => {
       });
     }
 
+    case 401: {
+      throw new BadRequestException({
+        message: error.message,
+        status: error.status,
+        name: error.name,
+      });
+    }
+
     case 404: {
       throw new NotFoundException({
         message: error.message,

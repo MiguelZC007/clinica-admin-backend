@@ -8,16 +8,18 @@ import {
   Delete,
   Query,
   BadRequestException,
+  Req,
 } from '@nestjs/common';
 import { HemodialysisService } from './hemodialysis.service';
 import { CreateHemodialysisDto } from './dto/create-hemodialysis.dto';
 import { UpdateHemodialysisDto } from './dto/update-hemodialysis.dto';
-import { Prisma } from '@prisma/client';
+import { Prisma, Product } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorators/auth.decorator';
 import { HemodialysisSessionService } from 'src/hemodialysis-session/hemodialysis-session.service';
 import * as moment from 'moment';
 import { ErrorsManager } from 'src/errors-manager';
+import { ProductService } from 'src/product/product.service';
 
 @ApiTags('Hemodialisis')
 @ApiBearerAuth()
@@ -26,6 +28,7 @@ export class HemodialysisController {
   constructor(
     private hemodialysisService: HemodialysisService,
     private hemodialysisSessionService: HemodialysisSessionService,
+    private productService: ProductService,
   ) {}
 
   @Get('patient/:patient_id')
@@ -43,9 +46,12 @@ export class HemodialysisController {
     @Param('patient_id') patient_id: string,
     @Query('from') from: string,
     @Query('to') to: string,
+    @Req() req: any,
   ) {
+    const user = req.user;
+
     try {
-      const sessions_dto: Prisma.HemodialysisSessionUncheckedCreateInput[] = [];
+      const sessions_dto: Prisma.HemodialysisSessionCreateInput[] = [];
       const hemodialysis = await this.hemodialysisService.findUnique({
         where: { patient_id: patient_id },
         include: {
@@ -69,31 +75,58 @@ export class HemodialysisController {
         let n = 1;
         while (moment(d).isBetween(from, to, undefined, '[]')) {
           if (turn.days.filter((item) => item == moment(d).day()).length > 0) {
-            const r: Prisma.HemodialysisSessionUncheckedCreateInput = {
+            const product: Product = await this.productService.findUnique({
+              where: {
+                name: 'Sesion de Hemodialisis Convenio',
+              },
+            });
+            if (product === null) {
+              throw new BadRequestException({
+                message:
+                  'El producto < Sesion de Hemodialisis Convenio > no existe',
+              });
+            }
+            const r: Prisma.HemodialysisSessionCreateInput = {
               check_in: turn.check_in,
               check_out: turn.check_out,
               number_machine: machine.number_machine,
               number_session: `${n}`,
               date: d,
               vascular_access: hemodialysis.vascular_access,
-              hemodialysis_id: hemodialysis.id,
-              dry_weight: 0,
-              income_weight: 0,
-              egress_weight: 0,
+              hemodialysis: {
+                connect: {
+                  id: hemodialysis.id,
+                },
+              },
+              sale: {
+                create: {
+                  cashier_id: user.id,
+                  patient_id: patient_id,
+                  total_price: product.price,
+                  transfer: 0,
+                  state: 'PAGADO',
+                  sale_detail: {
+                    create: {
+                      product_id: product.id,
+                      quantity: 1,
+                      sale_price: product.price,
+                      discount: 0,
+                      name: product.name,
+                      createdAt: d,
+                      updatedAt: d,
+                    },
+                  },
+                },
+              } as Prisma.SaleCreateNestedOneWithoutHemodialysis_sessionInput,
+              type_hemodialysis: 'CONVENIO',
               ultrafiltration_session: '',
               ultrafiltration_end: '',
-              filter_type: '',
               filter_reuse: '',
               line_reuse: '',
               heparin: '',
               ktv: '',
-              ingest: '',
               oxygenation: 0,
               pa_entry: '',
-              nursing_evaluation: null,
-              clinic_evaluation: null,
-              treatment: null,
-              type_hemodialysis: 'CONVENIO',
             };
             sessions_dto.push(r);
             n++;
@@ -101,13 +134,16 @@ export class HemodialysisController {
           d = moment(d).add(1, 'day').toISOString();
         }
         if (sessions_dto.length > 0) {
-          await this.hemodialysisSessionService.createMany({
-            data: sessions_dto,
-          } as Prisma.HemodialysisSessionCreateManyArgs);
+          for (const item of sessions_dto) {
+            await this.hemodialysisSessionService.create({
+              data: item as Prisma.HemodialysisSessionCreateInput,
+            });
+          }
         }
       } else {
         throw new BadRequestException({
-          message: 'El paciente no tiene asignado un turno',
+          message:
+            'El paciente no tiene asignado ningun turno, o no es paciente de Hemodialisis',
         });
       }
       return this.hemodialysisSessionService.findMany({
@@ -125,6 +161,7 @@ export class HemodialysisController {
         },
       });
     } catch (e) {
+      console.log(e);
       ErrorsManager(e);
     }
   }

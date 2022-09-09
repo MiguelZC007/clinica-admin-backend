@@ -23,19 +23,10 @@ export class HemodialysisSessionController {
     private readonly hemodialysisSessionService: HemodialysisSessionService,
   ) {}
 
-  @Post()
-  @Auth('ADMIN')
-  create(@Body() data: CreateHemodialysisSessionDto) {
-    const params: Prisma.HemodialysisSessionCreateArgs = {
-      data: data as Prisma.HemodialysisSessionUncheckedCreateInput,
-      include: this.hemodialysisSessionService.hemodialysis_session_include,
-    };
-    return this.hemodialysisSessionService.create(params);
-  }
-
   @Get()
   @Auth('ADMIN')
   findAll(@Query('take') take: number = 0, @Query('page') p: number = 0) {
+    console.log('toy aqui');
     const params: Prisma.HemodialysisSessionFindManyArgs = {
       include: this.hemodialysisSessionService.hemodialysis_session_include,
       orderBy: [
@@ -58,9 +49,20 @@ export class HemodialysisSessionController {
     return this.hemodialysisSessionService.findMany(params);
   }
 
+  @Post()
+  @Auth('ADMIN')
+  create(@Body() data: CreateHemodialysisSessionDto) {
+    const params: Prisma.HemodialysisSessionCreateArgs = {
+      data: data as Prisma.HemodialysisSessionUncheckedCreateInput,
+      include: this.hemodialysisSessionService.hemodialysis_session_include,
+    };
+    return this.hemodialysisSessionService.create(params);
+  }
+
   @Get(':id')
   @Auth('ADMIN')
   findOne(@Param('id') id: string) {
+    console.log('toy aqui 2');
     const params: Prisma.HemodialysisSessionFindUniqueArgs = {
       where: { id: id },
       include: this.hemodialysisSessionService.hemodialysis_session_include,
@@ -75,6 +77,8 @@ export class HemodialysisSessionController {
     @Query('from') from: string,
     @Query('to') to: string,
   ) {
+    console.log('toy aqui 3');
+
     const params: Prisma.HemodialysisSessionFindManyArgs = {
       where: {
         hemodialysis: {

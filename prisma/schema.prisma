@@ -8,60 +8,62 @@ datasource db {
 }
 
 model User {
-  id                             String                 @id @default(uuid())
-  name                           String?
-  lastname                       String?
-  mother_lastname                String?
-  search                         String?
-  birthdate                      DateTime?
-  cellphone                      String?
-  ci                             String?                @unique
-  gender                         Gender?
-  address                        String?
-  zone                           String?
-  state                          String?
-  city                           String?
-  country                        String?
-  email                          String?                @unique
-  password                       String?
-  contact_name                   String?
-  contact_phone                  String?
-  relationship                   String?
-  odoo_user_id                   Int?
-  registration_age               String?
-  observations                   String?
-  about_us                       String?
-  is_black                       Boolean?               @default(false)
-  hemodialysis                   Boolean?               @default(false)
-  createdAt                      DateTime               @default(now())
-  updatedAt                      DateTime               @updatedAt
-  active                         Boolean?               @default(true)
-  user_rol                       UserRol[]              @relation("user_id")
-  user_created_addendum          Addendum[]             @relation("addendum")
-  assigned_doctors               AssignedDoctors[]
-  day_offs                       DayOff[]               @relation("employee_dayoff")
-  specialties                    DoctorSpecialty[]
-  imagings                       Imaging[]              @relation("imaging")
-  laboratories                   Laboratory[]           @relation("laboratory")
-  history_detail_doctor_assigned MedicalHistoryDetail[] @relation("medical_history_detail")
-  history_detail_user_created    MedicalHistoryDetail[] @relation("medical_history_detail_created")
-  medication_user_created        Medication[]           @relation("medication")
-  doctor_meet                    Meet[]                 @relation("doctor_meet")
-  patient_meet                   Meet[]                 @relation("patient_meet")
-  user_created_physical_exam     PhysicalExam[]         @relation("physical_exam")
-  cashier_sale                   Sale[]                 @relation("cashier_sale")
-  delete_sale                    Sale[]                 @relation("delete_sale")
-  patient_sale                   Sale[]                 @relation("patient_sale")
-  update_sale                    Sale[]                 @relation("update_sale")
-  sessions                       Session[]              @relation("session_user")
-  vital_signs_user_created       VitalSigns[]           @relation("vital_signs")
-  user_working_hour              WorkingHour?           @relation("employee_work")
-  medical_history_detail_approve MedicalHistoryDetail[] @relation("medical_history_detail_approve")
-  imaging_doctor_assigned        Imaging[]              @relation("imaging_doctor_assigned")
-  patient_credit_detail          Payment[]              @relation("patient_payment")
-  cashier_credit_detail          Payment[]              @relation("cashier_payment")
-  patient_medical_history        MedicalHistory?        @relation("medical_history")
-  hemodialysis_history           Hemodialysis?
+  id                                    String                   @id @default(uuid())
+  name                                  String?
+  lastname                              String?
+  mother_lastname                       String?
+  search                                String?
+  birthdate                             DateTime?
+  cellphone                             String?
+  ci                                    String?                  @unique
+  gender                                Gender?
+  address                               String?
+  zone                                  String?
+  state                                 String?
+  city                                  String?
+  country                               String?
+  email                                 String?                  @unique
+  password                              String?
+  contact_name                          String?
+  contact_phone                         String?
+  relationship                          String?
+  odoo_user_id                          Int?
+  registration_age                      String?
+  observations                          String?
+  about_us                              String?
+  is_black                              Boolean?                 @default(false)
+  hemodialysis                          Boolean?                 @default(false)
+  createdAt                             DateTime                 @default(now())
+  updatedAt                             DateTime                 @updatedAt
+  active                                Boolean?                 @default(true)
+  user_rol                              UserRol[]                @relation("user_id")
+  user_created_addendum                 Addendum[]               @relation("addendum")
+  assigned_doctors                      AssignedDoctors[]
+  day_offs                              DayOff[]                 @relation("employee_dayoff")
+  specialties                           DoctorSpecialty[]
+  imagings                              Imaging[]                @relation("imaging")
+  laboratories                          Laboratory[]             @relation("laboratory")
+  history_detail_doctor_assigned        MedicalHistoryDetail[]   @relation("medical_history_detail")
+  history_detail_user_created           MedicalHistoryDetail[]   @relation("medical_history_detail_created")
+  prescription_user_created             Prescription[]           @relation("prescription")
+  doctor_meet                           Meet[]                   @relation("doctor_meet")
+  patient_meet                          Meet[]                   @relation("patient_meet")
+  user_created_physical_exam            PhysicalExam[]           @relation("physical_exam")
+  cashier_sale                          Sale[]                   @relation("cashier_sale")
+  delete_sale                           Sale[]                   @relation("delete_sale")
+  patient_sale                          Sale[]                   @relation("patient_sale")
+  update_sale                           Sale[]                   @relation("update_sale")
+  sessions                              Session[]                @relation("session_user")
+  vital_signs_user_created              VitalSigns[]             @relation("vital_signs")
+  user_working_hour                     WorkingHour?             @relation("employee_work")
+  medical_history_detail_approve        MedicalHistoryDetail[]   @relation("medical_history_detail_approve")
+  imaging_doctor_assigned               Imaging[]                @relation("imaging_doctor_assigned")
+  patient_credit_detail                 Payment[]                @relation("patient_payment")
+  cashier_credit_detail                 Payment[]                @relation("cashier_payment")
+  patient_medical_history               MedicalHistory?          @relation("medical_history")
+  hemodialysis_history                  Hemodialysis?
+  attention_sheet_detail                AttentionSheetDetail[]
+  user_created_vital_signs_hemodialysis VitalSignsHemodialysis[]
 }
 
 model UserRol {
@@ -133,27 +135,28 @@ model DayOff {
 }
 
 model Sale {
-  id             String       @id @default(uuid())
-  total_price    Decimal?     @default(0.0)
-  state          StateSale?   @default(NO_PAGADO)
-  description    String?      @default("")
-  receipt_number Int?         @default(autoincrement())
-  odoo_sale_id   Int?
-  patient_id     String
-  cashier_id     String
-  delete_id      String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  transfer       Decimal?     @default(0.0)
-  update_id      String?
-  cashier        User         @relation("cashier_sale", fields: [cashier_id], references: [id])
-  patient        User         @relation("patient_sale", fields: [patient_id], references: [id])
-  delete         User?        @relation("delete_sale", fields: [delete_id], references: [id])
-  update         User?        @relation("update_sale", fields: [update_id], references: [id])
-  laboratory     Laboratory?
-  sale_detail    SaleDetail[] @relation("sale")
-  imaging        Imaging?
-  payment        Payment[]
+  id                   String               @id @default(uuid())
+  total_price          Decimal?             @default(0.0)
+  state                StateSale?           @default(NO_PAGADO)
+  description          String?              @default("")
+  receipt_number       Int?                 @default(autoincrement())
+  odoo_sale_id         Int?
+  patient_id           String
+  cashier_id           String
+  delete_id            String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  transfer             Decimal?             @default(0.0)
+  update_id            String?
+  cashier              User                 @relation("cashier_sale", fields: [cashier_id], references: [id])
+  patient              User                 @relation("patient_sale", fields: [patient_id], references: [id])
+  delete               User?                @relation("delete_sale", fields: [delete_id], references: [id])
+  update               User?                @relation("update_sale", fields: [update_id], references: [id])
+  laboratory           Laboratory?
+  sale_detail          SaleDetail[]         @relation("sale")
+  imaging              Imaging?
+  payment              Payment[]
+  hemodialysis_session HemodialysisSession?
 }
 
 model Payment {
@@ -210,6 +213,7 @@ model Product {
   updatedAt        DateTime          @updatedAt
   sample           Sample[]
   imaging_detail   ImagingDetail[]
+  medicine         Medicine?
 }
 
 model TemplateProduct {
@@ -272,6 +276,8 @@ model AssignedDoctors {
   doctor_id          String
   doctor             User           @relation(fields: [doctor_id], references: [id])
   medical_history    MedicalHistory @relation(fields: [medical_history_id], references: [id])
+
+  @@unique([medical_history_id, doctor_id])
 }
 
 model MedicalHistory {
@@ -280,7 +286,7 @@ model MedicalHistory {
   maternal_family_record    Json?
   surgical_record           String?
   laboratory_record         String?
-  medicines                 String?
+  prescriptions             String?
   social_record             String?
   smokes                    String?
   is_smokes                 Boolean?                  @default(false)
@@ -298,20 +304,22 @@ model MedicalHistory {
 }
 
 model Hemodialysis {
-  id                   String                @id @default(uuid())
-  patient              User                  @relation(fields: [patient_id], references: [id])
-  patient_id           String                @unique
-  vascular_access      VascularAccessType?   @default(CATETER)
-  history_number       Int                   @default(autoincrement())
-  regisration_date     DateTime?
-  diagnostic           String?
-  pathologies          String?
-  deceased             Boolean?              @default(false)
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  files                Files[]
-  hemodialysis_machine HemodialysisMachine?
-  hemodialysis_session HemodialysisSession[]
+  id                           String                    @id @default(uuid())
+  patient                      User                      @relation(fields: [patient_id], references: [id])
+  patient_id                   String                    @unique
+  vascular_access              VascularAccessType?       @default(CATETER)
+  history_number               Int                       @default(autoincrement())
+  regisration_date             DateTime?
+  diagnostic                   String?
+  pathologies                  String?
+  deceased                     Boolean?                  @default(false)
+  createdAt                    DateTime                  @default(now())
+  updatedAt                    DateTime                  @updatedAt
+  files                        Files[]
+  hemodialysis_machine         HemodialysisMachine?
+  hemodialysis_session         HemodialysisSession[]
+  prescription_hemodialysis_id String?
+  prescription_hemodialysis    PrescriptionHemodialysis? @relation(fields: [prescription_hemodialysis_id], references: [id])
 }
 
 model HemodialysisSession {
@@ -319,33 +327,48 @@ model HemodialysisSession {
   hemodialysis             Hemodialysis             @relation(fields: [hemodialysis_id], references: [id])
   hemodialysis_id          String
   number_session           String
-  dry_weight               Decimal?                 @default(0.0)
-  income_weight            Decimal?                 @default(0.0)
-  egress_weight            Decimal?                 @default(0.0)
   number_machine           Int
   check_in                 DateTime
   check_out                DateTime
   date                     DateTime
   ultrafiltration_session  String
   ultrafiltration_end      String
-  filter_type              String                   @default("Alto Flujo")
   filter_reuse             String
   line_reuse               String
   heparin                  String
   ktv                      String
-  ingest                   String                   @default("N/A")
   oxygenation              Int
   pa_entry                 String
   vascular_access          VascularAccessType
   nursing_evaluation       String?
   clinic_evaluation        String?
   treatment                String?
+  filter_type              String                   @default("Alto Flujo")
+  ingest                   String                   @default("N/A")
+  dry_weight               Decimal?                 @default(0.0)
+  income_weight            Decimal?                 @default(0.0)
+  egress_weight            Decimal?                 @default(0.0)
   type_hemodialysis        TypeHemodialysis         @default(CONVENIO)
+  attended                 Boolean                  @default(false)
+  blocked                  Boolean                  @default(false)
   createdAt                DateTime                 @default(now())
   updatedAt                DateTime                 @updatedAt
   vital_signs_hemodialysis VitalSignsHemodialysis[]
-  medicaments              Medication[]
-  laboratories             Laboratory[]
+  sale_id                  String                   @unique
+  sale                     Sale                     @relation(fields: [sale_id], references: [id])
+
+  @@unique([date, hemodialysis_id])
+}
+
+model PrescriptionHemodialysis {
+  id            String         @id @default(uuid())
+  name          String         @unique
+  description   String?
+  active        Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  prescriptions Prescription[]
+  hemodialysis  Hemodialysis[]
 }
 
 model VitalSignsHemodialysis {
@@ -360,8 +383,30 @@ model VitalSignsHemodialysis {
   pv                      Int
   ptm                     Int
   conductivity            Decimal
+  user_created_id         String
+  user_created            User                @relation(fields: [user_created_id], references: [id])
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt
+}
+
+model AttentionSheet {
+  id                                String   @id @default(uuid())
+  number_enabled_machines           Int
+  number_positive_serology_machines Int
+  hospital_name                     String   @default("HOSPITAL MARIA ESPERANZA S.R.L.")
+  hospital_type                     String   @default("PRIVADO CONVENIO")
+  createdAt                         DateTime @default(now())
+  updatedAt                         DateTime @updatedAt
+}
+
+model AttentionSheetDetail {
+  id              String   @id @default(uuid())
+  patient         User     @relation(fields: [patient_id], references: [id])
+  patient_id      String
+  number_sessions Int
+  observation     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Files {
@@ -462,7 +507,7 @@ model MedicalHistoryDetail {
   addendum                  Addendum[]
   imaging                   Imaging[]
   laboratory                Laboratory[]
-  medication                Medication[]
+  prescriptions             Prescription[]
   physical_exam             PhysicalExam[]
   vital_signs               VitalSigns?
   diagnostic                Diagnostic[]
@@ -530,23 +575,73 @@ model Addendum {
   vital_signs_id            String?
 }
 
-model Medication {
-  id                        String               @id @default(uuid())
-  from                      DateTime?
-  to                        DateTime?
-  duration                  String?
-  description               String?
-  frequency                 String?
-  medicine                  String?
-  state                     Boolean              @default(true)
-  createdAt                 DateTime             @default(now())
-  updatedAt                 DateTime             @updatedAt
-  medical_history_detail    MedicalHistoryDetail @relation(fields: [medical_history_detail_id], references: [id])
-  medical_history_detail_id String
-  user_created              User                 @relation("medication", fields: [user_created_id], references: [id])
-  user_created_id           String
-  hemodialysis_session      HemodialysisSession? @relation(fields: [hemodialysis_session_id], references: [id])
-  hemodialysis_session_id   String?
+model Prescription {
+  id                           String                    @id @default(uuid())
+  from                         DateTime?
+  to                           DateTime?
+  duration                     String?
+  name                         String?
+  description                  String?
+  frequency                    String?
+  quantity                     Int                       @default(1)
+  active                       Boolean                   @default(true)
+  createdAt                    DateTime                  @default(now())
+  updatedAt                    DateTime                  @updatedAt
+  medical_history_detail       MedicalHistoryDetail?     @relation(fields: [medical_history_detail_id], references: [id])
+  medical_history_detail_id    String?
+  user_created                 User                      @relation("prescription", fields: [user_created_id], references: [id])
+  user_created_id              String
+  medicine_id                  String?
+  medicine                     Medicine?                 @relation(fields: [medicine_id], references: [id])
+  prescription_hemodialysis    PrescriptionHemodialysis? @relation(fields: [prescription_hemodialysis_id], references: [id])
+  prescription_hemodialysis_id String?
+}
+
+model Medicine {
+  id                        String                @id @default(uuid())
+  common_name               String                @unique
+  scientific_name           String
+  concentration             String?
+  recommendations           String?
+  active                    Boolean               @default(true)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+  medicine_concentration_id String
+  medicine_concentration    MedicineConcentration @relation(fields: [medicine_concentration_id], references: [id])
+  maker_medicine_id         String
+  maker_medicine            MakerMedicine         @relation(fields: [maker_medicine_id], references: [id])
+  pharmaceutical_form_id    String
+  pharmaceutical_form       PharmaceuticalForm    @relation(fields: [pharmaceutical_form_id], references: [id])
+  product_id                String                @unique
+  product                   Product               @relation(fields: [product_id], references: [id])
+  prescriptions             Prescription[]
+}
+
+model MedicineConcentration {
+  id            String     @id @default(uuid())
+  concentration String
+  active        Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  medicine      Medicine[]
+}
+
+model MakerMedicine {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  medicine  Medicine[]
+}
+
+model PharmaceuticalForm {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  medicine  Medicine[]
 }
 
 model PhysicalExam {
@@ -579,8 +674,6 @@ model Laboratory {
   patient                   User                  @relation("laboratory", fields: [patient_id], references: [id])
   sale                      Sale?                 @relation(fields: [sale_id], references: [id])
   sample                    Sample[]
-  hemodialysis_session      HemodialysisSession?  @relation(fields: [hemodialysis_session_id], references: [id])
-  hemodialysis_session_id   String?
 }
 
 model Sample {

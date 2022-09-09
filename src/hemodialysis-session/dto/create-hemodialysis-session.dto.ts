@@ -1,5 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDateString, IsNumber, IsPositive, IsString, IsUUID } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsNumber,
+  IsPositive,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateHemodialysisSessionDto {
   @ApiProperty()
@@ -101,4 +108,12 @@ export class CreateHemodialysisSessionDto {
   })
   @IsString()
   type_hemodialysis?: string;
+
+  @ApiPropertyOptional()
+  @IsBoolean()
+  blocked?: boolean;
+
+  @ApiPropertyOptional()
+  @IsBoolean()
+  attended?: boolean;
 }
