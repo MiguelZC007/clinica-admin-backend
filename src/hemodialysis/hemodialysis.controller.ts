@@ -21,7 +21,7 @@ import * as moment from 'moment';
 import { ErrorsManager } from 'src/errors-manager';
 import { ProductService } from 'src/product/product.service';
 
-@ApiTags('Hemodialisis')
+@ApiTags('Paciente de Hemodialisis')
 @ApiBearerAuth()
 @Controller({ version: '1', path: 'hemodialysis' })
 export class HemodialysisController {
@@ -104,7 +104,7 @@ export class HemodialysisController {
                   patient_id: patient_id,
                   total_price: product.price,
                   transfer: 0,
-                  state: 'PAGADO',
+                  state: 'CONVENIO',
                   sale_detail: {
                     create: {
                       product_id: product.id,
@@ -161,7 +161,6 @@ export class HemodialysisController {
         },
       });
     } catch (e) {
-      console.log(e);
       ErrorsManager(e);
     }
   }

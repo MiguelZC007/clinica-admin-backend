@@ -46,6 +46,15 @@ import { PhysicalExamModule } from './physical-exam/physical-exam.module';
 import { ImagingModule } from './imaging/imaging.module';
 import { ImagingDetailModule } from './imaging-detail/imaging-detail.module';
 import { ImagingFilesModule } from './imaging-files/imaging-files.module';
+import { AttentionSheetDetailModule } from './attention-sheet-detail/attention-sheet-detail.module';
+import { AttentionSheetModule } from './attention-sheet/attention-sheet.module';
+import { PrescriptionModule } from './prescription/prescription.module';
+import { MedicineModule } from './medicine/medicine.module';
+import { MedicineGenericNameModule } from './medicine-generic-name/medicine-generic-name.module';
+import { MedicineConcentrationModule } from './medicine-concentration/medicine-concentration.module';
+import { MakerMedicineModule } from './maker-medicine/maker-medicine.module';
+import { PharmaceuticalFormModule } from './pharmaceutical-form/pharmaceutical-form.module';
+import { PrescriptionHemodialysisModule } from './prescription-hemodialysis/prescription-hemodialysis.module';
 
 @Module({
   controllers: [AppController],
@@ -96,6 +105,15 @@ import { ImagingFilesModule } from './imaging-files/imaging-files.module';
     ImagingModule,
     ImagingDetailModule,
     ImagingFilesModule,
+    AttentionSheetDetailModule,
+    AttentionSheetModule,
+    PrescriptionModule,
+    MedicineModule,
+    MedicineGenericNameModule,
+    MedicineConcentrationModule,
+    MakerMedicineModule,
+    PharmaceuticalFormModule,
+    PrescriptionHemodialysisModule,
   ],
 })
 export class AppModule {}

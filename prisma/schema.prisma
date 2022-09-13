@@ -400,13 +400,14 @@ model AttentionSheet {
 }
 
 model AttentionSheetDetail {
-  id              String   @id @default(uuid())
-  patient         User     @relation(fields: [patient_id], references: [id])
+  id              String             @id @default(uuid())
+  patient         User               @relation(fields: [patient_id], references: [id])
   patient_id      String
+  vascular_access VascularAccessType
   number_sessions Int
   observation     String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
 }
 
 model Files {
@@ -600,9 +601,9 @@ model Prescription {
 model Medicine {
   id                        String                @id @default(uuid())
   common_name               String                @unique
-  scientific_name           String
-  concentration             String?
-  recommendations           String?
+  recommendations           String[]
+  formula                   String
+  conditions_conservation   String?
   active                    Boolean               @default(true)
   createdAt                 DateTime              @default(now())
   updatedAt                 DateTime              @updatedAt
@@ -614,12 +615,25 @@ model Medicine {
   pharmaceutical_form       PharmaceuticalForm    @relation(fields: [pharmaceutical_form_id], references: [id])
   product_id                String                @unique
   product                   Product               @relation(fields: [product_id], references: [id])
+  medicine_generic_name_id  String
+  medicine_generic_name     MedicineGenericName   @relation(fields: [medicine_generic_name_id], references: [id])
   prescriptions             Prescription[]
+}
+
+model MedicineGenericName {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  medicines   Medicine[]
 }
 
 model MedicineConcentration {
   id            String     @id @default(uuid())
-  concentration String
+  concentration Decimal
+  unit          String?
   active        Boolean    @default(true)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -627,21 +641,23 @@ model MedicineConcentration {
 }
 
 model MakerMedicine {
-  id        String     @id @default(uuid())
-  name      String     @unique
-  active    Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  medicine  Medicine[]
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  medicine    Medicine[]
 }
 
 model PharmaceuticalForm {
-  id        String     @id @default(uuid())
-  name      String     @unique
-  active    Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  medicine  Medicine[]
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  medicine    Medicine[]
 }
 
 model PhysicalExam {
@@ -826,6 +842,7 @@ enum StateSale {
   ELIMINADO
   ANULADO
   DEVOLUCION
+  CONVENIO
 }
 
 enum TypePayment {
