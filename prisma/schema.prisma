@@ -326,18 +326,19 @@ model HemodialysisSession {
   id                       String                   @id @default(uuid())
   hemodialysis             Hemodialysis             @relation(fields: [hemodialysis_id], references: [id])
   hemodialysis_id          String
-  number_session           String
+  number_session           Int
   number_machine           Int
   check_in                 DateTime
   check_out                DateTime
   date                     DateTime
-  ultrafiltration_session  String
-  ultrafiltration_end      String
-  filter_reuse             String
-  line_reuse               String
-  heparin                  String
-  ktv                      String
-  oxygenation              Int
+  ultrafiltration_session  Decimal
+  ultrafiltration_end      Decimal
+  filter_reuse             Int
+  line_reuse               Int
+  heparin                  Decimal
+  devol                    Decimal
+  ktv                      Decimal
+  oxygenation              Decimal
   pa_entry                 String
   vascular_access          VascularAccessType
   nursing_evaluation       String?

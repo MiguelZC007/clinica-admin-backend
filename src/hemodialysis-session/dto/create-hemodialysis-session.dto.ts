@@ -14,8 +14,8 @@ export class CreateHemodialysisSessionDto {
   hemodialysis_id: string;
 
   @ApiProperty()
-  @IsString()
-  number_session: string;
+  @IsNumber()
+  number_session: number;
 
   @ApiProperty()
   @IsPositive()
@@ -34,28 +34,28 @@ export class CreateHemodialysisSessionDto {
   date: string;
 
   @ApiProperty()
-  @IsString()
-  ultrafiltration_session: string;
+  @IsNumber()
+  ultrafiltration_session: number;
 
   @ApiProperty()
-  @IsString()
-  ultrafiltration_end: string;
+  @IsNumber()
+  ultrafiltration_end: number;
 
   @ApiProperty()
-  @IsString()
-  filter_reuse: string;
+  @IsNumber()
+  filter_reuse: number;
 
   @ApiProperty()
-  @IsString()
-  line_reuse: string;
+  @IsNumber()
+  line_reuse: number;
 
   @ApiProperty()
-  @IsString()
-  heparin: string;
+  @IsNumber()
+  heparin: number;
 
   @ApiProperty()
-  @IsString()
-  ktv: string;
+  @IsNumber()
+  ktv: number;
 
   @ApiProperty()
   @IsNumber()

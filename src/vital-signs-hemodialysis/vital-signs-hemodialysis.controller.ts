@@ -21,7 +21,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 export class VitalSignsHemodialysisController {
   constructor(
     private readonly vitalSignsHemodialysisService: VitalSignsHemodialysisService,
-  ) { }
+  ) {}
 
   @Post()
   @Auth('ADMIN')
@@ -52,6 +52,17 @@ export class VitalSignsHemodialysisController {
       where: { id: id },
     };
     return this.vitalSignsHemodialysisService.findUnique(params);
+  }
+
+  @Get('hemodialysis-session/:hemodialysis_session_id')
+  @Auth('ADMIN')
+  findHemodialysisSession(
+    @Param('hemodialysis_session_id') hemodialysis_session_id: string,
+  ) {
+    const params: Prisma.VitalSignsHemodialysisFindManyArgs = {
+      where: { hemodialysis_session_id: hemodialysis_session_id },
+    };
+    return this.vitalSignsHemodialysisService.findMany(params);
   }
 
   @Put(':id')

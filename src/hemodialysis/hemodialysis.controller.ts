@@ -90,7 +90,7 @@ export class HemodialysisController {
               check_in: turn.check_in,
               check_out: turn.check_out,
               number_machine: machine.number_machine,
-              number_session: `${n}`,
+              number_session: n,
               date: d,
               vascular_access: hemodialysis.vascular_access,
               hemodialysis: {
@@ -119,14 +119,15 @@ export class HemodialysisController {
                 },
               } as Prisma.SaleCreateNestedOneWithoutHemodialysis_sessionInput,
               type_hemodialysis: 'CONVENIO',
-              ultrafiltration_session: '',
-              ultrafiltration_end: '',
-              filter_reuse: '',
-              line_reuse: '',
-              heparin: '',
-              ktv: '',
+              devol: 0,
+              ultrafiltration_session: 0,
+              ultrafiltration_end: 0,
+              filter_reuse: 0,
+              line_reuse: 0,
+              heparin: 0,
+              ktv: 0,
               oxygenation: 0,
-              pa_entry: '',
+              pa_entry: '0/0',
             };
             sessions_dto.push(r);
             n++;
