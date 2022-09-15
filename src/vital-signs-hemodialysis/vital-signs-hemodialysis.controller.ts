@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Req,
 } from '@nestjs/common';
 import { VitalSignsHemodialysisService } from './vital-signs-hemodialysis.service';
 import { CreateVitalSignsHemodialysiDto } from './dto/create-vital-signs-hemodialysi.dto';
@@ -25,9 +26,13 @@ export class VitalSignsHemodialysisController {
 
   @Post()
   @Auth('ADMIN')
-  create(@Body() data: CreateVitalSignsHemodialysiDto) {
+  create(@Body() data: CreateVitalSignsHemodialysiDto, @Req() req: any) {
+    const user: any = req.user;
     const params: Prisma.VitalSignsHemodialysisCreateArgs = {
-      data: data as Prisma.VitalSignsHemodialysisUncheckedCreateInput,
+      data: {
+        ...data,
+        user_created_id: user.id,
+      } as Prisma.VitalSignsHemodialysisUncheckedCreateInput,
     };
     return this.vitalSignsHemodialysisService.create(params);
   }
