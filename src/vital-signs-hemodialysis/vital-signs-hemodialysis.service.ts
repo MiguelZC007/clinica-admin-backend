@@ -9,9 +9,9 @@ export class VitalSignsHemodialysisService {
 
   async create(params: Prisma.VitalSignsHemodialysisCreateArgs) {
     try {
-      const response: any = await this.prisma.vitalSignsHemodialysis.create(
-        params,
-      );
+      const response: any = await this.prisma.vitalSignsHemodialysis.create({
+        ...params,
+      });
       return response;
     } catch (e) {
       ErrorsManager(e);
