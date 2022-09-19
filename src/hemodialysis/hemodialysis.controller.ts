@@ -79,7 +79,7 @@ export class HemodialysisController {
             blood_flow: 0,
             conductivity: 0,
             fc: 0,
-            hour: index++,
+            hour: index + 1,
             pa: '0/0',
             ptm: 0,
             pv: 0,
