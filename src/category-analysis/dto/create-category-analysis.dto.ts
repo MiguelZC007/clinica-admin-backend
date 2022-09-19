@@ -1,11 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
-  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsPositive,
   IsString,
 } from 'class-validator';
 
@@ -16,9 +14,7 @@ export class CreateCategoryAnalysisDto {
   name: string;
 
   @ApiProperty()
-  @IsInt()
   @IsNumber()
-  @IsPositive()
   @IsOptional()
   order: number | null;
 

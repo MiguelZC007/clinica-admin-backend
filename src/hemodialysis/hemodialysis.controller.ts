@@ -49,7 +49,6 @@ export class HemodialysisController {
     @Req() req: any,
   ) {
     const user = req.user;
-
     try {
       const sessions_dto: Prisma.HemodialysisSessionCreateInput[] = [];
       const hemodialysis = await this.hemodialysisService.findUnique({
@@ -73,6 +72,20 @@ export class HemodialysisController {
         const { turn, machine } = turn_machine;
         let d = from;
         let n = 1;
+        const vitalSings = [];
+        for (let index = 0; index < 4; index++) {
+          vitalSings.push({
+            user_created_id: user.id,
+            blood_flow: 0,
+            conductivity: 0,
+            fc: 0,
+            hour: index++,
+            pa: '0/0',
+            ptm: 0,
+            pv: 0,
+            temp: 0,
+          });
+        }
         while (moment(d).isBetween(from, to, undefined, '[]')) {
           if (turn.days.filter((item) => item == moment(d).day()).length > 0) {
             const product: Product = await this.productService.findUnique({
@@ -128,6 +141,11 @@ export class HemodialysisController {
               ktv: 0,
               oxygenation: 0,
               pa_entry: '0/0',
+              vital_signs_hemodialysis: {
+                createMany: {
+                  data: vitalSings,
+                } as Prisma.VitalSignsHemodialysisCreateManyHemodialysis_sessionInputEnvelope,
+              },
             };
             sessions_dto.push(r);
             n++;

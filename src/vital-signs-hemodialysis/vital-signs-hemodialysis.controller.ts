@@ -66,6 +66,9 @@ export class VitalSignsHemodialysisController {
   ) {
     const params: Prisma.VitalSignsHemodialysisFindManyArgs = {
       where: { hemodialysis_session_id: hemodialysis_session_id },
+      orderBy: {
+        hour: 'asc',
+      },
     };
     return this.vitalSignsHemodialysisService.findMany(params);
   }

@@ -317,12 +317,10 @@ CREATE TABLE "Hemodialysis" (
     "vascular_access" "VascularAccessType" DEFAULT 'CATETER',
     "history_number" SERIAL NOT NULL,
     "regisration_date" TIMESTAMP(3),
-    "diagnostic" TEXT,
     "pathologies" TEXT,
     "deceased" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "prescription_hemodialysis_id" TEXT,
 
     CONSTRAINT "Hemodialysis_pkey" PRIMARY KEY ("id")
 );
@@ -365,7 +363,71 @@ CREATE TABLE "HemodialysisSession" (
 );
 
 -- CreateTable
-CREATE TABLE "PrescriptionHemodialysis" (
+CREATE TABLE "Receipt" (
+    "id" TEXT NOT NULL,
+    "hemodialysis_id" TEXT NOT NULL,
+    "net" TEXT NOT NULL DEFAULT 'SACABA',
+    "sedes" TEXT NOT NULL DEFAULT 'COCHABAMBA',
+    "establishment" TEXT NOT NULL DEFAULT 'HOSPITAL MARIA ESPERANZA S.R.L. - UNIDAD DE HEMODIALISIS',
+    "type_atention" TEXT NOT NULL DEFAULT 'REFERENCIA - ATENCION AMBULATORIA PARA DIALISIS',
+    "diagnostic" TEXT NOT NULL DEFAULT 'ENFERMEDAD RENAL CRONICA ESTADIO V - EN HEMODIALISIS',
+    "dispensed_date" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Receipt_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ReceiptMedicine" (
+    "id" TEXT NOT NULL,
+    "receipt_id" TEXT NOT NULL,
+    "medicine_id" TEXT NOT NULL,
+    "indications" TEXT NOT NULL,
+    "prescribed" INTEGER NOT NULL DEFAULT 0,
+    "dispensed" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ReceiptMedicine_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RecipeReceipt" (
+    "id" TEXT NOT NULL,
+    "hemodialysis_id" TEXT NOT NULL,
+    "net" TEXT NOT NULL DEFAULT 'SACABA',
+    "sedes" TEXT NOT NULL DEFAULT 'COCHABAMBA',
+    "establishment" TEXT NOT NULL DEFAULT 'HOSPITAL MARIA ESPERANZA S.R.L. - UNIDAD DE HEMODIALISIS',
+    "sus" TEXT NOT NULL DEFAULT 'LEY 1152',
+    "number_session_fistula" INTEGER NOT NULL DEFAULT 0,
+    "number_session_catheter" INTEGER NOT NULL DEFAULT 0,
+    "gender" "Gender" NOT NULL,
+    "month" TEXT NOT NULL,
+    "year" TEXT NOT NULL,
+    "diagnostic" TEXT NOT NULL DEFAULT 'ENFERMEDAD RENAL CRONICA ESTADIO V - EN HEMODIALISIS',
+    "other" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "RecipeReceipt_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RecipeReceiptMedicine" (
+    "id" TEXT NOT NULL,
+    "recipe_receipt_id" TEXT NOT NULL,
+    "medicine_id" TEXT NOT NULL,
+    "prescribed" INTEGER NOT NULL DEFAULT 0,
+    "dispensed" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "RecipeReceiptMedicine_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TemplateMedicine" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
@@ -373,7 +435,19 @@ CREATE TABLE "PrescriptionHemodialysis" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "PrescriptionHemodialysis_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "TemplateMedicine_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PrescriptionMedicine" (
+    "id" TEXT NOT NULL,
+    "template_medicine_id" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL DEFAULT 0,
+    "medicine_id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PrescriptionMedicine_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -493,6 +567,7 @@ CREATE TABLE "RecordUnderlyingDisease" (
     "icd_id" TEXT,
     "medical_history_id" TEXT,
     "medical_history_detail_id" TEXT,
+    "hemodialysis_id" TEXT,
     "diagnostic_id" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -599,7 +674,6 @@ CREATE TABLE "Prescription" (
     "medical_history_detail_id" TEXT,
     "user_created_id" TEXT NOT NULL,
     "medicine_id" TEXT,
-    "prescription_hemodialysis_id" TEXT,
 
     CONSTRAINT "Prescription_pkey" PRIMARY KEY ("id")
 );
@@ -639,7 +713,7 @@ CREATE TABLE "MedicineGenericName" (
 CREATE TABLE "MedicineConcentration" (
     "id" TEXT NOT NULL,
     "concentration" DECIMAL(65,30) NOT NULL,
-    "unit" TEXT,
+    "unit_measure" TEXT NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -873,7 +947,10 @@ CREATE UNIQUE INDEX "HemodialysisSession_sale_id_key" ON "HemodialysisSession"("
 CREATE UNIQUE INDEX "HemodialysisSession_date_hemodialysis_id_key" ON "HemodialysisSession"("date", "hemodialysis_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "PrescriptionHemodialysis_name_key" ON "PrescriptionHemodialysis"("name");
+CREATE UNIQUE INDEX "TemplateMedicine_name_key" ON "TemplateMedicine"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PrescriptionMedicine_template_medicine_id_medicine_id_key" ON "PrescriptionMedicine"("template_medicine_id", "medicine_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "HemodialysisMachine_hemodialysis_id_key" ON "HemodialysisMachine"("hemodialysis_id");
@@ -894,13 +971,16 @@ CREATE UNIQUE INDEX "Icd_disease_key" ON "Icd"("disease");
 CREATE UNIQUE INDEX "VitalSigns_medical_history_detail_id_key" ON "VitalSigns"("medical_history_detail_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Medicine_common_name_key" ON "Medicine"("common_name");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Medicine_product_id_key" ON "Medicine"("product_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Medicine_common_name_maker_medicine_id_medicine_concentrati_key" ON "Medicine"("common_name", "maker_medicine_id", "medicine_concentration_id", "pharmaceutical_form_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "MedicineGenericName_name_key" ON "MedicineGenericName"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "MedicineConcentration_unit_measure_concentration_key" ON "MedicineConcentration"("unit_measure", "concentration");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MakerMedicine_name_key" ON "MakerMedicine"("name");
@@ -1005,13 +1085,34 @@ ALTER TABLE "MedicalHistory" ADD CONSTRAINT "MedicalHistory_patient_id_fkey" FOR
 ALTER TABLE "Hemodialysis" ADD CONSTRAINT "Hemodialysis_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Hemodialysis" ADD CONSTRAINT "Hemodialysis_prescription_hemodialysis_id_fkey" FOREIGN KEY ("prescription_hemodialysis_id") REFERENCES "PrescriptionHemodialysis"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "HemodialysisSession" ADD CONSTRAINT "HemodialysisSession_hemodialysis_id_fkey" FOREIGN KEY ("hemodialysis_id") REFERENCES "Hemodialysis"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "HemodialysisSession" ADD CONSTRAINT "HemodialysisSession_sale_id_fkey" FOREIGN KEY ("sale_id") REFERENCES "Sale"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Receipt" ADD CONSTRAINT "Receipt_hemodialysis_id_fkey" FOREIGN KEY ("hemodialysis_id") REFERENCES "Hemodialysis"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ReceiptMedicine" ADD CONSTRAINT "ReceiptMedicine_receipt_id_fkey" FOREIGN KEY ("receipt_id") REFERENCES "Receipt"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ReceiptMedicine" ADD CONSTRAINT "ReceiptMedicine_medicine_id_fkey" FOREIGN KEY ("medicine_id") REFERENCES "Medicine"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RecipeReceipt" ADD CONSTRAINT "RecipeReceipt_hemodialysis_id_fkey" FOREIGN KEY ("hemodialysis_id") REFERENCES "Hemodialysis"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RecipeReceiptMedicine" ADD CONSTRAINT "RecipeReceiptMedicine_recipe_receipt_id_fkey" FOREIGN KEY ("recipe_receipt_id") REFERENCES "RecipeReceipt"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RecipeReceiptMedicine" ADD CONSTRAINT "RecipeReceiptMedicine_medicine_id_fkey" FOREIGN KEY ("medicine_id") REFERENCES "Medicine"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PrescriptionMedicine" ADD CONSTRAINT "PrescriptionMedicine_medicine_id_fkey" FOREIGN KEY ("medicine_id") REFERENCES "Medicine"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PrescriptionMedicine" ADD CONSTRAINT "PrescriptionMedicine_template_medicine_id_fkey" FOREIGN KEY ("template_medicine_id") REFERENCES "TemplateMedicine"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "VitalSignsHemodialysis" ADD CONSTRAINT "VitalSignsHemodialysis_hemodialysis_session_id_fkey" FOREIGN KEY ("hemodialysis_session_id") REFERENCES "HemodialysisSession"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1045,6 +1146,9 @@ ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_me
 
 -- AddForeignKey
 ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_medical_history_detail_id_fkey" FOREIGN KEY ("medical_history_detail_id") REFERENCES "MedicalHistoryDetail"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_hemodialysis_id_fkey" FOREIGN KEY ("hemodialysis_id") REFERENCES "Hemodialysis"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RecordUnderlyingDisease" ADD CONSTRAINT "RecordUnderlyingDisease_diagnostic_id_fkey" FOREIGN KEY ("diagnostic_id") REFERENCES "Diagnostic"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -1096,9 +1200,6 @@ ALTER TABLE "Prescription" ADD CONSTRAINT "Prescription_user_created_id_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "Prescription" ADD CONSTRAINT "Prescription_medicine_id_fkey" FOREIGN KEY ("medicine_id") REFERENCES "Medicine"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Prescription" ADD CONSTRAINT "Prescription_prescription_hemodialysis_id_fkey" FOREIGN KEY ("prescription_hemodialysis_id") REFERENCES "PrescriptionHemodialysis"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Medicine" ADD CONSTRAINT "Medicine_medicine_concentration_id_fkey" FOREIGN KEY ("medicine_concentration_id") REFERENCES "MedicineConcentration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

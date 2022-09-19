@@ -54,7 +54,12 @@ import { MedicineGenericNameModule } from './medicine-generic-name/medicine-gene
 import { MedicineConcentrationModule } from './medicine-concentration/medicine-concentration.module';
 import { MakerMedicineModule } from './maker-medicine/maker-medicine.module';
 import { PharmaceuticalFormModule } from './pharmaceutical-form/pharmaceutical-form.module';
-import { PrescriptionHemodialysisModule } from './prescription-hemodialysis/prescription-hemodialysis.module';
+import { RecipeReceiptModule } from './recipe-receipt/recipe-receipt.module';
+import { RecipeReceiptMedicineModule } from './recipe-receipt-medicine/recipe-receipt-medicine.module';
+import { ReceiptModule } from './receipt/receipt.module';
+import { ReceiptMedicineModule } from './receipt-medicine/receipt-medicine.module';
+import { TemplateMedicineModule } from './template-medicine/template-medicine.module';
+import { PrescriptionMedicineModule } from './prescription-medicine/prescription-medicine.module';
 
 @Module({
   controllers: [AppController],
@@ -113,7 +118,12 @@ import { PrescriptionHemodialysisModule } from './prescription-hemodialysis/pres
     MedicineConcentrationModule,
     MakerMedicineModule,
     PharmaceuticalFormModule,
-    PrescriptionHemodialysisModule,
+    RecipeReceiptModule,
+    RecipeReceiptMedicineModule,
+    ReceiptModule,
+    ReceiptMedicineModule,
+    TemplateMedicineModule,
+    PrescriptionMedicineModule,
   ],
 })
 export class AppModule {}

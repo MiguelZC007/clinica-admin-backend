@@ -2,10 +2,11 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDateString,
+  IsInt,
   IsNumber,
-  IsPositive,
   IsString,
   IsUUID,
+  Min,
 } from 'class-validator';
 
 export class CreateHemodialysisSessionDto {
@@ -14,11 +15,12 @@ export class CreateHemodialysisSessionDto {
   hemodialysis_id: string;
 
   @ApiProperty()
-  @IsNumber()
+  @IsInt()
+  @Min(1)
   number_session: number;
 
   @ApiProperty()
-  @IsPositive()
+  @IsInt()
   number_machine: number;
 
   @ApiProperty()
@@ -42,11 +44,11 @@ export class CreateHemodialysisSessionDto {
   ultrafiltration_end: number;
 
   @ApiProperty()
-  @IsNumber()
+  @IsInt()
   filter_reuse: number;
 
   @ApiProperty()
-  @IsNumber()
+  @IsInt()
   line_reuse: number;
 
   @ApiProperty()

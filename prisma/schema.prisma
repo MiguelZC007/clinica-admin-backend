@@ -304,22 +304,22 @@ model MedicalHistory {
 }
 
 model Hemodialysis {
-  id                           String                    @id @default(uuid())
-  patient                      User                      @relation(fields: [patient_id], references: [id])
-  patient_id                   String                    @unique
-  vascular_access              VascularAccessType?       @default(CATETER)
-  history_number               Int                       @default(autoincrement())
-  regisration_date             DateTime?
-  diagnostic                   String?
-  pathologies                  String?
-  deceased                     Boolean?                  @default(false)
-  createdAt                    DateTime                  @default(now())
-  updatedAt                    DateTime                  @updatedAt
-  files                        Files[]
-  hemodialysis_machine         HemodialysisMachine?
-  hemodialysis_session         HemodialysisSession[]
-  prescription_hemodialysis_id String?
-  prescription_hemodialysis    PrescriptionHemodialysis? @relation(fields: [prescription_hemodialysis_id], references: [id])
+  id                        String                    @id @default(uuid())
+  patient                   User                      @relation(fields: [patient_id], references: [id])
+  patient_id                String                    @unique
+  vascular_access           VascularAccessType?       @default(CATETER)
+  history_number            Int                       @default(autoincrement())
+  regisration_date          DateTime?
+  pathologies               String?
+  deceased                  Boolean?                  @default(false)
+  createdAt                 DateTime                  @default(now())
+  updatedAt                 DateTime                  @updatedAt
+  hemodialysis_machine      HemodialysisMachine?
+  files                     Files[]
+  hemodialysis_session      HemodialysisSession[]
+  record_underlying_disease RecordUnderlyingDisease[]
+  recipe_receipts           RecipeReceipt[]
+  receipts                  Receipt[]
 }
 
 model HemodialysisSession {
@@ -361,15 +361,87 @@ model HemodialysisSession {
   @@unique([date, hemodialysis_id])
 }
 
-model PrescriptionHemodialysis {
-  id            String         @id @default(uuid())
-  name          String         @unique
-  description   String?
-  active        Boolean        @default(true)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  prescriptions Prescription[]
-  hemodialysis  Hemodialysis[]
+model Receipt {
+  id                String            @id @default(uuid())
+  hemodialysis      Hemodialysis      @relation(fields: [hemodialysis_id], references: [id])
+  hemodialysis_id   String
+  net               String            @default("SACABA")
+  sedes             String            @default("COCHABAMBA")
+  establishment     String            @default("HOSPITAL MARIA ESPERANZA S.R.L. - UNIDAD DE HEMODIALISIS")
+  type_atention     String            @default("REFERENCIA - ATENCION AMBULATORIA PARA DIALISIS")
+  diagnostic        String            @default("ENFERMEDAD RENAL CRONICA ESTADIO V - EN HEMODIALISIS")
+  dispensed_date    DateTime
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  receipt_medicines ReceiptMedicine[]
+}
+
+model ReceiptMedicine {
+  id          String   @id @default(uuid())
+  receipt     Receipt  @relation(fields: [receipt_id], references: [id])
+  receipt_id  String
+  medicine    Medicine @relation(fields: [medicine_id], references: [id])
+  medicine_id String
+  indications String
+  prescribed  Int      @default(0)
+  dispensed   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model RecipeReceipt {
+  id                      String                  @id @default(uuid())
+  hemodialysis_id         String
+  hemodialysis            Hemodialysis            @relation(fields: [hemodialysis_id], references: [id])
+  net                     String                  @default("SACABA")
+  sedes                   String                  @default("COCHABAMBA")
+  establishment           String                  @default("HOSPITAL MARIA ESPERANZA S.R.L. - UNIDAD DE HEMODIALISIS")
+  sus                     String                  @default("LEY 1152")
+  number_session_fistula  Int                     @default(0)
+  number_session_catheter Int                     @default(0)
+  gender                  Gender
+  month                   String
+  year                    String
+  diagnostic              String                  @default("ENFERMEDAD RENAL CRONICA ESTADIO V - EN HEMODIALISIS")
+  other                   String?
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  receipt_medicines       RecipeReceiptMedicine[]
+}
+
+model RecipeReceiptMedicine {
+  id                String        @id @default(uuid())
+  recipe_receipt_id String
+  recipe_receipt    RecipeReceipt @relation(fields: [recipe_receipt_id], references: [id])
+  medicine_id       String
+  medicine          Medicine      @relation(fields: [medicine_id], references: [id])
+  prescribed        Int           @default(0)
+  dispensed         Int           @default(0)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+model TemplateMedicine {
+  id                     String                 @id @default(uuid())
+  name                   String                 @unique
+  description            String?
+  active                 Boolean                @default(true)
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+  prescription_medicines PrescriptionMedicine[]
+}
+
+model PrescriptionMedicine {
+  id                   String           @id @default(uuid())
+  template_medicine_id String
+  quantity             Int              @default(0)
+  medicine_id          String
+  medicine             Medicine         @relation(fields: [medicine_id], references: [id])
+  template_medicine    TemplateMedicine @relation(fields: [template_medicine_id], references: [id])
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+
+  @@unique([template_medicine_id, medicine_id])
 }
 
 model VitalSignsHemodialysis {
@@ -478,6 +550,8 @@ model RecordUnderlyingDisease {
   medical_history_id        String?
   medical_history_detail    MedicalHistoryDetail? @relation(fields: [medical_history_detail_id], references: [id])
   medical_history_detail_id String?
+  hemodialysis              Hemodialysis?         @relation(fields: [hemodialysis_id], references: [id])
+  hemodialysis_id           String?
   diagnostic                Diagnostic?           @relation(fields: [diagnostic_id], references: [id])
   diagnostic_id             String?               @unique
   createdAt                 DateTime              @default(now())
@@ -578,47 +652,50 @@ model Addendum {
 }
 
 model Prescription {
-  id                           String                    @id @default(uuid())
-  from                         DateTime?
-  to                           DateTime?
-  duration                     String?
-  name                         String?
-  description                  String?
-  frequency                    String?
-  quantity                     Int                       @default(1)
-  active                       Boolean                   @default(true)
-  createdAt                    DateTime                  @default(now())
-  updatedAt                    DateTime                  @updatedAt
-  medical_history_detail       MedicalHistoryDetail?     @relation(fields: [medical_history_detail_id], references: [id])
-  medical_history_detail_id    String?
-  user_created                 User                      @relation("prescription", fields: [user_created_id], references: [id])
-  user_created_id              String
-  medicine_id                  String?
-  medicine                     Medicine?                 @relation(fields: [medicine_id], references: [id])
-  prescription_hemodialysis    PrescriptionHemodialysis? @relation(fields: [prescription_hemodialysis_id], references: [id])
-  prescription_hemodialysis_id String?
-}
-
-model Medicine {
   id                        String                @id @default(uuid())
-  common_name               String                @unique
-  recommendations           String[]
-  formula                   String
-  conditions_conservation   String?
+  from                      DateTime?
+  to                        DateTime?
+  duration                  String?
+  name                      String?
+  description               String?
+  frequency                 String?
+  quantity                  Int                   @default(1)
   active                    Boolean               @default(true)
   createdAt                 DateTime              @default(now())
   updatedAt                 DateTime              @updatedAt
+  medical_history_detail    MedicalHistoryDetail? @relation(fields: [medical_history_detail_id], references: [id])
+  medical_history_detail_id String?
+  user_created              User                  @relation("prescription", fields: [user_created_id], references: [id])
+  user_created_id           String
+  medicine_id               String?
+  medicine                  Medicine?             @relation(fields: [medicine_id], references: [id])
+}
+
+model Medicine {
+  id                        String                  @id @default(uuid())
+  common_name               String
+  recommendations           String[]
+  formula                   String
+  conditions_conservation   String?
+  active                    Boolean                 @default(true)
+  createdAt                 DateTime                @default(now())
+  updatedAt                 DateTime                @updatedAt
   medicine_concentration_id String
-  medicine_concentration    MedicineConcentration @relation(fields: [medicine_concentration_id], references: [id])
+  medicine_concentration    MedicineConcentration   @relation(fields: [medicine_concentration_id], references: [id])
   maker_medicine_id         String
-  maker_medicine            MakerMedicine         @relation(fields: [maker_medicine_id], references: [id])
+  maker_medicine            MakerMedicine           @relation(fields: [maker_medicine_id], references: [id])
   pharmaceutical_form_id    String
-  pharmaceutical_form       PharmaceuticalForm    @relation(fields: [pharmaceutical_form_id], references: [id])
-  product_id                String                @unique
-  product                   Product               @relation(fields: [product_id], references: [id])
+  pharmaceutical_form       PharmaceuticalForm      @relation(fields: [pharmaceutical_form_id], references: [id])
+  product_id                String                  @unique
+  product                   Product                 @relation(fields: [product_id], references: [id])
   medicine_generic_name_id  String
-  medicine_generic_name     MedicineGenericName   @relation(fields: [medicine_generic_name_id], references: [id])
+  medicine_generic_name     MedicineGenericName     @relation(fields: [medicine_generic_name_id], references: [id])
   prescriptions             Prescription[]
+  prescription_medicines    PrescriptionMedicine[]
+  recipe_receipt_medicines  RecipeReceiptMedicine[]
+  receipt_medicines         ReceiptMedicine[]
+
+  @@unique([common_name, maker_medicine_id, medicine_concentration_id, pharmaceutical_form_id])
 }
 
 model MedicineGenericName {
@@ -634,11 +711,13 @@ model MedicineGenericName {
 model MedicineConcentration {
   id            String     @id @default(uuid())
   concentration Decimal
-  unit          String?
+  unit_measure  String
   active        Boolean    @default(true)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-  medicine      Medicine[]
+  medicines     Medicine[]
+
+  @@unique([unit_measure, concentration])
 }
 
 model MakerMedicine {
@@ -648,7 +727,7 @@ model MakerMedicine {
   active      Boolean    @default(true)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  medicine    Medicine[]
+  medicines   Medicine[]
 }
 
 model PharmaceuticalForm {
@@ -658,7 +737,7 @@ model PharmaceuticalForm {
   active      Boolean    @default(true)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  medicine    Medicine[]
+  medicines   Medicine[]
 }
 
 model PhysicalExam {

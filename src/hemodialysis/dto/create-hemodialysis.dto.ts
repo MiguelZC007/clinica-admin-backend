@@ -26,11 +26,6 @@ export class CreateHemodialysisDto {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
-  diagnostic: string;
-
-  @ApiPropertyOptional()
-  @IsString()
-  @IsOptional()
   pathologies: string;
 
   @ApiPropertyOptional({

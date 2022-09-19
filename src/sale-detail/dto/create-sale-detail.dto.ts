@@ -3,10 +3,11 @@ import {
   IsBoolean,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
-  IsPositive,
   IsString,
   IsUUID,
+  Min,
 } from 'class-validator';
 
 export class CreateSaleDetailDto {
@@ -21,18 +22,18 @@ export class CreateSaleDetailDto {
   sale_id: string;
 
   @ApiProperty()
-  @IsPositive()
-  @IsInt()
   @IsOptional()
+  @IsInt()
+  @Min(1)
   quantity: number | null;
 
   @ApiProperty()
-  @IsString()
+  @IsNumber()
   @IsOptional()
   sale_price: number | null;
 
   @ApiProperty()
-  @IsString()
+  @IsNumber()
   @IsOptional()
   discount: number | null;
 
@@ -50,5 +51,4 @@ export class CreateSaleDetailDto {
   @IsUUID()
   @IsOptional()
   meet_id: string | null;
-
 }
