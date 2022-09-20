@@ -23,13 +23,10 @@ export class ArchiveService {
       const arch = `${uid}.${ext.split('/')[1]}`;
       const name = resolve(carpeta, arch);
       if (user != null) {
-        const n = user.name != null ? user.name.split(' ') : [];
-        const l = user.lastname != null ? user.lastname.split(' ') : [];
-        const m =
-          user.mother_lastname != null ? user.mother_lastname.split(' ') : [];
-        const c = user.ci != null ? user.ci.split(' ') : [];
-        const fn = n.concat(l, m, c).join('-');
-        await fs.writeFileSync(`${carpeta}/${fn}.json`, JSON.stringify(user));
+        await fs.writeFileSync(
+          `${carpeta}/Informacion-De-Usuario.json`,
+          JSON.stringify(user),
+        );
       }
       await fs.writeFileSync(name, buff);
       return {
@@ -100,3 +97,4 @@ export class ArchiveService {
     }
   }
 }
+

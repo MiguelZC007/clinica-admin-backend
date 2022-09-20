@@ -296,6 +296,7 @@ CREATE TABLE "MedicalHistory" (
     "surgical_record" TEXT,
     "laboratory_record" TEXT,
     "prescriptions" TEXT,
+    "medicines" TEXT,
     "social_record" TEXT,
     "smokes" TEXT,
     "is_smokes" BOOLEAN DEFAULT false,
@@ -485,6 +486,7 @@ CREATE TABLE "AttentionSheet" (
 -- CreateTable
 CREATE TABLE "AttentionSheetDetail" (
     "id" TEXT NOT NULL,
+    "attention_sheet_id" TEXT NOT NULL,
     "patient_id" TEXT NOT NULL,
     "vascular_access" "VascularAccessType" NOT NULL,
     "number_sessions" INTEGER NOT NULL,
@@ -1119,6 +1121,9 @@ ALTER TABLE "VitalSignsHemodialysis" ADD CONSTRAINT "VitalSignsHemodialysis_hemo
 
 -- AddForeignKey
 ALTER TABLE "VitalSignsHemodialysis" ADD CONSTRAINT "VitalSignsHemodialysis_user_created_id_fkey" FOREIGN KEY ("user_created_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "AttentionSheetDetail" ADD CONSTRAINT "AttentionSheetDetail_attention_sheet_id_fkey" FOREIGN KEY ("attention_sheet_id") REFERENCES "AttentionSheet"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AttentionSheetDetail" ADD CONSTRAINT "AttentionSheetDetail_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

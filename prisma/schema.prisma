@@ -287,6 +287,7 @@ model MedicalHistory {
   surgical_record           String?
   laboratory_record         String?
   prescriptions             String?
+  medicines                 String?
   social_record             String?
   smokes                    String?
   is_smokes                 Boolean?                  @default(false)
@@ -463,24 +464,27 @@ model VitalSignsHemodialysis {
 }
 
 model AttentionSheet {
-  id                                String   @id @default(uuid())
+  id                                String                 @id @default(uuid())
   number_enabled_machines           Int
   number_positive_serology_machines Int
-  hospital_name                     String   @default("HOSPITAL MARIA ESPERANZA S.R.L.")
-  hospital_type                     String   @default("PRIVADO CONVENIO")
-  createdAt                         DateTime @default(now())
-  updatedAt                         DateTime @updatedAt
+  hospital_name                     String                 @default("HOSPITAL MARIA ESPERANZA S.R.L.")
+  hospital_type                     String                 @default("PRIVADO CONVENIO")
+  createdAt                         DateTime               @default(now())
+  updatedAt                         DateTime               @updatedAt
+  attention_sheet_details           AttentionSheetDetail[]
 }
 
 model AttentionSheetDetail {
-  id              String             @id @default(uuid())
-  patient         User               @relation(fields: [patient_id], references: [id])
-  patient_id      String
-  vascular_access VascularAccessType
-  number_sessions Int
-  observation     String?
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  id                 String             @id @default(uuid())
+  attention_sheet    AttentionSheet     @relation(fields: [attention_sheet_id], references: [id])
+  attention_sheet_id String
+  patient            User               @relation(fields: [patient_id], references: [id])
+  patient_id         String
+  vascular_access    VascularAccessType
+  number_sessions    Int
+  observation        String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model Files {
