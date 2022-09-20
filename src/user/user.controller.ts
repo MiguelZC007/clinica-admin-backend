@@ -39,6 +39,27 @@ export class UserController {
     return this.userService.create(params);
   }
 
+  @Post('patient')
+  @Auth('ADMIN')
+  createPatient(@Body() data: CreateUserDto) {
+    delete data.password;
+    const params: Prisma.UserCreateArgs = {
+      data: {
+        ...data,
+        user_rol: {
+          create: {
+            rol: {
+              connect: {
+                name: 'PACIENTE',
+              },
+            },
+          },
+        },
+      } as Prisma.UserCreateInput,
+    };
+    return this.userService.create(params);
+  }
+
   @Get('search')
   @Auth('ADMIN')
   @ApiOperation({
