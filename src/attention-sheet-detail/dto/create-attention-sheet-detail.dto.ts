@@ -13,6 +13,11 @@ export class CreateAttentionSheetDetailDto {
   @IsUUID()
   patient_id: string;
 
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsUUID()
+  attention_sheet_id: string;
+
   @ApiProperty({
     enum: ['CATETER', 'FISTULA'],
   })
